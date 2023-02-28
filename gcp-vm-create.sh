@@ -3,14 +3,15 @@
 # Install docker
 # install pgsql:14 pgadmin4:20 odoo:16
 
-gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,10010-10020 --source-ranges=0.0.0.0/0
-gcloud compute addresses create my-ip --project=vpn-gra --network-tier=STANDARD --region=us-central1
+gcloud compute firewall-rules create my-odoo-rule --allow tcp:10010-10020 --source-ranges=0.0.0.0/0
+gcloud compute firewall-rules create my-admin4-rule --allow tcp:5010-5010 --source-ranges=0.0.0.0/0
+gcloud compute addresses create odoo-static-ip --project=vpn-gra --network-tier=STANDARD --region=us-central1
 
 gcloud compute instances create docker-odoo \
     --project=vpn-gra \
     --zone=us-central1-a \
     --machine-type=e2-small \
-    --network-interface=address=my-ip,network-tier=STANDARD,subnet=default \
+    --network-interface=address=odoo-static-ip,network-tier=STANDARD,subnet=default \
     --maintenance-policy=MIGRATE \
     --provisioning-model=STANDARD \
     --service-account=907412932172-compute@developer.gserviceaccount.com \
@@ -24,11 +25,11 @@ gcloud compute instances create docker-odoo \
 
 gcloud compute ssh --project=vpn-gra --zone=us-central1-a docker-odoo
 
-sudo bash -c "$(curl https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
 sudo apt-get update
 sudo apt-get install nano
-sudo apt-get install unzip # unzip view_models.zip
+sudo apt-get install git
 git init
 sudo git pull https://github.com/borisgra/docker-yaml.git
+sudo bash -c "$(cat install_docker.sh)"
 cd yamls
 sudo docker compose up # pgsql:version+pgAdmin4:last+odoo:version  (param in .env)

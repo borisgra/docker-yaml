@@ -1,4 +1,4 @@
-<H4># Install docker https://gist.github.com/zulhfreelancer/254c4a157c586dd232c1a51db0f6eac3
+<H3> Install docker with odoo 16,15,14 and other ver. , pgsql , pgadmin4</H3> 
 <div style="color:Red;"><b>Attention!!! When create odoo base - base name needed start with odooXX (XX - ODOO_VERSION)  or change dbfilter in odoo.conf   </b></div>
 <pre>
 VM instances (min):
@@ -8,7 +8,8 @@ memory min 1.7G
 open ports in firewall ( gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,10010-10020 --source-ranges=0.0.0.0/0  
 </pre>
 <pre>
-curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+##curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh  # version instal docker 1 (https://gist.github.com/zulhfreelancer/254c4a157c586dd232c1a51db0f6eac3)
+sudo bash -c "$(cat install_server.sh)" # version instal docker 2
 sudo apt-get install nano
 sudo apt-get install unzip # unzip view_models.zip
 git init
