@@ -1,0 +1,18 @@
+services:
+  odoo:
+    container_name: odoo${ODOO_VERSION}
+    image: odoo:${ODOO_VERSION}.0
+    environment:
+      - COMPOSE_PROJECT_NAME=VAR${ODOO_VERSION}
+#    depends_on:
+#      - db
+    ports:
+      - "100${ODOO_VERSION}:8069"
+    volumes:
+#      - odoo-web-data:/var/lib/odoo
+      - ../config_$ODOO_VERSION:/etc/odoo
+      - ../addons_$ODOO_VERSION:/opt/community/addons #  addons_path =  /opt/community/addons # - odoo.conf  in folder ./config_$ODOO_VERSION
+    restart: always
+
+#volumes:
+#  odoo-web-data:
