@@ -1,0 +1,34 @@
+#!/bin/sh
+# Create VM
+# Install docker
+# install pgsql:14 pgadmin4:20 odoo:16
+
+gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,10010-10020 --source-ranges=0.0.0.0/0
+gcloud compute addresses create my-ip --project=vpn-gra --network-tier=STANDARD --region=us-central1
+
+gcloud compute instances create docker-odoo \
+    --project=vpn-gra \
+    --zone=us-central1-a \
+    --machine-type=e2-small \
+    --network-interface=address=my-ip,network-tier=STANDARD,subnet=default \
+    --maintenance-policy=MIGRATE \
+    --provisioning-model=STANDARD \
+    --service-account=907412932172-compute@developer.gserviceaccount.com \
+    --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
+    --tags=http-server,https-server \
+    --create-disk=auto-delete=yes,boot=yes,device-name=docker-odoo,image=projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2204-jammy-v20230214,mode=rw,size=10,type=projects/vpn-gra/zones/us-central1-a/diskTypes/pd-standard \
+    --no-shielded-secure-boot \
+    --shielded-vtpm \
+    --shielded-integrity-monitoring \
+    --reservation-affinity=any
+
+gcloud compute ssh --project=vpn-gra --zone=us-central1-a docker-odoo
+
+sudo bash -c "$(curl https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
+sudo apt-get update
+sudo apt-get install nano
+sudo apt-get install unzip # unzip view_models.zip
+git init
+sudo git pull https://github.com/borisgra/docker-yaml.git
+cd yamls
+sudo docker compose up # pgsql:version+pgAdmin4:last+odoo:version  (param in .env)
