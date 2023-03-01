@@ -3,8 +3,11 @@
 # Install docker
 # install pgsql:14 pgadmin4:20 odoo:16
 
-gcloud compute firewall-rules create my-odoo-rule --allow tcp:10010-10020 --source-ranges=0.0.0.0/0
-gcloud compute firewall-rules create my-admin4-rule --allow tcp:5010-5010 --source-ranges=0.0.0.0/0
+# replace vpn-gra on <project>
+# replace us-central1 on <region>
+#
+# !!! OPEN GCP console
+gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,tcp:10010-10020 --source-ranges=0.0.0.0/0
 gcloud compute addresses create odoo-static-ip --project=vpn-gra --network-tier=STANDARD --region=us-central1
 
 gcloud compute instances create docker-odoo \
@@ -23,13 +26,17 @@ gcloud compute instances create docker-odoo \
     --shielded-integrity-monitoring \
     --reservation-affinity=any
 
+# !!! wait 5 sec while starting VM
 gcloud compute ssh --project=vpn-gra --zone=us-central1-a docker-odoo
 
 sudo apt-get update
 sudo apt-get install nano
-sudo apt-get install git
+sudo apt-get install -y git
 git init
 sudo git pull https://github.com/borisgra/docker-yaml.git
 sudo bash -c "$(cat install_docker.sh)"
 cd yamls
 sudo docker compose up # pgsql:version+pgAdmin4:last+odoo:version  (param in .env)
+
+# !!! wait 30 sec while starting odoo
+# CLOSE GCP console
