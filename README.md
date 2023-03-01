@@ -5,13 +5,13 @@ VM instances (min):
 system disk- 10G for 1 odoo, 20G for several one (Ubuntu min)
 procesor 1
 memory min 1.7G
-open ports in firewall ( gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,10010-10020 --source-ranges=0.0.0.0/0  
+open ports in firewall ( gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,tcp:10010-10020 --source-ranges=0.0.0.0/0  
 </pre>
 <pre>
-##curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh  # version instal docker 1 (https://gist.github.com/zulhfreelancer/254c4a157c586dd232c1a51db0f6eac3)
-sudo bash -c "$(cat install_server.sh)" # version instal docker 2
+##curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh  # version install docker 1 (https://gist.github.com/zulhfreelancer/254c4a157c586dd232c1a51db0f6eac3)
 sudo apt-get install nano
-sudo apt-get install unzip # unzip view_models.zip
+sudo apt-get install -y git
+sudo bash -c "$(cat install_docker.sh)" # version install docker 2
 git init
 sudo git pull https://github.com/borisgra/docker-yaml.git
 cd yamls
