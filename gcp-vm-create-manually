@@ -31,10 +31,9 @@ gcloud compute ssh --project=vpn-gra --zone=us-central1-a docker-odoo
 sudo apt update
 sudo apt install nano
 sudo apt install -y git
-git init
-sudo git pull https://github.com/borisgra/docker-yaml.git
-sudo bash -c "$(cat install_docker.sh)"
-cd yamls
+sudo sudo git clone https://github.com/borisgra/docker-yaml.git
+cd docker-yaml/yamls
+sudo bash -c "$(cat ../install_docker.sh)"
 sudo docker compose up # pgsql:version+pgAdmin4:last+odoo:version  (param in .env)
 
 # !!! wait 30 sec while starting odoo

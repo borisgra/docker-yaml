@@ -129,9 +129,10 @@ function verify_docker_installed() {
     return 0
   fi
   log_error "NOT INSTALLED"
-  if ! confirm "Would you like to install Docker? This will run 'curl https://get.docker.com/ | sh'."; then
-    exit 0
-  fi
+# boris.gra
+#  if ! confirm "Would you like to install Docker? This will run 'curl https://get.docker.com/ | sh'."; then
+#    exit 0
+#  fi
   if ! run_step "Installing Docker" install_docker; then
     log_error "Docker installation failed, please visit https://docs.docker.com/install for instructions."
     exit 1
