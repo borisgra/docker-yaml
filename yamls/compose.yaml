@@ -1,0 +1,42 @@
+services:
+  odoo:
+    container_name: odoo
+    image: odoo:${ODOO_VERSION}.0
+    depends_on:
+      - db
+    ports:
+      - "100${ODOO_VERSION}:8069"
+    volumes:
+#      - odoo-web-data:/var/lib/odoo
+      - ../config_$ODOO_VERSION:/etc/odoo
+      - ../addons_$ODOO_VERSION:/opt/community/addons #  addons_path =  /opt/community/addons # - odoo.conf  in folder ./config_$ODOO_VERSION
+    restart: always
+
+  db:
+    container_name: postgres
+    image: postgres:$POSTGRES_VERSION
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=${POSTGRES_DB}
+      - PGDATA=../data-$POSTGRES_VERSION
+    volumes:
+      - ../data-$POSTGRES_VERSION:/var/lib/postgresql/data-$POSTGRES_VERSION
+    ports:
+      - $PORTS_POSTGRES
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:${ADMIN4_VERSION}
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW}
+    depends_on:
+      - db
+    ports:
+      - "${PORTS_ADMIN4}" #"5050:80"
+    restart: always
+
+#volumes:
+#  odoo-web-data:
