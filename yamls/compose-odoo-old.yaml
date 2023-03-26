@@ -1,0 +1,14 @@
+services:
+  odooOld:
+    container_name: odoo-$ODOO_VERSION_OLD
+    image: odoo:${ODOO_VERSION_OLD}.0
+    depends_on:
+      - db
+    ports:
+      - "100${ODOO_VERSION_OLD}:8069"
+    volumes:
+      #      - odoo-web-data:/var/lib/odoo
+      - ../config_$ODOO_VERSION_OLD:/etc/odoo
+      - ../config_$ODOO_VERSION/addons:/opt/community/addons #   odoo.conf  in folder ./config_$ODOO_VERSION
+      - ../config_$ODOO_VERSION:/var/lib/odoo/.local/share/Odoo/sessions
+    restart: always
