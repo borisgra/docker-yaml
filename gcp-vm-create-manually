@@ -37,3 +37,9 @@ sudo docker compose up # pgsql:version+pgAdmin4:last+odoo:version  (param in .en
 
 # !!! wait 30 sec while starting odoo
 # CLOSE GCP console
+
+Adding SSHKEY
+edit VM / SSH Keys / add item
+user name_user
+as is:
+ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAkf8F4vWHJ2ugTdfouGV521k4kHg+byCqQTLb/q+tIBqB2pXNAn8L7FIsE6inDGpVukUyVwVhT6UTwap1RURITRx0i/Xe+qTJt5UzjS/hL+em915TTQsT1WAuIqksbvlhx3bumvrBMoh4+0dSRdUD2yFrr3yFSiopX2D+PXKWXkHHtgmoFxUvfc2aKMbKys/fAHdJBcWkpR9jDSMEuFY+2c38TPOz9Z4AzEmnFQ0NqzQEth+GV2AVdA7UMxSSniml5RhzWplucW36iE6iS/h5fAqtGzq5d7SU0eaQMEwudbzpGlQ8J7+Fz0mkh8kFCEdpL0/PnOaJFkp+IGIrq5BEtw== google-ssh {"userName":"name_user","expireOn":"2025-06-01T13:57:26+0000"}

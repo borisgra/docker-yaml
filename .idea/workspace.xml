@@ -4,27 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="refactor compose-bd.yaml">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config_11/odoo.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config_14/odoo.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config_15/odoo.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config_16/odoo.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config_9/openerp-server.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config_pgadmin4/read.me" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gcp-vm-create-manually" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/install_docker.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yamls/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yamls/compose-bd.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yamls/compose-odoo-14-15-16.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yamls/compose-odoo-old.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yamls/compose-odoo-ver.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yamls/compose.yaml" afterDir="false" />
+    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gcp-vm-create-manually" beforeDir="false" afterPath="$PROJECT_DIR$/gcp-vm-create-manually" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -345,7 +327,35 @@
       <option name="project" value="LOCAL" />
       <updated>1679662348126</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="init">
+      <created>1679833583705</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1679833583706</updated>
+    </task>
+    <task id="LOCAL-00040" summary="logfile = /var/lib/odoo/.local/share/Odoo/odoo_log">
+      <created>1680023325049</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1680023325049</updated>
+    </task>
+    <task id="LOCAL-00041" summary="readne , default odoo16">
+      <created>1685625368900</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1685625368900</updated>
+    </task>
+    <task id="LOCAL-00042" summary="ADMIN4_VERSION=7.1">
+      <created>1685625897607</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1685625897607</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -381,9 +391,12 @@
     <MESSAGE value="      - COMPOSE_PROJECT_NAME=...." />
     <MESSAGE value=" undo     - COMPOSE_PROJECT_NAME=...." />
     <MESSAGE value="gitignore" />
-    <MESSAGE value="init" />
     <MESSAGE value="GCP" />
     <MESSAGE value="refactor 5432" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor 5432" />
+    <MESSAGE value="init" />
+    <MESSAGE value="logfile = /var/lib/odoo/.local/share/Odoo/odoo_log" />
+    <MESSAGE value="readne , default odoo16" />
+    <MESSAGE value="ADMIN4_VERSION=7.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="ADMIN4_VERSION=7.1" />
   </component>
 </project>
