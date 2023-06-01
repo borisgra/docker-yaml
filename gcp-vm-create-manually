@@ -1,12 +1,12 @@
 #!/bin/sh
 # Create VM
 # Install docker
-# install pgsql:14 pgadmin4:20 odoo:16
+# install pgsql:13.10 pgadmin4:7.1 odoo:16
 
 # replace vpn-gra on <project>
 # replace us-central1 on <region>
 #
-# !!! OPEN GCP console
+# !!! OPEN GCP console https://cloud.google.com/
 gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,tcp:10010-10020 --source-ranges=0.0.0.0/0
 gcloud compute addresses create odoo-static-ip --project=vpn-gra --network-tier=STANDARD --region=us-central1
 
