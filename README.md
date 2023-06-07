@@ -42,8 +42,10 @@ sudo systemctl stop docker.socket
 
 sudo git stash save # clear last modif in current git
 
+sudo git clone https://github.com/mmodrive/OdooX_Addons.git ~/docker-yaml/config_X/addons     # load addons
+
 # Dockerfile  (add needed package in image)
-sudo docker build -t odoo-my:9.0 . # build new image (Dockerfile in current dir)
+sudo docker build -t odoo:9.0 . #   replase odoo:9.0 build new image (Dockerfile in current dir)
 
 https://www.baeldung.com/ops/root-user-password-docker-container
 sudo docker compose exec -it odoo bash  # NOT root acccess
@@ -67,7 +69,6 @@ gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
 https://rominirani.com/hands-on-guide-to-scheduling-vm-instances-to-start-and-stop-a079a50e16c6 
 
 DELETE !!!
-gsutil retention temp release gs://boris-gra-bucket/suplements/Chirka-Kem-08.2016.avi
 gsutil -m retention event release gs://boris-gra/images/*.*
 gsutil retention temp release gs://boris-gra/images/*.*
 </pre>
