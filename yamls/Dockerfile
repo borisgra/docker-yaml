@@ -3,7 +3,9 @@ MAINTAINER boris.gra <boris.gra.dev@gmail.com>
 
 USER root
 
-RUN pip install openpyxl ebaysdk
+RUN pip install ebaysdk
+RUN pip install openpyxl==2.2.5
+
 #RUN pip installbs4
 
 USER odoo

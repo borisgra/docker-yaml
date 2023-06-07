@@ -42,7 +42,7 @@ sudo systemctl stop docker.socket
 
 sudo git stash save # clear last modif in current git
 
-# Dockerfile  (add needed pakets in image)
+# Dockerfile  (add needed package in image)
 sudo docker build -t odoo-my:9.0 . # build new image (Dockerfile in current dir)
 
 https://www.baeldung.com/ops/root-user-password-docker-container
