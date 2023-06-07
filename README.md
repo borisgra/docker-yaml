@@ -35,8 +35,39 @@ sudo docker compose down  # delete all containers
 sudo docker compose down --remove-orphans # if error: while removing network: network yamls_default
 sudo docker container stop odoo
 sudo docker container rm odoo
+sudo docker images
+sudo docker rmi <images>  # remove images (image1 image2 image3 ...)
 sudo service docker restart
 sudo systemctl stop docker.socket
 
 sudo git stash save # clear last modif in current git
+
+# Dockerfile  (add needed pakets in image)
+sudo docker build -t odoo-my:9.0 . # build new image (Dockerfile in current dir)
+
+https://www.baeldung.com/ops/root-user-password-docker-container
+sudo docker compose exec -it odoo bash  # NOT root acccess
+sudo docker compose exec -it -u root odoo bash  # root acccess
+
+sudo docker compose cp ~/daas_2023-01-23_17-51-22.dump pgadmin:/var/lib/pgadmin/storage/mail_gmail.com
+
+sudo service docker restart
+sudo systemctl stop docker.socket
+sudo systemctl status docker.service
+
+GCP:
+https://stackoverflow.com/questions/67265822/where-are-my-storage-pd-capacity-charges-coming-from 
+gcloud compute instances list
+gcloud compute zones list
+export from VM/Images (not MashinaImages)  !!
+gcloud compute images export --destination-uri gs://vpn-gra/images/image-vpn-pgsql-admin4.tar.gz --image image-vpn-pgsql-admin4
+gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
+gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
+
+https://rominirani.com/hands-on-guide-to-scheduling-vm-instances-to-start-and-stop-a079a50e16c6 
+
+DELETE !!!
+gsutil retention temp release gs://boris-gra-bucket/suplements/Chirka-Kem-08.2016.avi
+gsutil -m retention event release gs://boris-gra/images/*.*
+gsutil retention temp release gs://boris-gra/images/*.*
 </pre>
