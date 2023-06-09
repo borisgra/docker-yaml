@@ -1,0 +1,7 @@
+services:
+  odoo:
+    container_name: flask
+    image: flsk:latest   
+    ports:
+      - "5000:5000"
+    restart: always
