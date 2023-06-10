@@ -28,12 +28,7 @@ gcloud compute instances create docker-odoo \
 # !!! wait 30 sec while starting VM
 gcloud compute ssh --project=vpn-gra --zone=us-central1-a docker-odoo # start console VM
 
-sudo apt update && sudo apt install nano && sudo apt install -y git #  Install dependencies
-sudo git clone https://github.com/borisgra/docker-yaml.git --branch main
-sudo chmod 777 docker-yaml/config*
-cd docker-yaml/yamls
-sudo bash -c "$(cat ../install_docker.sh)"
-sudo docker compose up # pgsql:version+pgAdmin4:last+odoo:version  (param in .env)
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/main/install_docker.sh)"
 
 # !!! wait 30 sec while starting odoo
 # CLOSE GCP console
