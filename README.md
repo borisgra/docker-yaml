@@ -8,13 +8,13 @@ memory min 1.7G
 open ports in firewall ( gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,tcp:10010-10020 --source-ranges=0.0.0.0/0  
 </pre>
 <pre>
-# install docker.sh and start  pgsql:version+pgAdmin4:last+odoo:version  (param in .env)
+# install docker and start  pgsql:version+pgAdmin4:version+odoo:version  (version in .env file)
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/main/install_docker.sh)"
 
 By default ODOO_VERSION=16 (in .env),If needed, change ODOO_VERSION :
-1) sudo docker compose stop
-2) sudo nano .env # change ODOO_VERSION  (for ODOO_VERSION<13 - POSTGRES_VERSION)
-3) sudo docker compose up # pgsql:version+pgAdmin4:last+odoo:version  # version in file .env  (13.10+last+11)
+1) sudo docker compose down
+2) sudo nano .env # change ODOO_VERSION  (for ODOO_VERSION<10 - POSTGRES_VERSION < 14)
+3) sudo docker compose up 
 
 sudo docker compose stop
 sudo docker compose start 
