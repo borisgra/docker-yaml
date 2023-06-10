@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/flask" afterDir="false" />
+    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="install_docker.sh">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/install_docker.sh" beforeDir="false" afterPath="$PROJECT_DIR$/install_docker.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,9 +49,9 @@
       <recent name="F:\Projects_git\docker-yaml\config_16" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\Projects_git\docker-yaml" />
       <recent name="F:\Projects_git\docker-yaml\yamls" />
       <recent name="F:\Projects_git\docker-yaml\yamls2" />
-      <recent name="F:\Projects_git\docker-yaml" />
       <recent name="F:\Projects_git\docker-yaml\config_15" />
     </key>
   </component>
@@ -356,7 +358,42 @@
       <option name="project" value="LOCAL" />
       <updated>1685625897607</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="add flask">
+      <created>1686314253222</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1686314253222</updated>
+    </task>
+    <task id="LOCAL-00044" summary="sudo bash -c &quot;$(curl -fsSL https://get.docker.com)&quot; # install docker">
+      <created>1686331944741</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1686331944741</updated>
+    </task>
+    <task id="LOCAL-00045" summary="install_docker.sh">
+      <created>1686376451511</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1686376451511</updated>
+    </task>
+    <task id="LOCAL-00046" summary="install_docker.sh">
+      <created>1686377133646</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1686377133646</updated>
+    </task>
+    <task id="LOCAL-00047" summary="install_docker.sh 2">
+      <created>1686378432428</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1686378432428</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -375,8 +412,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="postgres&amp;admin4" />
-    <MESSAGE value="postgres&amp;admin4 - 3" />
     <MESSAGE value="    volumes:&#10;      - &quot;db-data:/var/lib/postgresql/data&quot;" />
     <MESSAGE value="volumes:&#10;  db-data: {}" />
     <MESSAGE value="rename" />
@@ -398,6 +433,10 @@
     <MESSAGE value="logfile = /var/lib/odoo/.local/share/Odoo/odoo_log" />
     <MESSAGE value="readne , default odoo16" />
     <MESSAGE value="ADMIN4_VERSION=7.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="ADMIN4_VERSION=7.1" />
+    <MESSAGE value="add flask" />
+    <MESSAGE value="sudo bash -c &quot;$(curl -fsSL https://get.docker.com)&quot; # install docker" />
+    <MESSAGE value="install_docker.sh" />
+    <MESSAGE value="install_docker.sh 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="install_docker.sh 2" />
   </component>
 </project>
