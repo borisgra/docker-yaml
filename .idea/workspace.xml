@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="install_docker.sh">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install_docker.sh" beforeDir="false" afterPath="$PROJECT_DIR$/install_docker.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gcp-vm-create-manually" beforeDir="false" afterPath="$PROJECT_DIR$/supplaments" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -393,7 +392,21 @@
       <option name="project" value="LOCAL" />
       <updated>1686378432428</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Ubuntu on Window:">
+      <created>1686744635591</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1686744635591</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Ubuntu on Window:">
+      <created>1686744789017</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1686744789017</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -412,7 +425,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="    volumes:&#10;      - &quot;db-data:/var/lib/postgresql/data&quot;" />
     <MESSAGE value="volumes:&#10;  db-data: {}" />
     <MESSAGE value="rename" />
     <MESSAGE value="odoo and pgadmin" />
@@ -435,8 +447,9 @@
     <MESSAGE value="ADMIN4_VERSION=7.1" />
     <MESSAGE value="add flask" />
     <MESSAGE value="sudo bash -c &quot;$(curl -fsSL https://get.docker.com)&quot; # install docker" />
-    <MESSAGE value="install_docker.sh" />
     <MESSAGE value="install_docker.sh 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="install_docker.sh 2" />
+    <MESSAGE value="install_docker.sh" />
+    <MESSAGE value="Ubuntu on Window:" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ubuntu on Window:" />
   </component>
 </project>
