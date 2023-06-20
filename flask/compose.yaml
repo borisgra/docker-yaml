@@ -1,7 +1,15 @@
 services:
   odoo:
     container_name: flask
-    image: flsk:latest   
+    image: flsk:latest
+    build:
+      context: "."
+      args:
+        URL_BD_CMD: ${URL_BD_COM}
+    volumes:
+      - .:/app
     ports:
-      - "5000:5000"
+      - "5003:5003"
     restart: always
+
+# sudo docker compose up --build
