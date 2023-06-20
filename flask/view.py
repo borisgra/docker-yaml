@@ -16,9 +16,9 @@ def hook_root():
     print(request.headers)
     sys.stdout.flush()
     if request.method == 'POST':
-        # WEBHOOK_SECRET = "AAAAB3NzaC1yc2EAAAADAQABAAABAQCEHGBawN9"
-        # return verify_signature(?????, WEBHOOK_SECRET, request.headers["X-Hub-Signature-256"])
-        return "OK", 200
+        WEBHOOK_SECRET = "AAAAB3NzaC1yc2EAAAADAQABAAABAQCEHGBawN9"
+        return verify_signature(request.data, WEBHOOK_SECRET, request.headers["X-Hub-Signature-256"])
+        # return "OK", 200
     else:
         return 'ERROR', 400
 
