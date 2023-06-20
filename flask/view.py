@@ -12,7 +12,6 @@ def home():
 @app. route('/hooktest', methods=['GET', 'POST'])
 def hook_root():
     print("webhook headers:")
-    # print(request.json)
     print(request.headers)
     sys.stdout.flush()
     if request.method == 'POST':
