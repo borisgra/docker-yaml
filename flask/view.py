@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, json
+import sys
+from flask import Flask, render_template, request
 import os
 
 app = Flask(__name__)
@@ -8,11 +9,13 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app. route('/hooktest', methods=['GET', 'POST'])
 def hook_root():
-    if request.headers['Content-Types'] == 'application/json':  # calling json objects
-        # print(json.dumps(request.json))
-        return json.dumps(request.json)
+    print("webhook")
+    sys.stdout.flush()
+    if request.method == 'POST':
+        return 'OK', 200
+    else:
+        return 'OK', 400
 
 @app. route('/test')
 def test():
