@@ -21,5 +21,5 @@ ENTRYPOINT [ "python" ]
 CMD ["hook.py"]
 
 # sudo docker image build -t borisgra/webhook:1.0 .
-# Sudo docker login -u borisgra
+# sudo docker login -u borisgra
 # sudo docker push borisgra/webhook:1.0

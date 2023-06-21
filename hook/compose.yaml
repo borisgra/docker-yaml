@@ -1,5 +1,5 @@
 services:
-  odoo:
+  webhook:
     container_name: webhook
     image: webhook:latest
     build:
