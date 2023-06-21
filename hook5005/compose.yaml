@@ -1,11 +1,11 @@
 services:
   webhook:
     container_name: webhook
-    image: borisgra/webhook:latest
+    image: borisgra/webhook:1.0
     volumes:
       - ./.env:/app/.env
     ports:
-      - "5005:5003"
+      - "$PORT:$PORT"
     restart: always
 
 # sudo docker compose up
