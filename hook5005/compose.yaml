@@ -1,0 +1,11 @@
+services:
+  odoo:
+    container_name: webhook
+    image: borisgra/webhook:latest
+    volumes:
+      - ./.env:/app/.env
+    ports:
+      - "5005:5003"
+    restart: always
+
+# sudo docker compose up

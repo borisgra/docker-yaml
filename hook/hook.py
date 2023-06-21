@@ -18,7 +18,7 @@ def hook_root():
     # import sys
     # sys.stdout.flush()
     if request.method == 'POST':
-        WEBHOOK_SECRET = "AAAAB3NzaC1yc2EAAAADAQABAAABAQCEHGBawN9"
+        WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET", "no")
         return verify_signature(request.data, WEBHOOK_SECRET, request.headers["X-Hub-Signature-256"])
     else:
         return 'ERROR', 400
@@ -43,5 +43,5 @@ def verify_signature(payload_body, secret_token, signature_header):
 
 if __name__ == "__main__":
     port = os.getenv('PORT', 5003)
-    isNotProduction = os.getenv("ORG_GRADLE_PROJECT_isProduction", "no") == "no"
-    app.run(debug=isNotProduction, host='0.0.0.0', port=port)
+    isProduction = os.getenv("isProduction", "no") == "no"
+    app.run(debug=not isProduction, host='0.0.0.0', port=port)
