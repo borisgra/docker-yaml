@@ -1,4 +1,3 @@
-import sys
 from flask import Flask, render_template, request
 import os
 import hashlib
@@ -14,13 +13,13 @@ def home():
 
 @app.route('/hook', methods=['GET', 'POST'])
 def hook_root():
-    print("webhook headers:")
-    print(request.headers)
-    sys.stdout.flush()
+    # print("webhook headers:")
+    # print(request.headers)
+    # import sys
+    # sys.stdout.flush()
     if request.method == 'POST':
         WEBHOOK_SECRET = "AAAAB3NzaC1yc2EAAAADAQABAAABAQCEHGBawN9"
         return verify_signature(request.data, WEBHOOK_SECRET, request.headers["X-Hub-Signature-256"])
-        # return "OK", 200
     else:
         return 'ERROR', 400
 

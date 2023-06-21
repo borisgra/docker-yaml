@@ -1,6 +1,6 @@
 services:
   odoo:
-    container_name: flask
+    container_name: webhook
     image: webhook:latest
     build:
       context: "."
