@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import os
 import hashlib
 import hmac
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -33,15 +34,16 @@ def verify_signature(payload_body, secret_token, signature_header):
         signature_header: header received from GitHub (x-hub-signature-256)
     """
     if not signature_header:
-        return 403, "x-hub-signature-256 header is missing!"
+        return "x-hub-signature-256 header is missing!", 403
     hash_object = hmac.new(secret_token.encode('utf-8'), msg=payload_body, digestmod=hashlib.sha256)
     expected_signature = "sha256=" + hash_object.hexdigest()
     if not hmac.compare_digest(expected_signature, signature_header):
-        return 403, "Request signatures didn't match!"
+        return "Request signatures didn't match!", 403
     return "OK", 200
 
 
 if __name__ == "__main__":
+    load_dotenv(".env")
     port = os.getenv('PORT', 5003)
-    isProduction = os.getenv("isProduction", "no") == "no"
+    isProduction = os.getenv("isProduction", "no") == "yes"
     app.run(debug=not isProduction, host='0.0.0.0', port=port)
