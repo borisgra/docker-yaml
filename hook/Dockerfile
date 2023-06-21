@@ -18,4 +18,4 @@ EXPOSE 5003
 # configure the container to run in an executed manner
 ENTRYPOINT [ "python" ]
 
-CMD ["view.py" ]
+CMD ["hook.py"]
