@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "5003:5003"
+      - "$PORT:$PORT"
     restart: always
 
 # sudo docker compose up --build

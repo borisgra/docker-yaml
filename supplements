@@ -1,26 +1,26 @@
 #!/bin/sh
 GCP:
-gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,tcp:10010-10020 --source-ranges=0.0.0.0/0
-gcloud compute addresses create odoo-static-ip --project=vpn-gra --network-tier=STANDARD --region=us-central1
+gcloud compute firewall-rules create my-rule1 --allow tcp:5000-5010,tcp:10010-10020,tcp:1009 --source-ranges=0.0.0.0/0
+gcloud compute addresses create my-ip1 --project=vpn-gra --network-tier=STANDARD --region=us-central1
 
-# create VM
-gcloud compute instances create docker-odoo \
+# create VM (# g1-small or e2-small)
+gcloud compute instances create ubuntu1 \
     --project=vpn-gra \
     --zone=us-central1-a \
-    --machine-type=e2-small \
-    --network-interface=address=odoo-static-ip,network-tier=STANDARD,subnet=default \
+    --machine-type=g1-small \
+    --network-interface=address=my-ip1,network-tier=STANDARD,subnet=default \
     --maintenance-policy=MIGRATE \
     --provisioning-model=STANDARD \
     --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
     --tags=http-server,https-server \
-    --create-disk=auto-delete=yes,boot=yes,device-name=docker-odoo,image=projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2004-focal-v20230216,mode=rw,size=10,type=projects/vpn-gra/zones/us-central1-a/diskTypes/pd-standard \
+    --create-disk=auto-delete=yes,boot=yes,device-name=ubuntu1,image=projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2004-focal-v20230216,mode=rw,size=10,type=projects/vpn-gra/zones/us-central1-a/diskTypes/pd-standard \
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
     --reservation-affinity=any
 
 # !!! wait 30 sec while starting VM
-gcloud compute ssh --project=vpn-gra --zone=us-central1-a docker-odoo # start console VM
+gcloud compute ssh --project=vpn-gra --zone=us-central1-a ubuntu1 # start console VM
 
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/main/install_docker.sh)"
 
@@ -38,3 +38,22 @@ sudo apt remove openssh-server && sudo apt install openssh-server && sudo servic
 sudo nano /etc/ssh/sshd_config   #  ( PasswordAuthentication yes) if refuse connection - Ubuntu-20.04 on Window
 sudo lsof -i -n -P | grep LISTEN # list open ports
 sudo service docker start # Ubuntu/Debian if error:  Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+
+sudo docker compose exec -it odoo bash  # NOT root acccess
+sudo docker compose exec -it -u root odoo bash  # root acccess
+https://security.stackexchange.com/questions/218355/how-to-execute-a-command-directly-on-the-host-system-through-docker-sock-in-a-do
+sudo docker compose exec -it -u root odoo mkdir /host
+sudo docker run -ti -u root --privileged --net=host --pid=host --ipc=host --volume /:/host odoo:9.0 chroot /host
+
+https://stackoverflow.com/questions/32163955/how-to-run-shell-script-on-host-from-docker-container
+HOST:
+sudo mkfifo myHostPipe &&  sudo chmod 777 myHostPipe &&
+while true; do eval "$(cat myHostPipe)"; done   &  # listener
+
+BASH in Conteiner:
+echo "ls -l" > myHostPipe  # example cmd
+
+fot test docker:
+sudo docker compose exec -it webhook echo "ls -l" > myHostPipe
+#-----------------------------------------------------
+ps auxw | grep  bash | grep -w S # bush in background
