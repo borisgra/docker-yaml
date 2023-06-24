@@ -3,7 +3,6 @@ import os
 import hashlib
 import hmac
 from dotenv import load_dotenv
-import subprocess
 import datetime
 
 app = Flask(__name__)
@@ -42,7 +41,7 @@ def verify_signature(payload_body, secret_token, signature_header):
     if not hmac.compare_digest(expected_signature, signature_header):
         return "Request signatures didn't match!", 403
     try:
-        subprocess.run([cmd])
+        os.system(cmd)
         with open("templates/index.html", "a") as text_file:
             print("<div>Date time START : {} </div>".format( datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S")), file=text_file)
 
