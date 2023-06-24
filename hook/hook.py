@@ -3,6 +3,8 @@ import os
 import hashlib
 import hmac
 from dotenv import load_dotenv
+import subprocess
+import datetime
 
 app = Flask(__name__)
 
@@ -19,8 +21,8 @@ def hook_root():
     # import sys
     # sys.stdout.flush()
     if request.method == 'POST':
-        WEBHOOK_SECRET = os.getenv("WEBHOOK_SECRET", "no")
-        return verify_signature(request.data, WEBHOOK_SECRET, request.headers["X-Hub-Signature-256"])
+        webhook_secret = os.getenv("WEBHOOK_SECRET", "no")
+        return verify_signature(request.data, webhook_secret, request.headers["X-Hub-Signature-256"])
     else:
         return 'ERROR', 400
 
@@ -39,6 +41,13 @@ def verify_signature(payload_body, secret_token, signature_header):
     expected_signature = "sha256=" + hash_object.hexdigest()
     if not hmac.compare_digest(expected_signature, signature_header):
         return "Request signatures didn't match!", 403
+    try:
+        subprocess.run([cmd])
+        with open("templates/index.html", "a") as text_file:
+            print("<div>Date time START : {} </div>".format( datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S")), file=text_file)
+
+    except:
+        return "IOError in CMD", 402
     return "OK", 200
 
 
@@ -46,4 +55,5 @@ if __name__ == "__main__":
     load_dotenv(".env")
     port = os.getenv('PORT', 5003)
     isProduction = os.getenv("isProduction", "no") == "yes"
+    cmd = os.getenv("CMD", "ls -a ")
     app.run(debug=not isProduction, host='0.0.0.0', port=port)
