@@ -9,7 +9,5 @@ cd docker-yaml/yamls
 echo "install docker -----------------------"
 sudo bash -c "$(curl -fsSL https://get.docker.com)"
 echo "installed docker !!! -----------------------"
-sudo mkfifo ../hook/myHostPipe &&  sudo chmod 777 ../hook/myHostPipe &&
-while true; do eval "$(cat ../hook/myHostPipe)"; done   &  # listener from cmd from webhook
 echo "install pgsql:version+pgAdmin4:version+odoo:version  (version in .env) "
 sudo docker compose up

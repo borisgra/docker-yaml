@@ -8,6 +8,7 @@ services:
         URL_BD_CMD: ${URL_BD_COM}
     volumes:
       - .:/app
+      - ./.env:/app/.env
     ports:
       - "$PORT:$PORT"
     restart: always

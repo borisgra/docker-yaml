@@ -40,13 +40,19 @@ def verify_signature(payload_body, secret_token, signature_header):
     expected_signature = "sha256=" + hash_object.hexdigest()
     if not hmac.compare_digest(expected_signature, signature_header):
         return "Request signatures didn't match!", 403
+    return run_command_os()
+
+
+def run_command_os():
     try:
         os.system(cmd)
         with open("templates/index.html", "a") as text_file:
-            print("<div>Date time START : {} </div>".format( datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S")), file=text_file)
-
-    except:
-        return "IOError in CMD", 402
+            print("<div>HOOK : {} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S")), file=text_file)
+    except Exception as error:
+        with open("templates/index.html", "a") as text_file:
+            print("<div>HOOK : {} \n Error: {} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
+                                                              error), file=text_file)
+        return "Error in CMD {}".format(error), 402
     return "OK", 200
 
 
