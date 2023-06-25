@@ -23,6 +23,7 @@ def hook_root():
         webhook_secret = os.getenv("WEBHOOK_SECRET", "no")
         return verify_signature(request.data, webhook_secret, request.headers["X-Hub-Signature-256"])
     else:
+        run_command_os("echo ' echo  \" ERROR 400 : Method not POST !!! \" ' > myHostPipe")
         return 'ERROR', 400
 
 
@@ -40,10 +41,10 @@ def verify_signature(payload_body, secret_token, signature_header):
     expected_signature = "sha256=" + hash_object.hexdigest()
     if not hmac.compare_digest(expected_signature, signature_header):
         return "Request signatures didn't match!", 403
-    return run_command_os()
+    return run_command_os(os.getenv("CMD", "ls -a "))
 
 
-def run_command_os():
+def run_command_os(cmd):
     try:
         os.system(cmd)
         with open("templates/index.html", "a") as text_file:
@@ -60,5 +61,4 @@ if __name__ == "__main__":
     load_dotenv(".env")
     port = os.getenv('PORT', 5003)
     isProduction = os.getenv("isProduction", "no") == "yes"
-    cmd = os.getenv("CMD", "ls -a ")
     app.run(debug=not isProduction, host='0.0.0.0', port=port)
