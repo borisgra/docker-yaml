@@ -13,6 +13,11 @@ def home():
     return render_template('index.html')
 
 
+@app.route('/test')
+def test():
+    os.system(os.getenv("CMD", "ls -a "))
+    return 'TEST', 401
+
 @app.route('/hook', methods=['GET', 'POST'])
 def hook_root():
     # print("webhook headers:")
