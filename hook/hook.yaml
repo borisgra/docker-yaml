@@ -5,6 +5,7 @@ services:
     volumes:
       - ./.env:/app/.env
       - ./index.html:/templates/index.html
+      - ./myHostPipe:/app/myHostPipe
     ports:
       - "$HOOK_PORT:$HOOK_PORT"
     restart: always

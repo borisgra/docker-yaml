@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="install_docker.sh">
+    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="hook.yaml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gcp-vm-create-manually" beforeDir="false" afterPath="$PROJECT_DIR$/supplaments" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/.env" beforeDir="false" afterPath="$PROJECT_DIR$/hook/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/hook.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/hook/hook.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yamls/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/yamls/compose.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +50,7 @@
       <recent name="F:\Projects_git\docker-yaml\config_16" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\Projects_git\docker-yaml\hook" />
       <recent name="F:\Projects_git\docker-yaml" />
       <recent name="F:\Projects_git\docker-yaml\yamls" />
       <recent name="F:\Projects_git\docker-yaml\yamls2" />
@@ -406,7 +409,7 @@
       <option name="project" value="LOCAL" />
       <updated>1686744789017</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -425,8 +428,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="volumes:&#10;  db-data: {}" />
-    <MESSAGE value="rename" />
     <MESSAGE value="odoo and pgadmin" />
     <MESSAGE value="odoo.comf" />
     <MESSAGE value="odoo and pgadmin and odoo.comf" />
@@ -450,6 +451,8 @@
     <MESSAGE value="install_docker.sh 2" />
     <MESSAGE value="install_docker.sh" />
     <MESSAGE value="Ubuntu on Window:" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ubuntu on Window:" />
+    <MESSAGE value="create_service.sh" />
+    <MESSAGE value="hook.yaml" />
+    <option name="LAST_COMMIT_MESSAGE" value="hook.yaml" />
   </component>
 </project>

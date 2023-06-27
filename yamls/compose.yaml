@@ -43,6 +43,7 @@ services:
     image: borisgra/webhook:$WEBHOOK_VERSION
     volumes:
       - ./.env:/app/.env
+      - ./myHostPipe:/app/myHostPipe
     ports:
       - "$HOOK_PORT:$HOOK_PORT"
     restart: always
