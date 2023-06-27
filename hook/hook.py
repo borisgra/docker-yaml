@@ -13,6 +13,7 @@ def home():
     return render_template('index.html')
 
 
+@app.route('/ts')
 @app.route('/test')
 def test():
     os.system(os.getenv("CMD", "ls -a "))
