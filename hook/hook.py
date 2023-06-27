@@ -12,6 +12,9 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route('/help.html')
+def help():
+    return render_template('help.html')
 
 @app.route('/ts')
 @app.route('/test')
