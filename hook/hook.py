@@ -16,7 +16,7 @@ def home():
 @app.route('/ts')
 @app.route('/test')
 def test():
-    os.system(os.getenv("CMD", "ls -a "))
+    os.system(os.getenv("CMD_TEST", "ls -a "))
     return 'TEST', 401
 
 @app.route('/hook', methods=['GET', 'POST'])
@@ -65,6 +65,6 @@ def run_command_os(cmd):
 
 if __name__ == "__main__":
     load_dotenv(".env")
-    port = os.getenv('PORT', 5003)
+    port = os.getenv('HOOK_PORT', 5003)
     isProduction = os.getenv("isProduction", "no") == "yes"
     app.run(debug=not isProduction, host='0.0.0.0', port=port)

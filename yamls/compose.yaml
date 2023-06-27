@@ -38,3 +38,11 @@ services:
       - "${PORTS_ADMIN4}" #"5050:80"
     restart: always
 
+  hook:
+    container_name: hook
+    image: borisgra/webhook:$WEBHOOK_VERSION
+    volumes:
+      - ./.env:/app/.env
+    ports:
+      - "$HOOK_PORT:$HOOK_PORT"
+    restart: always

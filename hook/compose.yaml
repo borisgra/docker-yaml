@@ -9,8 +9,9 @@ services:
     volumes:
       - .:/app
       - ./.env:/app/.env
+      - ./index.html:/templates/index.html
     ports:
-      - "$PORT:$PORT"
+      - "$HOOK_PORT:$HOOK_PORT"
     restart: always
 
 # sudo docker compose up --build
