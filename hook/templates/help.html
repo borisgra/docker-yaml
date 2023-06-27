@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webhooks</title>
+</head>
+<body>
+    <h1>Webhooks </h1>
+<pre>
+ 1. set webhook on githab:
+    https://github.com/user/repo.git / Setting / Webhooks / Edit
+        input your hook : http://server:HOOK_PORT/hook
+ 2. create file compose.yaml:
+  hook:
+    container_name: hook
+    image: borisgra/webhook:$WEBHOOK_VERSION
+    volumes:
+      - ./.env:/app/.env
+      - ./myHostPipe:/app/myHostPipe
+    ports:
+      - "$HOOK_PORT:$HOOK_PORT"
+    restart: always
+
+  3. create file .env :
+    HOOK_PORT=5005
+    WEBHOOK_VERSION=latest
+    WEBHOOK_SECRET="AAAAB3NzaC1yc2EAAAADAQABAAABAQCEHGBawN9"
+    isProduction="yes"
+    CMD_TEST=echo "ls -l  .. " > myHostPipe  # for test
+    CMD=echo " sudo git clone https://github.com/borisgra/xxxxxx.git --branch main ../config_16/adoons && sudo docker compose restart odoo" > myHostPipe
+
+  4. create hook command listener  file (webhook_listener.sh):
+#!/bin/bash
+cd /home/boris/docker-yaml/yamls  # !!  boris  !!!
+if [ ! -p myHostPipe ]; then
+    sudo mkfifo myHostPipe &&  sudo chmod 777 myHostPipe
+fi
+while true; do eval "$(cat myHostPipe)"; done
+
+    5. create file hook.servise:
+[Unit]
+Description=webhook monitoring service
+
+[Service]
+Type=simple
+User=root
+Group=root
+TimeoutStartSec=0
+Restart=on-failure
+RestartSec=30s
+#ExecStartPre=
+ExecStart=/usr/bin/webhook_listener.sh
+SyslogIdentifier=Diskutilization
+#ExecStop=
+
+[Install]
+WantedBy=multi-user.target
+
+    6. create file create_service.sh:
+#!/bin/bash
+#sudo systemctl stop hook.service
+#sudo systemctl status hook.service
+
+sudo chmod +x ./webhook_listener.sh
+sudo cp webhook_listener.sh /usr/bin && sudo cp hook.service /lib/systemd/system
+sudo systemctl daemon-reload # reload this daemon each time after making any changes in .service file
+sudo systemctl enable hook.service
+sudo systemctl start hook.service
+
+    7. sudo  sh ./create_service.sh
+
+    8. sudo docker compose up
+
+</pre>
+</body>
+</html>
+Date webhooks:
