@@ -12,15 +12,12 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/help.html')
-def help():
-    return render_template('help.html')
 
 @app.route('/ts')
 @app.route('/test')
 def test():
     cmd_test = os.getenv("CMD_TEST", "ls -a ")
-    with open("templates/index.html", "a") as text_file:
+    with open("static/history.html", "a") as text_file:
         print("<div>HOOK-T : {} CMD_TEST={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),cmd_test), file=text_file)
     os.system(cmd_test)
     return 'TEST', 401
@@ -59,10 +56,10 @@ def verify_signature(payload_body, secret_token, signature_header):
 def run_command_os(cmd):
     try:
         os.system(cmd)
-        with open("templates/index.html", "a") as text_file:
+        with open("static/history.html", "a") as text_file:
             print("<div>HOOK   : {} CMD={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),cmd), file=text_file)
     except Exception as error:
-        with open("templates/index.html", "a") as text_file:
+        with open("static/history.html", "a") as text_file:
             print("<div>HOOK : {} \n Error: {} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
                                                               error), file=text_file)
         return "Error in CMD {}".format(error), 402

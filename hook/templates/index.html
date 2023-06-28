@@ -5,7 +5,8 @@
     <title>webhooks</title>
 </head>
 <body>
-    <h1>Webhooks  ---> <a href="help.html">HELP</a></h1>
+<h2>Webhooks ---> <a href="{{ url_for('static', filename='help.html') }}">HELP</a>
+    and <a href="{{ url_for('static', filename='history.html') }}">Hook's History</a></h2>
 <pre>
    http://server:port - help and stat hooks
    http://server:port/hook - hook and comman
@@ -24,4 +25,3 @@
 </pre>
 </body>
 </html>
-<div>Date webhooks:</div>
