@@ -19,7 +19,10 @@ def help():
 @app.route('/ts')
 @app.route('/test')
 def test():
-    os.system(os.getenv("CMD_TEST", "ls -a "))
+    cmd_test = os.getenv("CMD_TEST", "ls -a ")
+    with open("templates/index.html", "a") as text_file:
+        print("<div>HOOK-T : {} CMD_TEST={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),cmd_test), file=text_file)
+    os.system(cmd_test)
     return 'TEST', 401
 
 @app.route('/hook', methods=['GET', 'POST'])
@@ -57,7 +60,7 @@ def run_command_os(cmd):
     try:
         os.system(cmd)
         with open("templates/index.html", "a") as text_file:
-            print("<div>HOOK : {} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S")), file=text_file)
+            print("<div>HOOK   : {} CMD={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),cmd), file=text_file)
     except Exception as error:
         with open("templates/index.html", "a") as text_file:
             print("<div>HOOK : {} \n Error: {} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),

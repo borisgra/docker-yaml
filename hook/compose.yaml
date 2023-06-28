@@ -9,7 +9,6 @@ services:
     volumes:
       - .:/app
       - ./.env:/app/.env
-      - ./index.html:/templates/index.html
     ports:
       - "$HOOK_PORT:$HOOK_PORT"
     restart: always
