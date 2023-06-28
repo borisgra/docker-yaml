@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="">
+    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="sudo chmod 777 ./webhook_listener.sh">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hook/hook.py" beforeDir="false" afterPath="$PROJECT_DIR$/hook/hook.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hook/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/hook/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,16 +36,16 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "F:/Projects_git/docker-yaml/hook/templates"
+    "last_opened_file_path": "F:/Projects_git/docker-yaml/hook"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\Projects_git\docker-yaml\hook" />
       <recent name="F:\Projects_git\docker-yaml\hook\templates" />
       <recent name="F:\Projects_git\docker-yaml\yamls" />
       <recent name="F:\Projects_git\docker-yaml" />
       <recent name="F:\Projects_git\docker-yaml\config_14" />
-      <recent name="F:\Projects_git\docker-yaml\config_16" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\Projects_git\docker-yaml\hook" />
@@ -409,12 +407,23 @@
       <option name="project" value="LOCAL" />
       <updated>1686744789017</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -428,9 +437,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="odoo and pgadmin and odoo.comf" />
-    <MESSAGE value="get-docker.sh" />
-    <MESSAGE value="config odoo" />
     <MESSAGE value="README  , compose..." />
     <MESSAGE value="README  , compose... fix1" />
     <MESSAGE value="README  , compose... fix2" />
@@ -453,6 +459,9 @@
     <MESSAGE value="hook.yaml" />
     <MESSAGE value="hook.yaml -fix" />
     <MESSAGE value="help.html" />
-    <option name="LAST_COMMIT_MESSAGE" value="help.html" />
+    <MESSAGE value="&amp;&amp; sudo chmod 777 ./webhook_listener.sh" />
+    <MESSAGE value="sudo chmod 777 ./webhook_listener.sh" />
+    <MESSAGE value="CMD_TEST=echo &quot;ls -a  .. &amp;&amp;  echo" />
+    <option name="LAST_COMMIT_MESSAGE" value="CMD_TEST=echo &quot;ls -a  .. &amp;&amp;  echo" />
   </component>
 </project>
