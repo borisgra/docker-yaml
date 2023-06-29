@@ -21,6 +21,7 @@ sudo docker compose start
 
 
 sudo docker compose down 
+sudo docker compose -f compose-hook.yaml # with webhook (before start: sh create_service.sh)
 sudo docker compose -f compose.yaml -f compose-odoo-14-15-16.yaml up # pgsql:13.10+pgAdmin4:last+odoo:16+15+14+11
 sudo docker compose -f compose-bd.yaml up # pgsql:version+pgAdmin4:last
 sudo docker compose -f compose-odoo-ver.yaml up # odoo:ver
