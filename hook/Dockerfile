@@ -1,5 +1,8 @@
 # start by pulling the python image
-FROM python:3.8-alpine
+# 18 MB
+#FROM python:3.12-rc-alpine3.17
+# 52 MB - need for paramiko
+FROM python:3.10.12-slim
 
 # copy the requirements file into the image
 COPY ./requirements.txt /app/requirements.txt

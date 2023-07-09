@@ -4,6 +4,7 @@ import hashlib
 import hmac
 from dotenv import load_dotenv
 import datetime
+import sys
 
 app = Flask(__name__)
 
@@ -13,8 +14,13 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/ts')
-@app.route('/test')
+@app.route('/ssh',methods=['GET', 'POST'])
+def test_ssh():
+    ssh("ls")
+    # ssh(cmd_test)
+    return 'TEST SSH', 401
+
+@app.route('/test',methods=['GET', 'POST'])
 def test():
     cmd_test = os.getenv("CMD_TEST", "ls -a ")
     with open("static/history.html", "a") as text_file:
@@ -66,8 +72,26 @@ def run_command_os(cmd):
     return "OK", 200
 
 
+import paramiko
+
+def ssh(command):
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh.connect(HOST_SSH, PORT_SSH, USERNAME_SSH, PASS_SSH)
+    stdin, stdout, stderr = ssh.exec_command(command)
+    lines = stdout.readlines()
+    print(lines)
+
 if __name__ == "__main__":
     load_dotenv(".env")
     port = os.getenv('HOOK_PORT', 5003)
+    HOST_SSH = os.getenv("HOST_SSH", "localhost")
+    PORT_SSH = int(os.getenv("PORT_SSH", "22"))
+    USERNAME_SSH=os.getenv("USERNAME_SSH", "boris")
+    PASS_SSH=os.getenv("PASS_SSH", "123")
+
+    print ("HOST_SSH={}, PORT_SSH={} ".format(HOST_SSH,PORT_SSH,))
+    sys.stdout.flush()
     isProduction = os.getenv("isProduction", "no") == "yes"
+    # ssh("ls ")
     app.run(debug=not isProduction, host='0.0.0.0', port=port)

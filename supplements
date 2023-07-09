@@ -57,3 +57,7 @@ fot test docker:
 sudo docker compose exec -it webhook echo "ls -l" > myHostPipe
 #-----------------------------------------------------
 ps auxw | grep  bash | grep -w S # bush in background
+
+https://stackoverflow.com/questions/22944631/how-to-get-the-ip-address-of-the-docker-host-from-inside-a-docker-container
+/sbin/ip route|awk '/default/ { print $3 }'
+docker network inspect bridge -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}'
