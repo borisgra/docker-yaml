@@ -1,3 +1,5 @@
+import socket
+
 from flask import Flask, render_template, request
 import os
 import hashlib
@@ -79,12 +81,22 @@ import paramiko
 def ssh(command):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    if (OPENSSH_KEY_FILENAME == ""):
-        ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, password=PASS_SSH)
-    else:
-        ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, key_filename=OPENSSH_KEY_FILENAME)
+    try:
+        if (OPENSSH_KEY_FILENAME == ""):
+            ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, password=PASS_SSH)
+        else:
+            ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, key_filename=OPENSSH_KEY_FILENAME) # sshkey.pub
 
-    stdin, stdout, stderr = ssh.exec_command(command)
+        stdin, stdout, stderr = ssh.exec_command(command)
+    except socket.error:
+        raise ValueError('Unable to connect to {}:{}'.format(HOST_SSH,PORT_SSH))
+    except paramiko.BadAuthenticationType:
+        raise ValueError('Bad authentication type.')
+    except paramiko.AuthenticationException:
+        raise ValueError('Authentication failed.')
+    except paramiko.BadHostKeyException:
+        raise ValueError('Bad host key.')
+
     lines = stdout.readlines()
     print(lines)
     sys.stdout.flush()
@@ -92,7 +104,7 @@ def ssh(command):
 if __name__ == "__main__":
     load_dotenv(".env")
     port = os.getenv('HOOK_PORT', 5003)
-    HOST_SSH = os.getenv("HOST_SSH", "localhost")
+    HOST_SSH = os.getenv("HOST_SSH", "172.17.0.1") # https://stackoverflow.com/questions/22944631/how-to-get-the-ip-address-of-the-docker-host-from-inside-a-docker-container
     PORT_SSH = int(os.getenv("PORT_SSH", "22"))
     USERNAME_SSH=os.getenv("USERNAME_SSH", "boris")
     PASS_SSH=os.getenv("PASS_SSH", "123")
