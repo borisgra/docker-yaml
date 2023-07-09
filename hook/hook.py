@@ -14,17 +14,19 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/ssh',methods=['GET', 'POST'])
+@app.route('/ssh', methods=['GET', 'POST'])
 def test_ssh():
-    ssh("ls")
-    # ssh(cmd_test)
+    print("cmd_test={}".format(cmd_test))
+    sys.stdout.flush()
+    ssh(cmd_test)
     return 'TEST SSH', 401
 
-@app.route('/test',methods=['GET', 'POST'])
+
+@app.route('/test', methods=['GET', 'POST'])
 def test():
-    cmd_test = os.getenv("CMD_TEST", "ls -a ")
     with open("static/history.html", "a") as text_file:
-        print("<div>HOOK-T : {} CMD_TEST={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),cmd_test), file=text_file)
+        print("<div>HOOK-T : {} CMD_TEST={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
+                                                           cmd_test), file=text_file)
     os.system(cmd_test)
     return 'TEST', 401
 
@@ -77,10 +79,15 @@ import paramiko
 def ssh(command):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh.connect(HOST_SSH, PORT_SSH, USERNAME_SSH, PASS_SSH)
+    if (OPENSSH_KEY_FILENAME == ""):
+        ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, password=PASS_SSH)
+    else:
+        ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, key_filename=OPENSSH_KEY_FILENAME)
+
     stdin, stdout, stderr = ssh.exec_command(command)
     lines = stdout.readlines()
     print(lines)
+    sys.stdout.flush()
 
 if __name__ == "__main__":
     load_dotenv(".env")
@@ -89,7 +96,9 @@ if __name__ == "__main__":
     PORT_SSH = int(os.getenv("PORT_SSH", "22"))
     USERNAME_SSH=os.getenv("USERNAME_SSH", "boris")
     PASS_SSH=os.getenv("PASS_SSH", "123")
+    OPENSSH_KEY_FILENAME=os.getenv("OPENSSH_KEY_FILENAME", "")
 
+    cmd_test = os.getenv("CMD_TEST", "ls -a ")
     print ("HOST_SSH={}, PORT_SSH={} ".format(HOST_SSH,PORT_SSH,))
     sys.stdout.flush()
     isProduction = os.getenv("isProduction", "no") == "yes"
