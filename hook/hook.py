@@ -82,10 +82,12 @@ def ssh(command):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     try:
+        k = paramiko.RSAKey.from_private_key_file(OPENSSH_KEY_FILENAME)
         if (OPENSSH_KEY_FILENAME == ""):
             ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, password=PASS_SSH)
         else:
-            ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, key_filename=OPENSSH_KEY_FILENAME) # sshkey.pub
+            ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, pkey=k) # sshkey.pub
+            # ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, key_filename=OPENSSH_KEY_FILENAME) # openssh key
 
         stdin, stdout, stderr = ssh.exec_command(command)
     except socket.error:
@@ -96,6 +98,8 @@ def ssh(command):
         raise ValueError('Authentication failed.')
     except paramiko.BadHostKeyException:
         raise ValueError('Bad host key.')
+    # except paramiko.ssh_exception.SSHException:
+    #     raise ValueError('The host key given by the SSH server did not match what we were expecting {}'.format(OPENSSH_KEY_FILENAME))
 
     lines = stdout.readlines()
     print(lines)
