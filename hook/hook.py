@@ -1,5 +1,5 @@
 import socket
-
+import paramiko
 from flask import Flask, render_template, request
 import os
 import hashlib
@@ -16,21 +16,11 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/ssh', methods=['GET', 'POST'])
-def test_ssh():
-    print("cmd_test={}".format(cmd_test))
-    sys.stdout.flush()
-    ssh(cmd_test)
-    return 'TEST SSH', 401
-
-
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    with open("static/history.html", "a") as text_file:
-        print("<div>HOOK-T : {} CMD_TEST={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
-                                                           cmd_test), file=text_file)
-    os.system(cmd_test)
-    return 'TEST', 401
+    run_command("CMD_TEST", CMD_TEST)
+    return 'TEST {}'.format (HOST_SSH), 401
+
 
 @app.route('/hook', methods=['GET', 'POST'])
 def hook_root():
@@ -42,7 +32,7 @@ def hook_root():
         webhook_secret = os.getenv("WEBHOOK_SECRET", "no")
         return verify_signature(request.data, webhook_secret, request.headers["X-Hub-Signature-256"])
     else:
-        run_command_os("echo ' echo  \" ERROR 400 : Method not POST !!! \" ' > myHostPipe")
+        run_command("CMD", "echo ' echo  \" ERROR 400 : Method not POST !!! \" ' > myHostPipe")
         return 'ERROR', 400
 
 
@@ -60,62 +50,65 @@ def verify_signature(payload_body, secret_token, signature_header):
     expected_signature = "sha256=" + hash_object.hexdigest()
     if not hmac.compare_digest(expected_signature, signature_header):
         return "Request signatures didn't match!", 403
-    return run_command_os(os.getenv("CMD", "ls -a "))
+    return run_command("CMD", CMD)
 
 
-def run_command_os(cmd):
+def run_command(mode, cmd):
     try:
-        os.system(cmd)
+        if HOST_SSH == "":
+            os.system(cmd)
+        else:
+            ssh(cmd)
         with open("static/history.html", "a") as text_file:
-            print("<div>HOOK   : {} CMD={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),cmd), file=text_file)
+            print("<div>HOOK   : {} {}={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"), mode,
+                                                         cmd), file=text_file)
     except Exception as error:
         with open("static/history.html", "a") as text_file:
-            print("<div>HOOK : {} \n Error: {} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
-                                                              error), file=text_file)
+            print("<div>HOOK : {} {}\n Error: {} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
+                                                                mode, error), file=text_file)
         return "Error in CMD {}".format(error), 402
     return "OK", 200
 
 
-import paramiko
-
 def ssh(command):
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh_client = paramiko.SSHClient()
+    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     try:
         k = paramiko.RSAKey.from_private_key_file(OPENSSH_KEY_FILENAME)
-        if (OPENSSH_KEY_FILENAME == ""):
-            ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, password=PASS_SSH)
+        if OPENSSH_KEY_FILENAME == "":
+            ssh_client.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, password=PASS_SSH)
         else:
-            ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, pkey=k) # sshkey.pub
+            ssh_client.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, pkey=k)  # sshkey.pub
             # ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, key_filename=OPENSSH_KEY_FILENAME) # openssh key
 
-        stdin, stdout, stderr = ssh.exec_command(command)
+        stdin, stdout, stderr = ssh_client.exec_command(command)
     except socket.error:
-        raise ValueError('Unable to connect to {}:{}'.format(HOST_SSH,PORT_SSH))
+        raise ValueError('Unable to connect to {}:{}'.format(HOST_SSH, PORT_SSH))
     except paramiko.BadAuthenticationType:
         raise ValueError('Bad authentication type.')
     except paramiko.AuthenticationException:
         raise ValueError('Authentication failed.')
     except paramiko.BadHostKeyException:
         raise ValueError('Bad host key.')
-    # except paramiko.ssh_exception.SSHException:
-    #     raise ValueError('The host key given by the SSH server did not match what we were expecting {}'.format(OPENSSH_KEY_FILENAME))
 
     lines = stdout.readlines()
     print(lines)
     sys.stdout.flush()
 
+
 if __name__ == "__main__":
     load_dotenv(".env")
     port = os.getenv('HOOK_PORT', 5003)
-    HOST_SSH = os.getenv("HOST_SSH", "172.17.0.1") # https://stackoverflow.com/questions/22944631/how-to-get-the-ip-address-of-the-docker-host-from-inside-a-docker-container
+    # https://stackoverflow.com/questions/22944631/how-to-get-the-ip-address-of-the-docker-host-from-inside-a-docker-container
+    HOST_SSH = os.getenv("HOST_SSH", "172.17.0.1")
     PORT_SSH = int(os.getenv("PORT_SSH", "22"))
-    USERNAME_SSH=os.getenv("USERNAME_SSH", "boris")
-    PASS_SSH=os.getenv("PASS_SSH", "123")
-    OPENSSH_KEY_FILENAME=os.getenv("OPENSSH_KEY_FILENAME", "")
+    USERNAME_SSH = os.getenv("USERNAME_SSH", "boris")
+    PASS_SSH = os.getenv("PASS_SSH", "123")
+    OPENSSH_KEY_FILENAME = os.getenv("OPENSSH_KEY_FILENAME", "")
 
-    cmd_test = os.getenv("CMD_TEST", "ls -a ")
-    print ("HOST_SSH={}, PORT_SSH={} ".format(HOST_SSH,PORT_SSH,))
+    CMD_TEST = os.getenv("CMD_TEST", "ls -a ")
+    CMD = os.getenv("CMD", "ls -a ")
+    print("HOST_SSH={}, PORT_SSH={} ".format(HOST_SSH, PORT_SSH, ))
     sys.stdout.flush()
     isProduction = os.getenv("isProduction", "no") == "yes"
     # ssh("ls ")
