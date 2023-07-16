@@ -1,14 +1,10 @@
 services:
   webhook:
     container_name: webhook
-    image: webhook:latest
-    build:
-      context: "."
-      args:
-        URL_BD_CMD: ${URL_BD_COM}
+    image: borisgra/webhook:latest
     volumes:
-      - .:/app
       - ./.env:/app/.env
+      - ./ssh_keys:/app/ssh_keys
     ports:
       - "$HOOK_PORT:$HOOK_PORT"
     restart: always

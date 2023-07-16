@@ -25,11 +25,19 @@
     HOOK_PORT=5005
     WEBHOOK_VERSION=latest
     WEBHOOK_SECRET="AAAAB3NzaC1yc2EAAAADAQABAAABAQCEHGBawN9"
-    isProduction="yes"
+    # for pipefile
     CMD_TEST=echo "ls -l  .. " > myHostPipe  # for test
-    CMD=echo " sudo git clone https://github.com/borisgra/xxxxxx.git --branch main ../config_16/adoons && sudo docker compose restart odoo" > myHostPipe
+    CMD=echo " sudo git clone https://github.com/borisgra/"> myHostPipe
+    # for ssh
+    CMD_TEST=mkdir ./TEST_DIR && ls -x  # from dir ~
+    CMD=sudo git clone https://github.com/borisgra/
+    PORT_SSH=22
+    HOST_SSH=172.17.0.1 # IP Docker HOST
+    USERNAME_SSH=user
+    PASS_SSH=123 # PASS_SSH or OPENSSH_KEY_FILENAME
+    OPENSSH_KEY_FILENAME=ssh_keys/CCS-aws.openssh-new # formst OPENSSH
 
-  4. create hook command listener  file (webhook_listener.sh):
+  4. (only fo pipefile) create hook command listener  file (webhook_listener.sh):
 #!/bin/bash
 cd /home/user/xxxxx  # !!  user  !!!   xxxxx  !!!
 if [ ! -p myHostPipe ]; then
@@ -37,7 +45,7 @@ if [ ! -p myHostPipe ]; then
 fi
 while true; do eval "$(cat myHostPipe)"; done
 
-    5. create file hook.servise:
+    5.(only fo pipefile) create file hook.servise:
 [Unit]
 Description=webhook monitoring service
 
@@ -56,7 +64,7 @@ SyslogIdentifier=Diskutilization
 [Install]
 WantedBy=multi-user.target
 
-    6. create file create_service.sh:
+    6.(only fo pipefile) create file create_service.sh:
 #!/bin/bash
 #sudo systemctl stop hook.service
 #sudo systemctl status hook.service
@@ -67,7 +75,7 @@ sudo systemctl daemon-reload # reload this daemon each time after making any cha
 sudo systemctl enable hook.service
 sudo systemctl start hook.service
 
-    7. sudo  sh ./create_service.sh
+    7.(only fo pipefile) sudo  sh ./create_service.sh
 
     8. sudo docker compose up
 

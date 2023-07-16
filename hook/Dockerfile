@@ -2,7 +2,7 @@
 # 18 MB
 #FROM python:3.12-rc-alpine3.17
 # 52 MB - need for paramiko
-FROM python:3.10.12-slim
+FROM python:3.11-slim
 
 # copy the requirements file into the image
 COPY ./requirements.txt /app/requirements.txt
@@ -24,5 +24,6 @@ ENTRYPOINT [ "python" ]
 CMD ["hook.py"]
 
 # sudo docker image build -t borisgra/webhook:1.0 .
+# sudo docker image build --progress=plain --no-cache -t borisgra/webhook:1.0 .
 # sudo docker login -u borisgra
 # sudo docker push borisgra/webhook:1.0

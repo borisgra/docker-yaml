@@ -1,4 +1,3 @@
-import socket
 import paramiko
 from flask import Flask, render_template, request
 import os
@@ -18,8 +17,7 @@ def home():
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    run_command("CMD_TEST", CMD_TEST)
-    return 'TEST {}'.format (HOST_SSH), 401
+    return run_command("CMD_TEST", CMD_TEST)
 
 
 @app.route('/hook', methods=['GET', 'POST'])
@@ -55,17 +53,16 @@ def verify_signature(payload_body, secret_token, signature_header):
 
 def run_command(mode, cmd):
     try:
+        with open("static/history.html", "a") as text_file:
+            print("<div>HOOK   :Host{} DateTime {} {}={} </div>".format(HOST_SSH,datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
+                                                                mode, cmd), file=text_file)
         if HOST_SSH == "":
             os.system(cmd)
         else:
             ssh(cmd)
-        with open("static/history.html", "a") as text_file:
-            print("<div>HOOK   : {} {}={} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"), mode,
-                                                         cmd), file=text_file)
     except Exception as error:
         with open("static/history.html", "a") as text_file:
-            print("<div>HOOK : {} {}\n Error: {} </div>".format(datetime.datetime.now().strftime("%Y.%m.%d %H:%M:%S"),
-                                                                mode, error), file=text_file)
+            print("<div>HOOK :  Error: {} </div>".format(error), file=text_file)
         return "Error in CMD {}".format(error), 402
     return "OK", 200
 
@@ -82,14 +79,8 @@ def ssh(command):
             # ssh.connect(HOST_SSH, PORT_SSH, username=USERNAME_SSH, key_filename=OPENSSH_KEY_FILENAME) # openssh key
 
         stdin, stdout, stderr = ssh_client.exec_command(command)
-    except socket.error:
-        raise ValueError('Unable to connect to {}:{}'.format(HOST_SSH, PORT_SSH))
-    except paramiko.BadAuthenticationType:
-        raise ValueError('Bad authentication type.')
-    except paramiko.AuthenticationException:
-        raise ValueError('Authentication failed.')
-    except paramiko.BadHostKeyException:
-        raise ValueError('Bad host key.')
+    except Exception as error:
+        raise ValueError('Error:{}'.format(error))
 
     lines = stdout.readlines()
     print(lines)

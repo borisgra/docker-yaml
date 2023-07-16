@@ -4,8 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="sudo chmod 777 ./webhook_listener.sh">
+    <list default="true" id="4e06a8c5-7bd8-46a3-9d37-9043159aaacf" name="Changes" comment="refacto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/.env" beforeDir="false" afterPath="$PROJECT_DIR$/hook/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/hook/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/hook/compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/hook.py" beforeDir="false" afterPath="$PROJECT_DIR$/hook/hook.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/hook/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hook/static/help.html" beforeDir="false" afterPath="$PROJECT_DIR$/hook/static/help.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supplements" beforeDir="false" afterPath="$PROJECT_DIR$/supplements" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +44,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "F:/Projects_git/docker-yaml/hook"
+    "last_opened_file_path": "F:/Projects_git/docker-yaml/hook/compose.yaml"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -54,6 +62,21 @@
       <recent name="F:\Projects_git\docker-yaml\yamls2" />
       <recent name="F:\Projects_git\docker-yaml\config_15" />
     </key>
+  </component>
+  <component name="RunManager" selected="Python.hook">
+    <configuration name="hook" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="sourceFilePath" value="hook/compose.yaml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Docker.hook" />
+      <item itemvalue="Python.hook" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -407,7 +430,7 @@
       <option name="project" value="LOCAL" />
       <updated>1686744789017</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <option name="localTasksCounter" value="65" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -437,10 +460,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="README  , compose..." />
-    <MESSAGE value="README  , compose... fix1" />
-    <MESSAGE value="README  , compose... fix2" />
-    <MESSAGE value="refact" />
     <MESSAGE value="      - COMPOSE_PROJECT_NAME=...." />
     <MESSAGE value=" undo     - COMPOSE_PROJECT_NAME=...." />
     <MESSAGE value="gitignore" />
@@ -462,6 +481,56 @@
     <MESSAGE value="&amp;&amp; sudo chmod 777 ./webhook_listener.sh" />
     <MESSAGE value="sudo chmod 777 ./webhook_listener.sh" />
     <MESSAGE value="CMD_TEST=echo &quot;ls -a  .. &amp;&amp;  echo" />
-    <option name="LAST_COMMIT_MESSAGE" value="CMD_TEST=echo &quot;ls -a  .. &amp;&amp;  echo" />
+    <MESSAGE value="ssh paramiko  (work from windows , not work from doker (wsl ubuntu)" />
+    <MESSAGE value="OPENSSH_KEY_FILENAME" />
+    <MESSAGE value="except paramiko" />
+    <MESSAGE value="ssh paramiko  (work from windows , not work from doker (wsl ubuntu) ssh key" />
+    <option name="LAST_COMMIT_MESSAGE" value="ssh paramiko  (work from windows , not work from doker (wsl ubuntu) ssh key" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hook/hook.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hook/hook.py</url>
+          <line>56</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hook/hook.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hook/hook.py</url>
+          <line>62</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hook/hook.py</url>
+          <line>72</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hook/hook.py</url>
+          <line>78</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hook/hook.py</url>
+          <line>74</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/hook/hook.py</url>
+          <line>75</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

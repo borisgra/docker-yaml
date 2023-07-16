@@ -3,7 +3,7 @@ GCP:
 gcloud compute firewall-rules create my-rule1 --allow tcp:5000-5010,tcp:10010-10020,tcp:1009 --source-ranges=0.0.0.0/0
 gcloud compute addresses create my-ip1 --project=vpn-gra --network-tier=STANDARD --region=us-central1
 
-# create VM (# g1-small or e2-small)
+# create VM (# g1-small or e2-small) f1-micro   us-east1
 gcloud compute instances create ubuntu1 \
     --project=vpn-gra \
     --zone=us-central1-a \
