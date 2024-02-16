@@ -1,11 +1,11 @@
 #!/bin/sh
 GCP:
 gcloud compute firewall-rules create my-rule1 --allow tcp:5000-5010,tcp:10010-10020,tcp:1009 --source-ranges=0.0.0.0/0
-gcloud compute addresses create my-ip1 --project=vpn-gra --network-tier=STANDARD --region=us-central1
+gcloud compute addresses create my-ip1 --project=gke-gra --network-tier=STANDARD --region=us-central1
 
 # create VM (# g1-small or e2-small) f1-micro   us-east1
 gcloud compute instances create ubuntu1 \
-    --project=vpn-gra \
+    --project=gke-gra \
     --zone=us-central1-a \
     --machine-type=g1-small \
     --network-interface=address=my-ip1,network-tier=STANDARD,subnet=default \
@@ -13,14 +13,14 @@ gcloud compute instances create ubuntu1 \
     --provisioning-model=STANDARD \
     --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
     --tags=http-server,https-server \
-    --create-disk=auto-delete=yes,boot=yes,device-name=ubuntu1,image=projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2004-focal-v20230216,mode=rw,size=10,type=projects/vpn-gra/zones/us-central1-a/diskTypes/pd-standard \
+    --create-disk=auto-delete=yes,boot=yes,device-name=ubuntu1,image=projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2004-focal-v20240209a,mode=rw,size=10,type=projects/gke-gra/zones/us-central1-a/diskTypes/pd-standard \
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
     --reservation-affinity=any
 
 # !!! wait 30 sec while starting VM
-gcloud compute ssh --project=vpn-gra --zone=us-central1-a ubuntu1 # start console VM
+gcloud compute ssh --project=gke-gra --zone=us-central1-a ubuntu1 # start console VM
 
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/main/install_docker.sh)"
 
