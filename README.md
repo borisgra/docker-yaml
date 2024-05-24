@@ -63,8 +63,15 @@ gcloud compute images export --destination-uri gs://vpn-gra/images/image-vpn-pgs
 gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
 gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
 
-https://rominirani.com/hands-on-guide-to-scheduling-vm-instances-to-start-and-stop-a079a50e16c6 
+https://rominirani.com/hands-on-guide-to-scheduling-vm-instances-to-start-and-stop-a079a50e16c6
 
+WSL (Windows Subsystem for Linux):  Unix on Windows
+install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+wsl --export --vhd Ubuntu-24.04 F:/temp/WpSystem-my/Ubuntu-24.04/ext4.vhdx
+wsl --import-in-place ubuntu_24.04docker F:\temp\WpSystem-my\Ubuntu-24.04\ext4.vhdx
+wsl --manage ubuntu_24.04docker --set-sparse true
+
+https://learn.microsoft.com/ru-ru/windows/wsl/basic-commands#import-a-distribution
 DELETE !!!
 gsutil -m retention event release gs://boris-gra/images/*.*
 gsutil retention temp release gs://boris-gra/images/*.*

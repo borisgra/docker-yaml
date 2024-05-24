@@ -1,4 +1,11 @@
 #!/bin/sh
+WSL (Windows Subsystem for Linux):  Unix on Windows
+install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+wsl --export --vhd Ubuntu-24.04 F:/temp/WpSystem-my/Ubuntu-24.04/ext4.vhdx
+wsl --import-in-place ubuntu_24.04docker F:\temp\WpSystem-my\Ubuntu-24.04\ext4.vhdx
+wsl --manage ubuntu_24.04docker --set-sparse true
+https://learn.microsoft.com/ru-ru/windows/wsl/basic-commands#import-a-distribution
+
 GCP:
 gcloud compute firewall-rules create my-rule1 --allow tcp:5000-5010,tcp:10010-10020,tcp:1009 --source-ranges=0.0.0.0/0
 gcloud compute addresses create my-ip1 --project=gke-gra --network-tier=STANDARD --region=us-central1
