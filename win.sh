@@ -7,7 +7,7 @@
 # IMAGE_URL="https://huggingface.co/ngxson/windows-10-ggcloud/resolve/main/windows-10-ggcloud.raw.gz"
 
 
-# bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/main/win.sh)"
+# bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win.sh)"
 
 IMAGE_URL="https://drive.usercontent.google.com/download?id=1HYhgTJ4rJB7qp5zCRKBG_nUXonHiOoV5&export=download&authuser=0&confirm=t&uuid=a1db2f2a-503c-45da-8291-0165075785f1&at=APZUnTXCEYOvHd6Mdz1jqyaWrJZy%3A1722852784203"
 
