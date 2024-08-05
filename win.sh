@@ -2,8 +2,9 @@
 
 # wget -qO- https://raw.githubusercontent.com/ngxson/public-assets/main/install-windows-gcp.sh | sudo bash
 
-wget -qO- https://drive.usercontent.google.com/download?id=1HYhgTJ4rJB7qp5zCRKBG_nUXonHiOoV5&export=download&authuser=0&confirm=t&uuid=a1db2f2a-503c-45da-8291-0165075785f1&at=APZUnTXCEYOvHd6Mdz1jqyaWrJZy%3A1722852784203 | sudo bash
+# wget -qO- https://drive.usercontent.google.com/download?id=1HYhgTJ4rJB7qp5zCRKBG_nUXonHiOoV5&export=download&authuser=0&confirm=t&uuid=a1db2f2a-503c-45da-8291-0165075785f1&at=APZUnTXCEYOvHd6Mdz1jqyaWrJZy%3A1722852784203 | sudo bash
 
+# bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/main/win.sh)"
 
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
