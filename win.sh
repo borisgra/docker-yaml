@@ -9,7 +9,8 @@
 
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win.sh)"
 
-IMAGE_URL="https://drive.usercontent.google.com/download?id=1HYhgTJ4rJB7qp5zCRKBG_nUXonHiOoV5&export=download&authuser=0&confirm=t&uuid=a1db2f2a-503c-45da-8291-0165075785f1&at=APZUnTXCEYOvHd6Mdz1jqyaWrJZy%3A1722852784203"
+IMAGE_URL="https://storage.googleapis.com/public-gra/images/win10-gcp/windows-10-ggcloud.raw.gz"
+#IMAGE_URL="https://drive.usercontent.google.com/download?id=1HYhgTJ4rJB7qp5zCRKBG_nUXonHiOoV5&export=raw&authuser=0&confirm=t&uuid=a1db2f2a-503c-45da-8291-0165075785f1&at=APZUnTXCEYOvHd6Mdz1jqyaWrJZy%3A1722852784203"
 
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
