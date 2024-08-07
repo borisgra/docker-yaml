@@ -77,7 +77,8 @@ sudo docker compose up
 wait 2 min
 connect RDP
 cmd
-shell:startup
+cd C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
+paste startServer.lnk
 
 https://mega.nz/file/hAMw0R5B#P-mHOwWEMmzYz9FdYHfqkQ8eF7YTwUeNiBPlQQNWfes   - deltaj(SRV12 and CLIENT)_igra-oleg.zip
 https://storage.googleapis.com/public-gra/distrib/Office%202010%20SP1%2032bit.zip  - Office 2010 SP1 32bit.zip
