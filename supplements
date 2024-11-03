@@ -10,7 +10,7 @@ GCP:
 gcloud compute firewall-rules create my-rule1 --allow tcp:5000-5010,tcp:10010-10020,tcp:1009 --source-ranges=0.0.0.0/0
 gcloud compute addresses create my-ip1 --project=gke-gra --network-tier=STANDARD --region=us-central1
 
-# create VM (# g1-small or e2-small) f1-micro   us-east1
+# create VM (# g1-small or e2-small) f1-micro   us-east1  (Instance for query look in end)
 gcloud compute instances create ubuntu1 \
     --project=gke-gra \
     --zone=us-central1-a \
@@ -68,3 +68,27 @@ ps auxw | grep  bash | grep -w S # bush in background
 https://stackoverflow.com/questions/22944631/how-to-get-the-ip-address-of-the-docker-host-from-inside-a-docker-container
 /sbin/ip route|awk '/default/ { print $3 }'
 docker network inspect bridge -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}'
+
+#Instanse for query
+gcloud compute instances create-with-container query \
+    --project=gke-gra \
+    --zone=us-central1-a \
+    --machine-type=f1-micro \
+    --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
+    --maintenance-policy=MIGRATE \
+    --provisioning-model=STANDARD \
+    --service-account=148641556397-compute@developer.gserviceaccount.com \
+    --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/trace.append \
+    --image=projects/cos-cloud/global/images/cos-stable-117-18613-75-4 \
+    --boot-disk-size=10GB \
+    --boot-disk-type=pd-standard \
+    --boot-disk-device-name=query \
+    --container-image=borisgra/query-gra \
+    --container-restart-policy=always \
+    --container-privileged \
+    --container-env=QUERY_BD=koyebdb,ADMIN_PASSW=+++++,PORT=5003,SERVER_TYPE=http,\
+DATABASE_URL_koyebdb=postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286.eu-central-1.aws.neon.tech/querys \
+    --no-shielded-secure-boot \
+    --shielded-vtpm \
+    --shielded-integrity-monitoring \
+    --labels=goog-ec-src=vm_add-gcloud,container-vm=cos-stable-117-18613-75-4
