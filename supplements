@@ -92,3 +92,27 @@ DATABASE_URL_koyebdb=postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286
     --shielded-vtpm \
     --shielded-integrity-monitoring \
     --labels=goog-ec-src=vm_add-gcloud,container-vm=cos-stable-117-18613-75-4
+
+#cloud func MIN 128M and 80m
+# Start/Stop vm
+#https://stackoverflow.com/questions/62721152/google-cloud-platform-rest-api-acquiring-access-token-and-api-key
+#https://cloud.google.com/compute/docs/reference/rest/v1/instances/start
+gcloud projects list
+PROJECT_ID="YOURS_PROJECT_ID"
+ACCESS_TOKEN=$(gcloud auth print-access-token)
+API_KEY=$(curl -X POST https://apikeys.googleapis.com/v1/projects/$PROJECT_ID/apiKeys?access_token=$ACCESS_TOKEN | jq -r ".currentKey")
+echo $ACCESS_TOKEN
+echo $API_KEY
+
+API_KEY
+null
+#https://cloud.google.com/sdk/gcloud/reference/auth/print-access-token
+gcloud auth print-access-token --lifetime 43200 # seconds (max 12 hours)
+ACCESS_TOKEN
+
+# Start(Stop) vm  https://reqbin.com/c-4coksytv
+curl --request POST \
+  'https://compute.googleapis.com/compute/v1/projects/gke-gra/zones/us-central1-a/instances/query/start?key=null' \
+  --header 'Authorization: Bearer '+<ACCESS_TOKEN> \
+  --header 'Accept: application/json' \
+  --compressed
