@@ -21,7 +21,7 @@ EXPOSE 8080
 # configure the container to run in an executed manner
 ENTRYPOINT [ "python" ]
 
-CMD ["main.py"]
+CMD ["cloudrun.py"]
 
 # sudo docker image build -t borisgra/webhook:1.0 .
 # sudo docker image build --progress=plain --no-cache -t borisgra/webhook:1.0 .
