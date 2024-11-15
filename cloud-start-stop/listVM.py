@@ -4,7 +4,7 @@ from requests.structures import CaseInsensitiveDict
 from getToken import getToken
 
 @functions_framework.http
-def start_stop(request):
+def listVM(request):
     com = 'start'
     vm = '????'
     project = '????'
@@ -13,8 +13,6 @@ def start_stop(request):
     if not resp:
         resp = request.args
     if resp:
-        if 'com' in resp:
-            com = resp['com']
         if 'vm' in resp:
             vm = resp['vm']
         if 'project' in resp:
@@ -24,8 +22,8 @@ def start_stop(request):
 
     token = getToken()
 
-    url = ("https://compute.googleapis.com/compute/v1/projects/{}/zones/{}/instances/{}/{}"
-           .format(project,zone,vm,com))
+    url = ("https://compute.googleapis.com/compute/v1/projects/{}/zones/{}/instances"
+           .format(project,zone))
     print(url)
     headers = CaseInsensitiveDict()
     headers["Authorization"] = "Bearer {}".format(token)
@@ -33,5 +31,10 @@ def start_stop(request):
     headers["Content-Length"] = "0"
     resp = requests.post(url, headers=headers)
     print(resp.status_code)
+    items = resp.json()['items']
+    vmList=""
+    for item in items:
+        vm = items[item]
+        vmList += "{}  {} \n".format(vm.name,vm.status)
 
-    return 'Start {}! ({})'.format(com,resp.status_code)
+    return 'List VM ({} \n {})'.format(com,resp.status_code,vmList)
