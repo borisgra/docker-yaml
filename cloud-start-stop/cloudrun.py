@@ -9,7 +9,7 @@ def home():
     return start_stop(request)
 
 @app.route('/list', methods=['GET', 'POST'])
-def home():
+def listvm():
     return listVM(request)
 
 if __name__ == "__main__":
