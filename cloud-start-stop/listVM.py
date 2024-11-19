@@ -39,6 +39,10 @@ def listVM(request):
     else:
         items = response.json()['items']
         for item in items:
-            vmList += "<b>{}  {} <a href='{}&vm={}&com=start'> START </a> .. <a href='{}&vm={}&com=stop'> STOP </a>   <br> ".format(item['name'],item['status'],urlCom,item['name'],urlCom,item['name'])
+            accessConfigs = item['networkInterfaces'][0]['accessConfigs'][0]
+            vmList += ("<b>{}  {} <a href='{}&vm={}&com=start'> START </a>"
+                       " .. <a href='{}&vm={}&com=stop'> STOP </a> .. {}"
+                       .format(item['name'],item['status'],urlCom,item['name'],urlCom,item['name']
+                               ,accessConfigs['natIP'] if 'natIP' in accessConfigs else '' ))
 
     return 'List VM ({}) <br><br> {}'.format(response.status_code,vmList)
