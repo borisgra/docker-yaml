@@ -43,7 +43,7 @@ def listVM(request):
             accessConfigs = item['networkInterfaces'][0]['accessConfigs'][0]
             natIP = accessConfigs['natIP'] if 'natIP' in accessConfigs else ''
             vmList += ("<b>{}  {} <td> <a href='{}&vm={}&com=start'> START </a> </td>" 
-                       " <td>..</td>  <td><a href='{}&vm={}&com=stop'> STOP </a></td> <td>..</td> <td>{}</td>"
+                       "   <td><a href='{}&vm={}&com=stop'> STOP </a></td>  <td>{}</td>"
                        .format(item['name'],item['status'],urlCom,item['name'],urlCom,item['name']
                                ,natIP ))
 
