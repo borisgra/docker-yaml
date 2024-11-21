@@ -69,20 +69,17 @@ https://stackoverflow.com/questions/22944631/how-to-get-the-ip-address-of-the-do
 /sbin/ip route|awk '/default/ { print $3 }'
 docker network inspect bridge -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}'
 
-#Instanse for query
+#Instanse for query  --project=????? \   --service-account=148641556397-compute@developer.gserviceaccount.com \
 gcloud compute instances create-with-container query \
-    --project=gke-gra \
     --zone=us-central1-a \
     --machine-type=f1-micro \
     --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
     --maintenance-policy=MIGRATE \
     --provisioning-model=STANDARD \
-    --service-account=148641556397-compute@developer.gserviceaccount.com \
     --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/trace.append \
     --image=projects/cos-cloud/global/images/cos-stable-117-18613-75-4 \
     --boot-disk-size=10GB \
     --boot-disk-type=pd-standard \
-    --boot-disk-device-name=query \
     --container-image=borisgra/query-gra \
     --container-restart-policy=always \
     --container-privileged \

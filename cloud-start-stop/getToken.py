@@ -9,6 +9,8 @@ import requests
      !!! add pemision   Compute Instance Admin (v1)   in service account Cloud Run (Edit/Security)
     https://stackoverflow.com/questions/26000336/execute-curl-command-within-a-python-script
     https://cloud.google.com/compute/docs/metadata/querying-metadata#linux
+    https://gtseres.medium.com/using-service-accounts-across-projects-in-gcp-cf9473fef8f0
+    !!! add service acсount Cloud Run project to service account other projects (pemision Editor)
 """
 
 def getToken():
