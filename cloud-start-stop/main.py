@@ -1,7 +1,6 @@
 import functions_framework
-import requests
-from requests.structures import CaseInsensitiveDict
 from getToken import getToken
+from run_command import run_command
 
 @functions_framework.http
 def start_stop(request):
@@ -23,15 +22,6 @@ def start_stop(request):
             zone = resp['zone']
 
     token = getToken()
-
-    url = ("https://compute.googleapis.com/compute/v1/projects/{}/zones/{}/instances/{}/{}"
-           .format(project,zone,vm,com))
-    print(url)
-    headers = CaseInsensitiveDict()
-    headers["Authorization"] = "Bearer {}".format(token)
-    headers["Accept"] = "application/json"
-    headers["Content-Length"] = "0"
-    resp = requests.post(url, headers=headers)
-    print(resp.status_code)
+    resp = run_command(com, project, resp, token, vm, zone)
 
     return 'Start {}! ({})'.format(com,resp.status_code)
