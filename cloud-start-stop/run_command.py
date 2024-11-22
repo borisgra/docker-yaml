@@ -1,7 +1,7 @@
 import requests
 from requests.structures import CaseInsensitiveDict
 
-def run_command(com, project, resp, token, vm, zone):
+def run_command(com, project, token, vm, zone):
     url = ("https://compute.googleapis.com/compute/v1/projects/{}/zones/{}/instances/{}/{}"
            .format(project, zone, vm, com))
     print(url)
@@ -11,4 +11,4 @@ def run_command(com, project, resp, token, vm, zone):
     headers["Content-Length"] = "0"
     resp = requests.post(url, headers=headers)
     print(resp.status_code)
-    return resp
+    return resp.status_code
