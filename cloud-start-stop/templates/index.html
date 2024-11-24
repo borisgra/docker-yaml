@@ -5,7 +5,63 @@
     <title>VM instances</title>
     <link rel="icon" type="image/ico" href="img/favicon.ico">
 </head>
-<body>
+<body onload="brython()">
+<!--<body>-->
+<!--
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    //https://www.freecodecamp.org/news/javascript-post-request-how-to-send-an-http-post-request-in-js/
+    function  list_vm(){
+        $.post("https://comps-hyx2izic7a-uc.a.run.app/list?vm=query&com=start&project=vpn-gra&zone=us-central1-a", {}, status => {
+          console.log(status);
+         // console.log(status);
+        });
+      //  alert('!!! ok')
+    }
+</script>
+<button onclick="list_vm()">Click me</button>
+-->
+
+
+<script src="https://cdn.jsdelivr.net/npm/brython@3.12/brython.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/brython@3.12/brython_stdlib.js"></script>
+<script>
+    pyTest = "import browser;browser.console.log('Hello Brython!');"
+    eval(__BRYTHON__.python_to_js(pyTest));
+</script>
+<script type="text/python">
+    import sys
+    sys.path.append(sys.path[0].replace('/templates','/py'))
+    sys.path.insert(0,'https://cdn.jsdelivr.net/npm/brython@3.12/brython.min.js')
+    sys.path.insert(0,'https://cdn.jsdelivr.net/npm/brython@3.12/brython_stdlib.js')
+    print(sys.path)
+    from test_mod import test
+    test()
+    #from run_command import run_command
+    #resp_command = run_command()
+
+</script>
+<!--
+
+<script type="text/python">
+    #https://brython.info/demo.html?lang=en#
+    #https://stackoverflow.com/questions/26021672/how-to-use-ajax-in-brython
+    from browser import document, alert,ajax, doc
+
+    def by_python(event):
+        url = "https://comps-hyx2izic7a-uc.a.run.app/list?vm=query&com=start&project=vpn-gra&zone=us-central1-a"
+        req = ajax.ajax()
+        req.open('POST',url,True)
+        req.set_header('content-type','application/x-www-form-urlencoded')
+        req.send()
+        alert('!!! ok')
+
+    document["by_python_1"].bind("click", by_python)
+    document["by_python_2"].bind("click", by_python)
+</script>
+<button id="by_python_1">Click me</button>
+<button id="by_python_2">Click me</button>
+-->
 <h2>VM instances ({{project}})   {{ code }}   command: {{resp_command}}</h2>
 {{data|safe}}
 <pre>
