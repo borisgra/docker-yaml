@@ -13,3 +13,5 @@ EXPOSE 8080
 ENTRYPOINT [ "python" ]
 
 CMD ["cloudrun.py"]
+
+#sudo docker buildx build  --progress=plain -t test . 2>&1 | tee build.log
