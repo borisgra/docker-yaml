@@ -53,4 +53,6 @@ def listVM(request):
                                    ,natIP ))
         vmList = '<b><table>{}</table></b>'.format(vmList)
 
-    return render_template('index.html',code=response.status_code,data=vmList,project=project,resp_command=resp_command)
+    import sys
+    return render_template('index.html',code=response.status_code,data=vmList,
+                           sys_path_python=','.join(sys.path),project=project,resp_command=resp_command)

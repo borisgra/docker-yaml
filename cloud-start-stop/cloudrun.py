@@ -13,7 +13,4 @@ def listvm():
     return listVM(request)
 
 if __name__ == "__main__":
-    import sys
-    print('sys.path.__main=',sys.path)
-    main_sys_path = sys.path
     app.run(debug=False, host='0.0.0.0', port=8080)

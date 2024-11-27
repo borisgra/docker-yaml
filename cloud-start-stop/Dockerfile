@@ -6,7 +6,7 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-COPY . /app
+COPY --chmod=777 . /app
 
 EXPOSE 8080
 

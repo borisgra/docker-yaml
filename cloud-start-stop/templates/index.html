@@ -31,16 +31,21 @@
 </script>
 
 <script type="text/python">
+    from browser import document, alert
     import sys
     sys.path.append(sys.path[0].replace('/templates',''))
-    sys.path.append(sys.path[0].replace('/templates','/py'))
+    sys.path = "{{sys_path_python}}".split(',') + sys.path
     print(sys.path)
-    from test_mod import test
-    test()
 
-    from test_mod_py import test2
-    test2()
+    def by_python(event):
+        from run_command import run_command
+        com = 'start'
+        vm = 'query'
+        project = 'vpn-gra'
+        zone = 'us-central1-a'
+        resp_command = run_command(com, project, token, vm, zone)
 
+    document["by_python"].bind("click", by_python)
 </script>
 
 <!--
@@ -68,8 +73,9 @@
     document["by_python_2"].bind("click", by_python)
 </script>
 -->
-<button id="by_python_1.start">Click me</button>
-<button id="by_python_2.stop">Click me</button>
+<button id="by_python">Click 1!!</button>
+<!--<button id="by_python_1.start">Click 1</button>-->
+<!--<button id="by_python_2.stop">Click 2</button>-->
 <div id="result"> </div>
 <div id="result_com"> </div>
 
