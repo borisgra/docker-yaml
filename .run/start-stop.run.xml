@@ -2,7 +2,7 @@
   <configuration default="false" name="start-stop" type="docker-deploy" factoryName="dockerfile" server-name="Docker-22.04">
     <deployment type="dockerfile">
       <settings>
-        <option name="imageTag" value="borisgra/vm:test" />
+        <option name="imageTag" value="borisgra/vm:ver-0.1" />
         <option name="containerName" value="start-stop" />
         <option name="sourceFilePath" value="cloud-start-stop/Dockerfile" />
       </settings>

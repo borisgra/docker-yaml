@@ -1,7 +1,7 @@
 def get_param(request):
-    com = 'start'
-    vm = '????'
-    project = '????'
+    com = ''
+    vm = ''
+    project = ''
     zone = 'us-central1-a'
     resp = request.get_json(silent=True)
     if not resp:

@@ -5,8 +5,19 @@
     <title>VM instances</title>
     <link rel="icon" type="image/ico" href="img/favicon.ico">
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    //https://www.freecodecamp.org/news/javascript-post-request-how-to-send-an-http-post-request-in-js/
+    function  com_vm(url){
+        console.log(url);
+        $.post(url, {}, status => {
+          console.log(status);
+          $("#rez_code").text(status);
+        });
+    }
+</script>
 <body>
-<h2>VM instances ({{project}})   {{ code }}   command: {{resp_command}}</h2>
+<h2>VM instances ({{project}})  list: {{ code }}  comand: <a id='rez_code'></a> </h2>
 {{data|safe}}
 <pre>
 

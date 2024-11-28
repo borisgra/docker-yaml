@@ -11,4 +11,4 @@ def run_command(com, project, token, vm, zone):
     headers["Content-Length"] = "0"
     resp = requests.post(url, headers=headers)
     print(resp.status_code)
-    return resp.status_code
+    return str(resp.status_code)
