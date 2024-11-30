@@ -8,8 +8,12 @@ from get_param import get_param
 @functions_framework.http
 def listVM(request):
     urlCom = request.url.split('?')[0].replace('http:','https:')  # todo http ??
-
+    print('urlCom =',urlCom)
     com, project, vm, zone = get_param(request)
+    if zone == '':
+        return 'Add param zone=  (url?project=my_project_name) - by default zone=us-central1-a'
+    elif project == '':
+        return 'Add param project=  (url?project=my_project_name or urlurl?project=my_project_name&project=my_project_name)'
 
     token = getToken()
 

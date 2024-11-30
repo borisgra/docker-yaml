@@ -4,6 +4,14 @@
       <settings>
         <option name="imageTag" value="borisgra/vm:ver-0.1" />
         <option name="containerName" value="start-stop" />
+        <option name="portBindings">
+          <list>
+            <DockerPortBindingImpl>
+              <option name="containerPort" value="8080" />
+              <option name="hostPort" value="8080" />
+            </DockerPortBindingImpl>
+          </list>
+        </option>
         <option name="sourceFilePath" value="cloud-start-stop/Dockerfile" />
       </settings>
     </deployment>
