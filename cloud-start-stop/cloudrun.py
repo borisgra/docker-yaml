@@ -1,4 +1,4 @@
-# !!! if need manage other project - add service acсount Cloud Run project to other projects (IAM& Admin/IAM - pemision Editor)
+# !!! if need manage other project - add service acсount Cloud Run project to other projects (IAM& Admin/IAM - pemision Viewer)
 
 from flask import Flask, request
 from listVM import listVM
