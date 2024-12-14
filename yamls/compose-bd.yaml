@@ -25,5 +25,19 @@ services:
       - "${PORTS_ADMIN4}" #"5050:80"
     restart: always
 
+  query:
+    container_name: query
+    image: borisgra/query-gra
+    environment:
+      - QUERY_BD=koyebdb
+      - ADMIN_PASSW=+++++
+      - PORT=5003
+      - SERVER_TYPE=http
+      - DATABASE_URL_koyebdb=postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286.eu-central-1.aws.neon.tech/querys
+      - DATABASE_URL_local=postgres://odoo:6Ud3RVzDQgntgcED4jUm@172.18.0.1/query  # ifconfig get first IP
+    ports:
+      - 5003:5003
+    restart: always
+
 #volumes:
 #  odoo-web-data:

@@ -26,6 +26,13 @@ gcloud compute instances create ubuntu1 \
     --shielded-integrity-monitoring \
     --reservation-affinity=any
 
+#https://gcloud-compute.com/images.html
+gcloud compute instances create vm-debian-cloud \
+--machine-type='g1-small' \
+--zone='us-central1-a' \
+--image-project='debian-cloud' \
+--image-family='debian-12'
+
 # !!! wait 30 sec while starting VM
 gcloud compute ssh --project=gke-gra --zone=us-central1-a ubuntu1 # start console VM
 
