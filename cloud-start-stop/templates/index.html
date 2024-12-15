@@ -12,12 +12,12 @@
         console.log(url);
         $.post(url, {}, status => {
           console.log(status);
-          $("#rez_code").text(status);
+          $("#rez_code_com").text(status);
         });
     }
 </script>
 <body>
-<h2>VM instances ({{project}})  list: {{ code }}  comand: <a id='rez_code'>???</a> </h2>
+<h2>VM instances ({{projects}})  list: {{ codes }}  comand: <a id='rez_code_com'>???</a> </h2>
 {{data|safe}}
 <pre>
 
