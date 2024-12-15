@@ -44,9 +44,9 @@ sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yam
 # !!! wait 30 sec while starting odoo
 # CLOSE GCP console
 
-Adding SSHKEY VM GPS:
+Adding SSHKEY VM GPS  (example.ppk):
 VM / edit  / SSH Keys / add item
-ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAkf8F4vWHJ2ugTdfouGV521k4kHg+byCqQTLb/q+tIBqB2pXNAn8L7FIsE6inDGpVukUyVwVhT6UTwap1RURITRx0i/Xe+qTJt5UzjS/hL+em915TTQsT1WAuIqksbvlhx3bumvrBMoh4+0dSRdUD2yFrr3yFSiopX2D+PXKWXkHHtgmoFxUvfc2aKMbKys/fAHdJBcWkpR9jDSMEuFY+2c38TPOz9Z4AzEmnFQ0NqzQEth+GV2AVdA7UMxSSniml5RhzWplucW36iE6iS/h5fAqtGzq5d7SU0eaQMEwudbzpGlQ8J7+Fz0mkh8kFCEdpL0/PnOaJFkp+IGIrq5BEtw== google-ssh {"userName":"<name_user>","expireOn":"2025-06-01T13:57:26+0000"}
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCKXQMWPGT4jUsPPAfe2qAsOhNTRuIfeRITtzOVevnCLwIFxfYZhisBmfchv/ZWzZ/IE5mijlurHSWATTKYqiUPawMdLNUEwPE/LfNa3uUdNbMyImIxTqIfTlfZSp/piaa5RvCtpqCgYn6V6pKkVI8zJDrTvU/YiH0MpfG1Jx51VACUghN39QBzvR6chPeXroxiV6/kenZr+9ug992B5tLSAPmrYyitm3kU9dpfDBWOaO96Yg3WOx+SZytmMs659CubUI/OFTqXyz8CL0JpqUf7bpvVxHKmt9k6vnrL7mknTRXNJcLdBzYZUBsNy3fM67BXFN2TEIuTF2FGJqgCdeAp google-ssh {"userName":"boris_gra_dev","expireOn":"2035-06-01T13:57:26+0000"}
 
 Ubuntu, Debian on Window:
 sudo apt update && sudo apt install curl  # Debian on Windows
