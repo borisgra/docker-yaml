@@ -13,15 +13,16 @@ def listVM(request):
     if zone == '':
         return 'Add param zone=  (url?zone=my_zone) - by default zone=us-central1-a'
     elif projects == '':
-        return 'Add param projects=  (url?projects=my_projects_name or url?projects=my_projects1_name,my_project2_name)'
-
-    token = getToken()
-
-    if not(com == '' and vm == ''):
-        return run_command(com, projects, token, vm, zone)
+        return 'Add param projects=  (url?projects=my_projects_id or url?projects=my_projects1_id,my_project2_id)'
 
     vmList=""
     codes=[]
+    token = getToken()
+    if token.startswith('Error'):
+        return render_template('index.html',codes='',data=token,projects=projects)
+    if not(com == '' and vm == ''):
+        return run_command(com, projects, token, vm, zone)
+
     for project  in projects.split(","):
         codes, vmList = one_project(codes, project, token, urlCom, vmList, zone)
 

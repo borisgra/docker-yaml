@@ -18,8 +18,13 @@ def getToken():
     url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token"
     payload = {}
     headers = {"Metadata-Flavor": "Google"}
-    resp = requests.post(url, data=payload, headers=headers)
-    print(resp.status_code)
-    token = resp.json()['access_token']
+    try:
+        resp = requests.post(url, data=payload, headers=headers)
+    except Exception as error:
+        return "Error getToken: {} <br/> {}".format(type(error).__name__,error)
+    if resp.status_code != 200:
+        token = "Error getToken: status_code {}".format(resp.status_code)
+    else:
+        token = resp.json()['access_token']
     print(token)
     return token
