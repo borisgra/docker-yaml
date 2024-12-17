@@ -10,6 +10,7 @@
     //https://www.freecodecamp.org/news/javascript-post-request-how-to-send-an-http-post-request-in-js/
     function  com_vm(url){
         console.log(url);
+        $("#rez_code_com").text('???');
         $.post(url, {}, status => {
           console.log(status);
           $("#rez_code_com").text(status);
@@ -17,7 +18,7 @@
     }
 </script>
 <body>
-<h2>VM instances ({{projects}})  list: {{ codes }}  comand: <a id='rez_code_com'>???</a> </h2>
+<h2>VM instances -> projects: {{projects}}  codes: {{ codes }}  comand: <a id='rez_code_com'>???</a> </h2>
 {{data|safe}}
 <pre>
 
