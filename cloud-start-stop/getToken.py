@@ -6,11 +6,11 @@ import requests
     https://cloud.google.com/compute/docs/reference/rest/v1/instances/start?apix=true
     https://cloud.google.com/docs/authentication/rest#metadata-server
     https://cloud.google.com/compute/docs/metadata/querying-metadata#linux
-     !!! add pemision   Compute Instance Admin (v1)   in service account Cloud Run (Edit/Security)
+     !!! add permission   Compute Instance Admin (v1)   in service account Cloud Run (Edit/Security)
     https://stackoverflow.com/questions/26000336/execute-curl-command-within-a-python-script
     https://cloud.google.com/compute/docs/metadata/querying-metadata#linux
     https://gtseres.medium.com/using-service-accounts-across-projects-in-gcp-cf9473fef8f0
-    !!! if need manage other project add service acсount Cloud Run project to other projects (IAM& Admin/IAM - pemision Editor)
+    !!! if need manage other project add service account Cloud Run project to other projects (IAM& Admin/IAM - permission Editor)
 """
 
 def getToken():
