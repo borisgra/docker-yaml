@@ -7,7 +7,10 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
 def listvm():
-    return listVM(request)
+    print('ver=',ver)
+    return listVM(request,ver)
 
 if __name__ == "__main__":
+    f = open("../ver", "r")
+    ver = f.read()
     app.run(debug=False, host='0.0.0.0', port=8080)

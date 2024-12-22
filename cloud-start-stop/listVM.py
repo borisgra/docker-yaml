@@ -4,11 +4,15 @@ from getToken import getToken
 from flask import render_template
 from run_command import run_command
 from get_param import get_param
+from datetime import datetime
 
 @functions_framework.http
-def listVM(request):
+def listVM(request,ver):
     urlCom = request.url.split('?')[0].replace('http:','https:')  # todo http ??
-    print('urlCom =',urlCom)
+    a,b,c,_ = ver.split('\n')
+    version = ('version:1.0.{} {} compile {} started {}'
+               .format(a,b,c,str(datetime.today().strftime('%Y-%m-%d %H:%M:%S'))))
+    print('urlCom =',urlCom,'version=',version)
     com, projects, vm, zone = get_param(request)
     if projects == '':
         return 'Add param (url?projects=my_projects1_id,my_project2_id,..)'
@@ -17,7 +21,7 @@ def listVM(request):
     codes=[]
     token = getToken()
     if token.startswith('Error'):
-        return render_template('index.html',codes='',data=token,projects=projects)
+        return render_template('index.html',codes='',data=token,projects=projects,ver=version)
     if not(com == '' and vm == ''):
         return run_command(com, projects, token, vm, zone)
 
@@ -26,7 +30,7 @@ def listVM(request):
 
     vmList = ('<b><table> <th>Project</th> <th>Name VM</th> <th>Zone</th> <th>Status</th> <th>Start</th> <th>Stop</th> <th>natIP</th>\n '
               '{}</table></b>').format(vmList)
-    return render_template('index.html',codes=','.join(codes),data=vmList,projects=projects)
+    return render_template('index.html',codes=','.join(codes),data=vmList,projects=projects,ver=version)
 
 
 def one_project(codes, project, token, urlCom, vmList, zone):
