@@ -4,7 +4,10 @@ RUN apt-get update && apt-get install -y git
 ARG GIT="https://borisgra@github.com/borisgra/docker-yaml.git"
 ENV GIT=$GIT
 
-RUN git clone --single-branch --branch develop $GIT /app # --no-cache  --progress=plain
+#https://stackoverflow.com/questions/35134713/disable-cache-for-specific-run-commands
+ADD "https://currentmillis.com/time/minutes-since-unix-epoch.php" skipcache
+
+RUN git clone --single-branch --branch develop $GIT /app
 
 WORKDIR /app
 
