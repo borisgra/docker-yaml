@@ -4,14 +4,11 @@ from getToken import getToken
 from flask import render_template
 from run_command import run_command
 from get_param import get_param
-from datetime import datetime
+
 
 @functions_framework.http
-def listVM(request,ver):
+def listVM(request,version):
     urlCom = request.url.split('?')[0].replace('http:','https:')  # todo http ??
-    a,b,c,_ = ver.split('\n')
-    version = ('version:1.0.{} {} compile {} started {}'
-               .format(a,b,c,str(datetime.today().strftime('%Y-%m-%d %H:%M:%S'))))
     print('urlCom =',urlCom,'version=',version)
     com, projects, vm, zone = get_param(request)
     if projects == '':
