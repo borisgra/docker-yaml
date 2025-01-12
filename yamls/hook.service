@@ -1,0 +1,25 @@
+# sistem services webhook_listener.sh
+[Unit]
+Description=webhook monitoring service
+
+[Service]
+Type=simple
+User=root
+Group=root
+TimeoutStartSec=0
+Restart=on-failure
+RestartSec=30s
+#ExecStartPre=
+ExecStart=/usr/bin/webhook_listener.sh
+SyslogIdentifier=Diskutilization
+#ExecStop=
+
+[Install]
+WantedBy=multi-user.target
+
+#sudo cp hook.service /lib/systemd/system/  && sudo systemctl daemon-reload
+#sudo systemctl daemon-reload # reload this daemon each time after making any changes in .service file
+#sudo systemctl enable hook.service
+#sudo systemctl start hook.service
+#sudo systemctl stop hook.service
+#sudo systemctl status hook.service
