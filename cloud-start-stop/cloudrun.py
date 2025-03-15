@@ -1,11 +1,14 @@
 # !!! if need manage other project - add service account Cloud Run project to other projects (IAM& Admin/IAM - permission Editor)
-
+from flask_cors import CORS
 from flask import Flask, request
 from listVM import listVM
 import os.path
 from datetime import datetime
 
 app = Flask(__name__)
+# https://sky.pro/wiki/python/razreshenie-cors-vo-flask-dlya-zaprosov-cherez-j-query/
+# http://localhost:8080/static/menus/menu-load.js
+CORS(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def listvm():
