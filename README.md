@@ -64,27 +64,30 @@ gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
 gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
 
 win10-intellij import:
-gsutil cp gs://store-gra/images/win10-intellij.tar.gz gs://comp-gra/win10-intellij.tar.gz
-gsutil cp gs://store-gra/images/win10-intellij-data.tar.gz gs://comp-gra/win10-intellij-data.tar.gz
-gcloud compute images create win10-intellij --source-uri="gs://comp-gra/win10-intellij.tar.gz" --project=com-gra
-gcloud compute images create win10-intellij-data --source-uri=gs://comp-gra/win10-intellij-data.tar.gz --project=com-gra
+Go to progect store-gra and create images:
+gcloud compute images create win10-intellij --source-uri=gs://store-gra/images/win10-intellij.tar.gz --project=com-gra --storage-location=us-central1
+gcloud compute images create win10-intellij-data --source-uri=gs://store-gra/images/win10-intellij-data.tar.gz --project=com-gra --storage-location=us-central1
 
+Go to progect com-gra and create instance ($50 month or $0.07 hourly):
 gcloud compute instances create win10-intellij \
 --project=com-gra \
 --zone=us-central1-a \
---machine-type=e2-medium \
+--machine-type=e2-standard-2 \
 --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
 --service-account=878732527619-compute@developer.gserviceaccount.com \
 --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/trace.append \
---create-disk=auto-delete=yes,boot=yes,device-name=win10-intellij,image=projects/com-gra/global/images/win10-intellij,mode=rw,size=30,type=pd-balanced \
+--create-disk=auto-delete=no,boot=yes,device-name=win10-intellij,image=projects/com-gra/global/images/win10-intellij,mode=rw,size=25,type=pd-standard \
+--create-disk=device-name=win10-intellij-data,image=projects/com-gra/global/images/win10-intellij-data,mode=rw,name=win10-intellij-data,size=10,type=pd-standard \
 --labels=goog-ec-src=vm_add-gcloud \
 --reservation-affinity=any 
 
 connect by windows Remote Deckstop
     ip - External IP VM Instance (Compute Engine VM instances)
     The default username and password are set to user/123456
+
+unzip on D:  d:\distrib\mde-partision-free-portable.zip
 
 https://rominirani.com/hands-on-guide-to-scheduling-vm-instances-to-start-and-stop-a079a50e16c6
 
