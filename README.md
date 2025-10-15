@@ -64,11 +64,10 @@ gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
 gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
 
 win10-intellij import:
-Go to progect store-gra and create images:
+Go to progect com-gra and create images and instance ($50 month or $0.07 hourly):
 gcloud compute images create win10-intellij --source-uri=gs://store-gra/images/win10-intellij.tar.gz --project=com-gra --storage-location=us-central1
 gcloud compute images create win10-intellij-data --source-uri=gs://store-gra/images/win10-intellij-data.tar.gz --project=com-gra --storage-location=us-central1
 
-Go to progect com-gra and create instance ($50 month or $0.07 hourly):
 gcloud compute instances create win10-intellij \
 --project=com-gra \
 --zone=us-central1-a \
