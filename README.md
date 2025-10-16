@@ -63,8 +63,8 @@ gcloud compute images export --destination-uri gs://vpn-gra/images/image-vpn-pgs
 gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
 gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
 
-win10-intellij import:
-Go to progect com-gra and create images and instance ($50 month or $0.07 hourly):
+win10-intellij import (replace com-gra on real project):
+Go to progect com-gra and create images and instance ($50 month or $0.07 hourly)   ~ 7min:
 gcloud compute images create win10-intellij --source-uri=gs://store-gra/images/win10-intellij.tar.gz --project=com-gra --storage-location=us-central1
 gcloud compute images create win10-intellij-data --source-uri=gs://store-gra/images/win10-intellij-data.tar.gz --project=com-gra --storage-location=us-central1
 
@@ -75,7 +75,6 @@ gcloud compute instances create win10-intellij \
 --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
---service-account=878732527619-compute@developer.gserviceaccount.com \
 --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/trace.append \
 --create-disk=auto-delete=no,boot=yes,device-name=win10-intellij,image=projects/com-gra/global/images/win10-intellij,mode=rw,size=25,type=pd-standard \
 --create-disk=device-name=win10-intellij-data,image=projects/com-gra/global/images/win10-intellij-data,mode=rw,name=win10-intellij-data,size=10,type=pd-standard \
@@ -88,7 +87,17 @@ connect by windows Remote Deckstop
 
 unzip on D:  d:\distrib\mde-partision-free-portable.zip
 
-https://rominirani.com/hands-on-guide-to-scheduling-vm-instances-to-start-and-stop-a079a50e16c6
+For service instance start/stop https://comps-907412932172.us-central1.run.app/?projects=com-gra,vpn-gra,gke-gra :
+https://console.cloud.google.com/iam-admin/roles?project=vpn-gra
+create new role "Custom ComputeStartStop" with permision:
+compute.instances.list	
+compute.instances.start	
+compute.instances.stop	
+
+https://console.cloud.google.com/iam-admin/iam?project=vpn-gra (View by principals + Grant access)
+Add to project vpn-gra principal "myserviceaccount@vpn-gra.iam.gserviceaccount.com" 
+with role "Custom ComputeStartStop" 
+
 
 WSL (Windows Subsystem for Linux):  Unix on Windows
 install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
