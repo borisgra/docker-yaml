@@ -98,6 +98,30 @@ https://console.cloud.google.com/iam-admin/iam?project=vpn-gra (View by principa
 Add to project vpn-gra principal "myserviceaccount@vpn-gra.iam.gserviceaccount.com" 
 with role "Custom ComputeStartStop" 
 
+Moove Users to anothe disk
+https://www.top-password.com/blog/move-the-entire-user-profiles-to-another-drive-in-windows/
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
+
+win10-gcp:
+
+gcloud compute instances create win10-create \
+--project=com-gra \
+--zone=us-central1-a \
+--machine-type=e2-medium \
+--network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
+--metadata=enable-osconfig=TRUE \
+--maintenance-policy=MIGRATE \
+--provisioning-model=STANDARD \
+--create-disk=auto-delete=yes,boot=yes,device-name=win10--create,image=projects/debian-cloud/global/images/debian-12-bookworm-v20251014,mode=rw,size=10,type=pd-balanced \
+--create-disk=device-name=win10,mode=rw,name=win10,size=25,type=pd-standard \
+--no-shielded-secure-boot \
+--shielded-vtpm \
+--shielded-integrity-monitoring \
+--labels=goog-ops-agent-policy=v2-x86-template-1-4-0,goog-ec-src=vm_add-gcloud \
+--reservation-affinity=any
+
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win.sh)"
+
 
 WSL (Windows Subsystem for Linux):  Unix on Windows
 install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
