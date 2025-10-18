@@ -1,17 +1,13 @@
 #!/bin/bash
-
+# The original !
 # wget -qO- https://raw.githubusercontent.com/ngxson/public-assets/main/install-windows-gcp.sh | sudo bash
-
-# wget -qO- https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win.sh | sudo bash
-
 # IMAGE_URL="https://huggingface.co/ngxson/windows-10-ggcloud/resolve/main/windows-10-ggcloud.raw.gz"
-
-
+# my version  for execution !!!
+# wget -qO- https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win.sh | sudo bash
+# or
 # bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win.sh)"
-
+# my image url
 IMAGE_URL="https://storage.googleapis.com/public-gra/images/win10-gcp/windows-10-ggcloud.raw.gz"
-#IMAGE_URL="https://drive.usercontent.google.com/download?id=1HYhgTJ4rJB7qp5zCRKBG_nUXonHiOoV5&export=raw&authuser=0&confirm=t&uuid=a1db2f2a-503c-45da-8291-0165075785f1&at=APZUnTXCEYOvHd6Mdz1jqyaWrJZy%3A1722852784203"
-
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
   exit

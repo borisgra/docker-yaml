@@ -102,8 +102,7 @@ Moove Users to anothe disk
 https://www.top-password.com/blog/move-the-entire-user-profiles-to-another-drive-in-windows/
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
 
-win10-gcp:
-
+win10-gcp (https://www.youtube.com/watch?v=DcUA_S2n7Qw&list=WL&index=1):
 gcloud compute instances create win10-create \
 --project=com-gra \
 --zone=us-central1-a \
@@ -112,15 +111,32 @@ gcloud compute instances create win10-create \
 --metadata=enable-osconfig=TRUE \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
---create-disk=auto-delete=yes,boot=yes,device-name=win10--create,image=projects/debian-cloud/global/images/debian-12-bookworm-v20251014,mode=rw,size=10,type=pd-balanced \
---create-disk=device-name=win10,mode=rw,name=win10,size=25,type=pd-standard \
---no-shielded-secure-boot \
---shielded-vtpm \
---shielded-integrity-monitoring \
---labels=goog-ops-agent-policy=v2-x86-template-1-4-0,goog-ec-src=vm_add-gcloud \
---reservation-affinity=any
+--create-disk=auto-delete=yes,boot=yes,device-name=win10-create,image=projects/debian-cloud/global/images/debian-12-bookworm-v20251014,mode=rw,size=10,type=pd-balanced \
+--create-disk=auto-delete=no,device-name=win10,mode=rw,name=win10,size=25,type=pd-standard 
 
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win.sh)"
+# !!! wait 30 sec while starting instance
+gcloud compute ssh --project=com-gra --zone=us-central1-a win10-create # start console VM  
+sudo bash -c "$(curl -fsSL https://storage.googleapis.com/public-gra/images/win10-gcp/win.sh)" # execute (~5min  on e2-medium)
+#sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win.sh)" # execute (~5min  on e2-medium)
+
+exit
+gcloud compute instances delete win10-create --zone=us-central1-a 
+# !!! wait 30 sec while delete instance
+gcloud compute instances create win10 \
+--project=com-gra \
+--zone=us-central1-a \
+--machine-type=e2-standard-2 \
+--network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
+--metadata=enable-osconfig=TRUE \
+--maintenance-policy=MIGRATE \
+--provisioning-model=STANDARD \
+--disk=boot=yes,device-name=win10,mode=rw,name=win10 \
+--create-disk=auto-delete=no,device-name=win10-data,mode=rw,name=win10-data,size=10,type=pd-standard 
+
+load and unzip https://storage.googleapis.com/public-gra/images/win10-gcp/distrib_for_win10GCP.zip
+if you will copy c:/Users to d: use teracopy-portable.exe from distrib_for_win10GCP
+  and correct path in  regedit HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
+  and all users (starting with ‘S-1-5-‘)
 
 
 WSL (Windows Subsystem for Linux):  Unix on Windows
