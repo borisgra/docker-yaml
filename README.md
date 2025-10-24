@@ -63,6 +63,27 @@ gcloud compute images export --destination-uri gs://vpn-gra/images/image-vpn-pgs
 gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
 gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
 
+https://console.cloud.google.com/iam-admin/iam?project=store-gra # (View by principals + Grant access)
+Add to project store-gra principal :
+       "148641556397-compute@developer.gserviceaccount.com"   # gke-gra
+   and "878732527619-compute@developer.gserviceaccount.com"   # com-gra
+   and "907412932172-compute@developer.gserviceaccount.com"   # vpn-gra
+with role "Storage Admin"
+
+gcloud compute images export --destination-uri gs://store-gra/images/image-1.tar.gz --image image-1
+
+win10min:
+gcloud compute images create win10-user-123456 --source-uri=gs://store-gra/images/image-gcp-win10-user-123456.tar.gz --project=com-gra --storage-location=us-central1
+
+gcloud compute instances create win10-user-123456 \
+--project=com-gra \
+--zone=us-central1-a \
+--machine-type=e2-standard-2 \
+--network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
+--maintenance-policy=MIGRATE \
+--provisioning-model=STANDARD \
+--create-disk=auto-delete=yes,boot=yes,device-name=win10-user-123456,image=projects/com-gra/global/images/win10-user-123456,mode=rw,size=25,type=pd-standard 
+
 win10-intellij import (replace com-gra on real project):
 Go to progect com-gra and create images and instance ($50 month or $0.07 hourly)   ~ 7min:
 gcloud compute images create win10-intellij --source-uri=gs://store-gra/images/win10-intellij.tar.gz --project=com-gra --storage-location=us-central1
@@ -94,8 +115,8 @@ compute.instances.list
 compute.instances.start	
 compute.instances.stop	
 
-https://console.cloud.google.com/iam-admin/iam?project=vpn-gra (View by principals + Grant access)
-Add to project vpn-gra principal "myserviceaccount@vpn-gra.iam.gserviceaccount.com" 
+https://console.cloud.google.com/iam-admin/iam?project=????? (View by principals + Grant access)
+Add to project ?????? principal "myserviceaccount@vpn-gra.iam.gserviceaccount.com" 
 with role "Custom ComputeStartStop" 
 
 Moove Users to anothe disk
