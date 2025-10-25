@@ -1,0 +1,129 @@
+#!/bin/sh
+WSL (Windows Subsystem for Linux):  Unix on Windows
+install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+cmd or powershel
+wsl --export --vhd Ubuntu-24.04 F:/temp/WpSystem-my/Ubuntu-24.04/ext4.vhdx
+wsl --import ubuntu_22-04-fromtar F:\temp\WpSystem-my\ubuntu-22.04fromtar\ext4.vhdx F:\temp\WpSystem-my\tar_wsl-ubuntu\Ubuntu-22-04_start.tar
+wsl --import-in-place ubuntu_24.04docker F:\temp\WpSystem-my\Ubuntu-24.04\ext4.vhdx
+wsl --manage ubuntu_24.04docker --set-sparse true
+wsl -l -v
+wsl --help
+https://learn.microsoft.com/ru-ru/windows/wsl/basic-commands#import-a-distribution
+
+GCP:
+gcloud compute firewall-rules create my-rule1 --allow tcp:5000-5010,tcp:10010-10020,tcp:1009 --source-ranges=0.0.0.0/0
+gcloud compute addresses create my-ip1 --project=gke-gra --network-tier=STANDARD --region=us-central1
+
+# create VM (# g1-small or e2-small) f1-micro   us-east1  (Instance for query look in end)
+gcloud compute instances create ubuntu1 \
+    --project=gke-gra \
+    --zone=us-central1-a \
+    --machine-type=g1-small \
+    --network-interface=address=my-ip1,network-tier=STANDARD,subnet=default \
+    --maintenance-policy=MIGRATE \
+    --provisioning-model=STANDARD \
+    --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
+    --tags=http-server,https-server \
+    --create-disk=auto-delete=yes,boot=yes,device-name=ubuntu1,image=projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2004-focal-v20240209a,mode=rw,size=10,type=projects/gke-gra/zones/us-central1-a/diskTypes/pd-standard \
+    --no-shielded-secure-boot \
+    --shielded-vtpm \
+    --shielded-integrity-monitoring \
+    --reservation-affinity=any
+
+#https://gcloud-compute.com/images.html
+gcloud compute instances create vm-debian-cloud \
+--machine-type='g1-small' \
+--zone='us-central1-a' \
+--create-disk=auto-delete=yes \
+--boot-disk-size=10GB \
+--boot-disk-type=pd-standard \
+--image-project='debian-cloud' \
+--image-family='debian-12'
+
+# !!! wait 30 sec while starting VM
+gcloud compute ssh --project=gke-gra --zone=us-central1-a ubuntu1 # start console VM
+
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/main/install_docker.sh)"
+
+# !!! wait 30 sec while starting odoo
+# CLOSE GCP console
+
+Adding SSHKEY VM GPS  (example.ppk):
+VM / edit  / SSH Keys / add item
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCKXQMWPGT4jUsPPAfe2qAsOhNTRuIfeRITtzOVevnCLwIFxfYZhisBmfchv/ZWzZ/IE5mijlurHSWATTKYqiUPawMdLNUEwPE/LfNa3uUdNbMyImIxTqIfTlfZSp/piaa5RvCtpqCgYn6V6pKkVI8zJDrTvU/YiH0MpfG1Jx51VACUghN39QBzvR6chPeXroxiV6/kenZr+9ug992B5tLSAPmrYyitm3kU9dpfDBWOaO96Yg3WOx+SZytmMs659CubUI/OFTqXyz8CL0JpqUf7bpvVxHKmt9k6vnrL7mknTRXNJcLdBzYZUBsNy3fM67BXFN2TEIuTF2FGJqgCdeAp google-ssh {"userName":"boris_gra_dev","expireOn":"2035-06-01T13:57:26+0000"}
+
+Ubuntu, Debian on Window:
+sudo apt update && sudo apt install curl  # Debian on Windows
+sudo apt update sudo && apt install net-tools # Ifconfig ( first ip address for inner connects and third for putty
+sudo apt remove openssh-server && sudo apt install openssh-server && sudo service ssh start  # Ubuntu on Window
+sudo nano /etc/ssh/sshd_config   #  ( PasswordAuthentication yes) if refuse connection - Ubuntu-20.04 on Window
+sudo lsof -i -n -P | grep LISTEN # list open ports
+sudo service docker start # Ubuntu/Debian if error:  Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+
+sudo docker compose exec -it odoo bash  # NOT root acccess
+sudo docker compose exec -it -u root odoo bash  # root acccess
+https://security.stackexchange.com/questions/218355/how-to-execute-a-command-directly-on-the-host-system-through-docker-sock-in-a-do
+sudo docker compose exec -it -u root odoo mkdir /host
+sudo docker run -ti -u root --privileged --net=host --pid=host --ipc=host --volume /:/host odoo:9.0 chroot /host
+
+https://stackoverflow.com/questions/32163955/how-to-run-shell-script-on-host-from-docker-container
+HOST:
+sudo mkfifo myHostPipe &&  sudo chmod 777 myHostPipe &&
+while true; do eval "$(cat myHostPipe)"; done   &  # listener
+
+BASH in Conteiner:
+echo "ls -l" > myHostPipe  # example cmd
+
+fot test docker:
+sudo docker compose exec -it webhook echo "ls -l" > myHostPipe
+#-----------------------------------------------------
+ps auxw | grep  bash | grep -w S # bush in background
+
+https://stackoverflow.com/questions/22944631/how-to-get-the-ip-address-of-the-docker-host-from-inside-a-docker-container
+/sbin/ip route|awk '/default/ { print $3 }'
+docker network inspect bridge -f '{{range .IPAM.Config}}{{.Gateway}}{{end}}'
+
+#Instanse for query  --project=????? \   --service-account=148641556397-compute@developer.gserviceaccount.com \
+gcloud compute instances create-with-container query \
+    --zone=us-central1-a \
+    --machine-type=f1-micro \
+    --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
+    --maintenance-policy=MIGRATE \
+    --provisioning-model=STANDARD \
+    --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/trace.append \
+    --image=projects/cos-cloud/global/images/cos-stable-117-18613-75-4 \
+    --boot-disk-size=10GB \
+    --boot-disk-type=pd-standard \
+    --container-image=borisgra/query-gra \
+    --container-restart-policy=always \
+    --container-privileged \
+    --container-env=QUERY_BD=koyebdb,ADMIN_PASSW=+++++,PORT=5003,SERVER_TYPE=http,\
+DATABASE_URL_koyebdb=postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286.eu-central-1.aws.neon.tech/querys \
+    --no-shielded-secure-boot \
+    --shielded-vtpm \
+    --shielded-integrity-monitoring \
+    --labels=goog-ec-src=vm_add-gcloud,container-vm=cos-stable-117-18613-75-4
+
+#cloud func MIN 128M and 80m
+# Start/Stop vm
+#https://stackoverflow.com/questions/62721152/google-cloud-platform-rest-api-acquiring-access-token-and-api-key
+#https://cloud.google.com/compute/docs/reference/rest/v1/instances/start
+gcloud projects list
+PROJECT_ID="YOURS_PROJECT_ID"
+ACCESS_TOKEN=$(gcloud auth print-access-token)
+API_KEY=$(curl -X POST https://apikeys.googleapis.com/v1/projects/$PROJECT_ID/apiKeys?access_token=$ACCESS_TOKEN | jq -r ".currentKey")
+echo $ACCESS_TOKEN
+echo $API_KEY
+
+API_KEY
+null
+#https://cloud.google.com/sdk/gcloud/reference/auth/print-access-token
+gcloud auth print-access-token --lifetime 43200 # seconds (max 12 hours)
+ACCESS_TOKEN
+
+# Start(Stop) vm  https://reqbin.com/c-4coksytv
+curl --request POST \
+  'https://compute.googleapis.com/compute/v1/projects/gke-gra/zones/us-central1-a/instances/query/start?key=null' \
+  --header 'Authorization: Bearer '+<ACCESS_TOKEN> \
+  --header 'Accept: application/json' \
+  --compressed

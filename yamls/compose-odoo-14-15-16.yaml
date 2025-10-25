@@ -1,0 +1,43 @@
+services:
+  odoo16:
+    container_name: odoo16
+    image: odoo:16.0
+    depends_on:
+      - db
+    ports:
+      - "10016:8069"
+    volumes:
+      - ../config_16:/etc/odoo
+      - ../config_16/addons:/opt/community/addons #  addons_path =  /opt/community/addons # - odoo.conf  in folder ./config_16
+      - ../config_16:/var/lib/odoo/.local/share/Odoo
+    restart: always
+
+  odoo15:
+    container_name: odoo15
+    image: odoo:15.0
+    depends_on:
+      - db
+    ports:
+      - "10015:8069"
+    volumes:
+#      - odoo-web-data:/var/lib/odoo
+      - ../config_15:/etc/odoo
+      - ../config_15/addons:/opt/community/addons #  addons_path =  /opt/community/addons # - odoo.conf  in folder ./config_15
+      - ../config_15:/var/lib/odoo/.local/share/Odoo
+    restart: always
+
+  odoo14:
+    container_name: odoo14
+    image: odoo:14.0
+    depends_on:
+      - db
+    ports:
+      - "10014:8069"
+    volumes:
+#      - odoo-web-data:/var/lib/odoo
+      - ../config_14:/etc/odoo
+      - ../config_14/addons:/opt/community/addons #  addons_path =  /opt/community/addons # - odoo.conf  in folder ./config_$ODOO_VERSION
+      - ../config_14:/var/lib/odoo/.local/share/Odoo
+    restart: always
+
+

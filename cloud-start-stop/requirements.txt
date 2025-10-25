@@ -1,0 +1,4 @@
+functions-framework==3.*
+requests==2.27.1
+Flask==2.3.2
+flask_cors==5.0.1

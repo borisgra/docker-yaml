@@ -1,0 +1,12 @@
+services:
+  webhook:
+    container_name: webhook
+    image: borisgra/webhook:latest
+    volumes:
+      - ./.env:/app/.env
+      - ./ssh_keys:/app/ssh_keys
+    ports:
+      - "$HOOK_PORT:$HOOK_PORT"
+    restart: always
+
+# sudo docker compose up --build

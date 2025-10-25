@@ -1,0 +1,51 @@
+https://www.youtube.com/watch?v=DcUA_S2n7Qw&list=WL&index=1
+
+Code: https://download-x.com/install-window...
+This Windows version is quite lightweight, occupying minimal RAM, and comes pre-activated. Additionally, I have enabled RDP and SSH for convenient remote access, as well as disabled Windows Update and Windows Defender to reduce lag.
+The default username and password are set to user/123456
+The basic steps for implementation are as follows (performed entirely on Google Cloud, without downloading any files to your local machine):
+Create a Linux VM with one boot disk and one additional disk.
+Use the “dd” command to copy the Windows image to the created additional disk.
+Detach the additional disk from the Linux machine.
+Create a new VM, attaching the above additional disk as the boot disk. When booting, this machine will directly enter Windows.
+Delete the Linux VM.
+Start win10
+
+
+gcloud compute instances create win10-create \
+--project=com-gra \
+--zone=us-central1-a \
+--machine-type=e2-medium \
+--network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
+--metadata=enable-osconfig=TRUE \
+--maintenance-policy=MIGRATE \
+--provisioning-model=STANDARD \
+--create-disk=auto-delete=yes,boot=yes,device-name=win10-create,image=projects/debian-cloud/global/images/debian-12-bookworm-v20251014,mode=rw,size=10,type=pd-standard \
+--create-disk=auto-delete=no,device-name=win10,mode=rw,name=win10,size=25,type=pd-standard
+
+# !!! wait 30 sec while starting instance
+gcloud compute ssh --project=com-gra --zone=us-central1-a win10-create # start console VM
+sudo bash -c "$(curl -fsSL https://storage.googleapis.com/public-gra/images/win10-gcp/win.sh)" # execute (~5min  on e2-medium)
+
+exit
+gcloud compute instances delete win10-create --zone=us-central1-a
+# !!! wait 30 sec while delete instance
+gcloud compute instances create win10 \
+--project=com-gra \
+--zone=us-central1-a \
+--machine-type=e2-standard-2 \
+--network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
+--metadata=enable-osconfig=TRUE \
+--maintenance-policy=MIGRATE \
+--provisioning-model=STANDARD \
+--disk=boot=yes,device-name=win10,mode=rw,name=win10 \
+--create-disk=auto-delete=no,device-name=win10-data,mode=rw,name=win10-data,size=10,type=pd-standard
+
+connect by windows Remote Deckstop
+    ip - External IP VM Instance (Compute Engine VM instances)
+    The default username and password are set to user/123456
+
+load and unzip https://storage.googleapis.com/public-gra/images/win10-gcp/distrib_for_win10GCP.zip
+if you will copy c:/Users to d: use teracopy-portable.exe from distrib_for_win10GCP
+  and correct path in  regedit HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
+  and all users (starting with ‘S-1-5-‘)

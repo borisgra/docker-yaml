@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webhooks</title>
+</head>
+<body>
+<h2>Webhooks ---> <a href="{{ url_for('static', filename='help.html') }}">HELP</a>
+    and <a href="{{ url_for('static', filename='history.html') }}">Hook's History</a></h2>
+<pre>
+   http://server:port - help and stat hooks
+   http://server:port/hook - hook and comman
+   http://server:port/test - only command
+  command in .env
+
+  in detail in HELP
+    1. set webhook on githab:
+    2. create file compose.yaml:
+    3. create file .env :
+    4. create hook command listener  file (webhook_listener.sh):
+    5. create file hook.servise:
+    6. create file create_service.sh:
+    7. sudo  sh ./create_service.sh
+    8. sudo docker compose up
+</pre>
+</body>
+</html>

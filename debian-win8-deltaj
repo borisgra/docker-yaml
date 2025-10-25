@@ -1,0 +1,84 @@
+Create win8.1 on debina and install deltaj
+
+https://github.com/dockur/windows?tab=readme-ov-file
+https://stackoverflow.com/questions/40238780/google-cloud-platform-kvm-support
+https://medium.com/axon-technologies/installing-a-windows-virtual-machine-in-a-linux-docker-container-c78e4c3f9ba1 -- не пробовал (4 proc 8Gb)
+https://cloud.google.com/compute/docs/regions-zones
+
+# create VM (# g1-small  or f1-micro  n1-standard-1 e2-medium   e2-standard-2 custom-1-6656 custom-1-6144 custom-1-3584 custom-1-3328 custom-1-3072 ($33.97)        us-east1
+# for win8 (0.65g) g1-small disk size=20(0.0257USD/hour) time install 40 min (on port 8006 - 30 min)
+# for win8 (0.7g)1) n1-standard-1 , install win6, update to  g1-small (0.0257USD/hour)
+# for win 10 (5G) n1-standard-2 ,install winq0, update to custom-1-6656
+# image=debian-win8-07g-g-smol1
+# image=debian-win8-065g-g1-smol-deltaj-55555-startup
+#not work  image=gs://store-gra/images/debian-win8-07g-g-smol1.tar.gz
+# image=projects/debian-cloud/global/images/debian-12-bookworm-v20240701
+gcloud compute instances create debian-win8 \
+    --project=gke-gra \
+    --zone=us-central1-a \
+    --machine-type=g1-small  \
+    --maintenance-policy=MIGRATE \
+    --provisioning-model=STANDARD \
+    --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
+    --tags=http-server,https-server \
+    --create-disk=auto-delete=yes,boot=yes,device-name=win8,image=projects/debian-cloud/global/images/debian-12-bookworm-v20240701,mode=rw,size=20,type=projects/gke-gra/zones/us-central1-a/diskTypes/pd-standard \
+    --no-shielded-secure-boot \
+    --shielded-vtpm \
+    --shielded-integrity-monitoring \
+    --enable-nested-virtualization \
+    --min-cpu-platform="Intel Haswell" \
+    --reservation-affinity=any
+
+sudo bash -c "$(curl -fsSL https://get.docker.com)"
+
+nano compose.yaml
+
+services:
+  windows:
+    image: dockurr/windows
+    container_name: windows
+    environment:
+      VERSION: "win8"
+# "win8" - 0.7G "ltsc10"- 5G "win10" "winxp"
+      RAM_SIZE: "0.7G"
+      REGION: "en-US"
+#      LANGUAGE: "Russian"
+      KEYBOARD: "en-US"
+      USERNAME: "boris"
+      PASSWORD: "123"
+    devices:
+      - /dev/kvm
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8006:8006
+      - 3389:3389/tcp
+      - 3389:3389/udp
+      - 55555:55555/tcp
+      - 55555:55555/udp
+    stop_grace_period: 2m
+
+alt/x
+
+sudo -i
+nano /home/boris_gra_dev/startup.sh
+#!/bin/bash
+sleep 5
+cd /home/boris_gra_dev
+echo "$(date +"%Y_%m_%d_%I_%M_%p").log" >> rez
+sudo docker compose up > error
+alt/x
+chmod -x /home/boris_gra_dev/startup.sh
+crontab -e
+@reboot sh /home/boris_gra_dev/startup.sh
+exit
+sudo docker compose up
+
+wait 2 min
+connect RDP
+cmd
+cd C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
+paste startServer.lnk
+
+https://mega.nz/file/hAMw0R5B#P-mHOwWEMmzYz9FdYHfqkQ8eF7YTwUeNiBPlQQNWfes   - deltaj(SRV12 and CLIENT)_igra-oleg.zip
+https://storage.googleapis.com/public-gra/distrib/Office%202010%20SP1%2032bit.zip  - Office 2010 SP1 32bit.zip
