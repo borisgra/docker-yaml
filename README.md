@@ -62,6 +62,20 @@ export from VM/Images: (not MashinaImages)  !!
 gcloud compute images export --destination-uri gs://vpn-gra/images/image-vpn-pgsql-admin4.tar.gz --image image-vpn-pgsql-admin4
 gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
 gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
+gsutil du -ach gs://com-gra
+gsutil du -ach gs://*     # all bucket in current project
+gcloud config get-value project
+
+# all bucket in ALL project
+for project in $(gcloud projects list --format="value(projectId)"); do
+        echo "Project: $project"
+        gcloud config set project "$project" >/dev/null
+        for bucket in $(gsutil ls); do
+            echo "Bucket: $bucket"
+            gsutil du -ach $bucket
+        done
+    done
+gcloud config set project store-gra
 
 https://console.cloud.google.com/iam-admin/iam?project=store-gra # (View by principals + Grant access)
 Add to project store-gra principal :
