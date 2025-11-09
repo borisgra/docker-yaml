@@ -64,7 +64,14 @@ gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
 gsutil cp gs://public-gra/temp/daas_2023-01-23_17-51-22.dump ~
 gsutil du -ach gs://com-gra
 gsutil du -ach gs://*     # all bucket in current project
+gsutil du -sh gs://*     # summ by bucket
+gsutil -m  rm -r  gs://*   # delete all bucket in current project
+gsutil -m  mv -r  gs://*   # move all bucket from current project
+gsutil -m  cp -r  gs://*   # copy all bucket from current project
 gcloud config get-value project
+gcloud config set project new-project
+gcloud help
+curl https://raw.githubusercontent.com/borisgra/menus/refs/heads/main/menu-koyeb.js | gsutil cp - gs://gke-gra
 
 # all bucket in ALL project
 for project in $(gcloud projects list --format="value(projectId)"); do
