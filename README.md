@@ -72,6 +72,14 @@ gcloud config get-value project
 gcloud config set project new-project
 gcloud help
 curl https://raw.githubusercontent.com/borisgra/menus/refs/heads/main/menu-koyeb.js | gsutil cp - gs://gke-gra
+gcloud storage buckets update gs://my-bucket --soft-delete-duration=1d  # 0d - cancel  
+curl https://storage.googleapis.com/store-gra/public-gra/images/win10-gcp/windows-10-ggcloud.raw.gz | aws s3 cp - s3://aws-strore-gra/win10/windows-10-ggcloud.raw.gz
+curl https://aws-strore-gra.s3.us-east-1.amazonaws.com/win10/win.sh  | aws s3 cp - s3://aws-strore-gra/win10/win-3.sh
+# not work ??
+gcloud transfer jobs create \
+gs://public-gra/rednoise/rednoise_alfa.apk/ \
+s3://aws-strore-gra/win10/ / \
+--include-prefixes=prefix --immediate
 
 # all bucket in ALL project
 for project in $(gcloud projects list --format="value(projectId)"); do
@@ -94,8 +102,15 @@ with role "Storage Admin"
 gcloud compute images export --destination-uri gs://store-gra/images/image-1.tar.gz --image image-1
 
 win10min:
-gcloud compute images create win10-user-123456 --source-uri=gs://store-gra/images/image-gcp-win10-user-123456.tar.gz --project=com-gra --storage-location=us-central1
+# images - 6min  5.9G
+gcloud compute images create win10-user-123456 \
+--source-uri=gs://store-gra/images/image-gcp-win10-user-123456.tar.gz \
+--project=com-gra \
+--storage-location=us-central1
 
+# disk type (25gb): pd-standard=1$ / pd-balanced=2.5$ / pd-ssd=4.25$
+#  1 min
+# !!! not connected !!!
 gcloud compute instances create win10-user-123456 \
 --project=com-gra \
 --zone=us-central1-a \
@@ -103,8 +118,14 @@ gcloud compute instances create win10-user-123456 \
 --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
---create-disk=auto-delete=yes,boot=yes,device-name=win10-user-123456,image=projects/com-gra/global/images/win10-user-123456,mode=rw,size=25,type=pd-standard 
+--create-disk=auto-delete=yes,boot=yes,device-name=win10-user-123456,image=projects/com-gra/global/images/win10-user-123456,mode=rw,\
+size=25,type=pd-ssd
 
+# delete win10 image 
+gcloud compute images delete win10-user-123456 \
+--project=com-gra
+
+win10-intellij (two disks):
 win10-intellij import (replace com-gra on real project):
 Go to progect com-gra and create images and instance ($50 month or $0.07 hourly)   ~ 7min:
 gcloud compute images create win10-intellij --source-uri=gs://store-gra/images/win10-intellij.tar.gz --project=com-gra --storage-location=us-central1
@@ -180,6 +201,53 @@ if you will copy c:/Users to d: use teracopy-portable.exe from distrib_for_win10
   and correct path in  regedit HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
   and all users (starting with ‘S-1-5-‘)
 
+AWS
+
+# run-instance win10-create (debian 13 (20251006-2257)) for create disk win10
+aws ec2 run-instances --image-id 'ami-0f9c27b471bdcd702' \
+--instance-type 't3.micro' \
+--key-name 'aws-my' \
+--block-device-mappings '{"DeviceName":"/dev/xvda","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-0c7a56286941e0491","VolumeSize":10,"VolumeType":"gp3","Throughput":125}}' \
+  '{"DeviceName":"/dev/sdb","Ebs":{"Encrypted":false,"DeleteOnTermination":false,"Iops":3000,"VolumeSize":25,"VolumeType":"gp3","Throughput":125}}' \
+--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-04fee8d3060faa648"]}' \
+--credit-specification '{"CpuCredits":"unlimited"}' \
+--tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"win10-create"}]}' \
+--metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
+--private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' \
+--count '1'
+
+# connect to win10-create
+wget -qO- https://raw.githubusercontent.com/ngxson/public-assets/main/install-windows-gcp.sh | sudo bash
+
+# Terminate instance win10-create !!!
+
+# snapshot
+aws ec2 create-snapshot \
+--volume-id vol-0354d153fe71a26d7 \
+--description "Snapshot win10"
+
+# image from SnapshotId
+aws ec2 register-image \
+--name "My-win10" \
+--architecture x86_64 \
+--root-device-name /dev/sda1 \
+--block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"SnapshotId":"snap-0c5863c4fb155ffae"}}]' \
+--virtualization-type hvm
+
+# lunch instance win10 (image above) -- !!! not connected !!!
+aws ec2 run-instances --image-id 'ami-03e612d0230414d91' \
+--instance-type 't2.large' \
+--key-name 'aws-my' \
+--network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-04fee8d3060faa648"]}' \
+--credit-specification '{"CpuCredits":"standard"}' \
+--tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"win10"}]}' \
+--private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' \
+--count '1'
+
+# not work normal (write file  .raw on local) !!?
+aws s3 cp s3://aws-strore-gra/images/images_image-gcp-win10-user-123456.tar.gz -   |\
+tar -xzOvf -   | \
+aws s3 cp - s3://aws-strore-gra/win10/images/gcp-win10.vmdk
 
 WSL (Windows Subsystem for Linux):  Unix on Windows
 install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
