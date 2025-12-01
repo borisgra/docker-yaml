@@ -102,6 +102,8 @@ with role "Storage Admin"
 gcloud compute images export --destination-uri gs://store-gra/images/image-1.tar.gz --image image-1
 
 win10min:
+#bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win10gcp.sh)" # execute ~5min from gcp console
+
 # images - 6min  5.9G
 gcloud compute images create win10-user-123456 \
 --source-uri=gs://store-gra/images/image-gcp-win10-user-123456.tar.gz \
