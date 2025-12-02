@@ -50,7 +50,7 @@ echo "    DOWNLOADING WINDOWS IMAGE FILE... ~5min"
 
 # images - 6min  5.9G
 gcloud compute images create $name \
---source-uri=gs://store-gra/images/image-gcp-win10-user-123456.tar.gz \
+--source-uri=gs://public-gra/images/image-gcp-win10-user-123456.tar.gz \
 --project=$project \
 --storage-location=$location
 
