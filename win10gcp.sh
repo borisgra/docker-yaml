@@ -1,10 +1,13 @@
 #!/bin/bash
 # create and start computer instance GCP
 #gcloud auth login
-#bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win10gcp.sh)" # execute ~5min from gcp console
+"""
+curl -s https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win10gcp.sh | \
+  bash -s -- -n win10gcp -d pd-balanced
+"""
 
 usage() {
-    echo "Usage: $0 -n <name> -t <tipe instance> -dt <disk_type> -p <project> -z <zone>"
+    echo "Usage: $0 -n <name> -t <tipe instance> -d <disk_type> -p <project> -z <zone> -l <location>"
     exit 1
 }
 
@@ -14,10 +17,10 @@ project="com-gra"
 zone="us-central1-a"
 location="us-central1"
 type="e2-standard-2"
-disk_type="pd-standard"
+disk_type="pd-standard" # pd-standard=1$ / pd-balanced=2.5$ / pd-ssd=4.25$
 
 # Parse command line options
-while getopts "n:p:z:t:dt" opt; do
+while getopts "n:p:z:t:d:l" opt; do
     case $opt in
         n)
             name=$OPTARG
@@ -28,11 +31,14 @@ while getopts "n:p:z:t:dt" opt; do
         z)
             zone=$OPTARG
             ;;
+        l)
+            location=$OPTARG
+            ;;
         t)
             type=$OPTARG
             ;;
-        dt)
-            disk-type=$OPTARG
+        d)
+            disk_type=$OPTARG
             ;;
         \?)
             echo "Invalid option: -$OPTARG"
@@ -46,6 +52,7 @@ while getopts "n:p:z:t:dt" opt; do
 done
 
 date
+echo "$name $type $disk_type $project $zone $location"
 echo "    DOWNLOADING WINDOWS IMAGE FILE... ~5min"
 
 # images - 6min  5.9G
@@ -59,14 +66,14 @@ echo "IMAGE created"
 
 # disk type (25gb): pd-standard=1$ / pd-balanced=2.5$ / pd-ssd=4.25$
 #  1 min
-gcloud compute instances create win10-user-123456 \
+gcloud compute instances create $name \
 --project=$project \
 --zone=$zone \
 --machine-type=$type \
 --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
---create-disk=auto-delete=yes,boot=yes,device-name=win10-user-123456,image=projects/com-gra/global/images/win10-user-123456,mode=rw,\
+--create-disk=auto-delete=yes,boot=yes,device-name=$name,image=projects/com-gra/global/images/$name,mode=rw,\
 size=25,type=$disk_type
 
 date

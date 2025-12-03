@@ -58,6 +58,8 @@ GCP:
 https://stackoverflow.com/questions/67265822/where-are-my-storage-pd-capacity-charges-coming-from 
 gcloud compute instances list
 gcloud compute zones list
+https://cloud.google.com/storage/pricing?hl=ru
+gcloud storage objects update gs://public-gra/images/** --storage-class=COLDLINE # STANDARD -> NEARLINE -> COLDLINE -> ARHIVE 
 export from VM/Images: (not MashinaImages)  !!
 gcloud compute images export --destination-uri gs://vpn-gra/images/image-vpn-pgsql-admin4.tar.gz --image image-vpn-pgsql-admin4
 gsutil mv -r gs://vpn-gra/images/*  gs://store-gra/images
@@ -101,8 +103,9 @@ with role "Storage Admin"
 
 gcloud compute images export --destination-uri gs://store-gra/images/image-1.tar.gz --image image-1
 
-win10min:
-#bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win10gcp.sh)" # execute ~5min from gcp console
+win10min create instance:
+curl -s https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win10gcp.sh | \
+  bash -s -- -n win10gcp -dt pd-balanced
 
 # images - 6min  5.9G
 gcloud compute images create win10-user-123456 \
