@@ -1,0 +1,41 @@
+services:
+  query:
+    container_name: query
+    image: borisgra/query-gra
+    environment:
+      - ADMIN_PASSW=+++++
+      - PORT=5003
+      - SERVER_TYPE=htts
+      - jsr223=hide
+      - QUERY_BD=neon-boris.gra
+#      - w=and submenu='SOUNDPROOFING'
+      - DATABASE_URL_koyeb_querys=postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286.eu-central-1.aws.neon.tech/querys
+      - DATABASE_URL_daas_nma=$NMA
+      - q=v_history_today_ro
+      - DATABASE_URL_neon-boris.gra=$NEON
+      - DATABASE_URL_neon=$NEON
+      - BIG_QUERY_vpn-gra=$VPN_GRA
+    ports:
+      - 5003:5003
+    restart: always
+
+
+  loadmenu:
+    container_name: loadmenu
+    image: borisgra/greed:nginx-87
+    environment:
+      - PASS='12345'
+    ports:
+      - 3000:3000
+    restart: always
+
+  compurers:
+    container_name: compurers
+    image: borisgra/vm:ver-1.0.106
+    environment:
+      - PASS='12345'
+    ports:
+      - 8080:8080
+    restart: always
+
+#  sudo docker compose  -f compose-query.yaml up

@@ -18,9 +18,10 @@ zone="us-central1-a"
 location="us-central1"
 type="e2-standard-2"
 disk_type="pd-standard" # pd-standard=1$ / pd-balanced=2.5$ / pd-ssd=4.25$
-
+source_uri="https://storage.googleapis.com/public-gra/images/image-gcp-win10-user-123456.tar.gz"
+#source_uri="gs://public-gra/images/image-gcp-win10-user-123456.tar.gz"
 # Parse command line options
-while getopts "n:p:z:t:d:l" opt; do
+while getopts "n:p:z:t:d:l:s" opt; do
     case $opt in
         n)
             name=$OPTARG
@@ -40,6 +41,9 @@ while getopts "n:p:z:t:d:l" opt; do
         d)
             disk_type=$OPTARG
             ;;
+        s)
+            source_uri=$OPTARG
+            ;;
         \?)
             echo "Invalid option: -$OPTARG"
             usage
@@ -53,11 +57,12 @@ done
 
 date
 echo "$name $type $disk_type $project $zone $location"
+
 echo "    DOWNLOADING WINDOWS IMAGE FILE... ~5min"
 
 # images - 6min  5.9G
 gcloud compute images create $name \
---source-uri=gs://public-gra/images/image-gcp-win10-user-123456.tar.gz \
+--source-uri=$source_uri \
 --project=$project \
 --storage-location=$location
 

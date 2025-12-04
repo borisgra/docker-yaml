@@ -1,16 +1,23 @@
+<pre>
+VM instances (min):
+system disk- 10G  - Debian /Ubuntu
+procesor 1 memory min 1G  (N2 type - custom-1-1024 - 0.035 usd/h)
+open ports in firewall ( gcloud compute firewall-rules create my-rule --allow tcp:5003,3000,8080 --source-ranges=0.0.0.0/0
+
+install docker and start  install query , loadmenu , computers-start-stop
+sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/install_query.sh)"
+</pre>
 <H3> Install docker with odoo 16,15,14 and other ver. , pgsql , pgadmin4</H3> 
 <div style="color:Red;"><b>Attention!!! When create odoo base - base name needed start with odooXX (XX - ODOO_VERSION)  or change dbfilter in odoo.conf   </b></div>
 <pre>
 VM instances (min):
 system disk- 10G for 1 odoo, 20G for several one (Ubuntu min)
-procesor 1
-memory min 1.7G
-open ports in firewall ( gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,tcp:10010-10020 --source-ranges=0.0.0.0/0  
-</pre>
-<pre>
+procesor 1 memory min 1.7G
+open ports in firewall ( gcloud compute firewall-rules create my-odoo-rule --allow tcp:5010,tcp:10010-10020 --source-ranges=0.0.0.0/0
 # install docker and start  pgsql:version+pgAdmin4:version+odoo:version  (version in .env file)
 sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/main/install_docker.sh)"
-
+</pre>
+<pre>
 By default ODOO_VERSION=16 (in .env),If needed, change ODOO_VERSION :
 1) sudo docker compose down
 2) sudo nano .env # change ODOO_VERSION  (for ODOO_VERSION<10 - POSTGRES_VERSION < 14)
@@ -103,11 +110,40 @@ with role "Storage Admin"
 
 gcloud compute images export --destination-uri gs://store-gra/images/image-1.tar.gz --image image-1
 
+Debian/Ubuntu:
+f1-micro 0.25-1 vCPU (1 shared core) 614 MB  0.25 ? usd/h
+g1-small 0.5-1 vCPU (1 shared core) 1.7 GB   0.03 usd/h ?
+e2-micro (2 vCPU, 1 core, 1 GB memory)  0.01 usd/h
+e2-small (2 vCPU, 1 core, 2 GB memory)  0.03 usd/h
+N2 type - custom-1-1024 - 0.035 usd/h
+
+gcloud compute instances create debian-2 \
+--project=com-gra \
+--zone=us-central1-a \
+--machine-type=e2-small \
+--network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
+--metadata=enable-osconfig=TRUE \
+--maintenance-policy=MIGRATE \
+--provisioning-model=STANDARD \
+--create-disk=auto-delete=yes,boot=yes,device-name=debian-2,image=projects/debian-cloud/global/images/debian-13-trixie-v20251014,mode=rw,size=10,type=pd-standard
+
+extend file system on 1G :
+GCP Manage disk(edit) - set new value
+lsblk
+df -h
+sudo apt install cloud-guest-utils
+sudo growpart /dev/sda 1
+sudo resize2fs /dev/sda1 #EXT4
+or
+sudo xfs_growfs /  #XFS
+df -h
+
 win10min create instance:
 curl -s https://raw.githubusercontent.com/borisgra/docker-yaml/develop/win10gcp.sh | \
   bash -s -- -n win10gcp -dt pd-balanced
 
 # images - 6min  5.9G
+#--source-uri=https://storage.googleapis.com/public-gra/images/image-gcp-win10-user-123456.tar.gz \
 gcloud compute images create win10-user-123456 \
 --source-uri=gs://store-gra/images/image-gcp-win10-user-123456.tar.gz \
 --project=com-gra \
@@ -174,7 +210,7 @@ win10-gcp (https://www.youtube.com/watch?v=DcUA_S2n7Qw&list=WL&index=1):
 gcloud compute instances create win10-create \
 --project=com-gra \
 --zone=us-central1-a \
---machine-type=e2-medium \
+--machine-type=g1-small \
 --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
 --metadata=enable-osconfig=TRUE \
 --maintenance-policy=MIGRATE \
@@ -248,6 +284,14 @@ aws ec2 run-instances --image-id 'ami-03e612d0230414d91' \
 --tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"win10"}]}' \
 --private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' \
 --count '1'
+
+aws ec2 import-image \
+--description "My Imported VM Image" \
+--disk-containers "Format=<Your_Format>,UserBucket={S3Bucket=<Your_Bucket_Name>,S3Key=<Your_S3_Key_Path>}"
+
+aws ec2 import-image \
+--description "My Public S3 Image" \
+--disk-containers "Format=<Your_Format>,Url=<S3_HTTPS_or_S3_URL>"
 
 # not work normal (write file  .raw on local) !!?
 aws s3 cp s3://aws-strore-gra/images/images_image-gcp-win10-user-123456.tar.gz -   |\
