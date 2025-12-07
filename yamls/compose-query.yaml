@@ -9,6 +9,7 @@ services:
       - jsr223=hide
       - QUERY_BD=neon-boris.gra
 #      - w=and submenu='SOUNDPROOFING'
+      - DATABASE_URL_local=postgres://odoo:6Ud3RVzDQgntgcED4jUm@172.18.0.1/querys
       - DATABASE_URL_koyeb_querys=postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286.eu-central-1.aws.neon.tech/querys
       - DATABASE_URL_daas_nma=$NMA
       - q=v_history_today_ro
