@@ -20,7 +20,6 @@ services:
       - 5003:5003
     restart: always
 
-
   loadmenu:
     container_name: loadmenu
     image: borisgra/greed:nginx-87
@@ -28,6 +27,15 @@ services:
       - PASS='12345'
     ports:
       - 3000:3000
+    restart: always
+
+  loadmenu-p:
+    container_name: loadmenu-p
+    image: borisgra/greed:latest  # with Python
+    environment:
+      - PASS='12345'
+    ports:
+      - 5001:3000
     restart: always
 
   compurers:
