@@ -21,17 +21,17 @@ services:
     restart: always
 
   loadmenu:
-    container_name: loadmenu
-    image: borisgra/greed:nginx-87
+    container_name: loadmenu # only JS without Python
+    image: borisgra/greed:nginx-91
     environment:
       - PASS='12345'
     ports:
-      - 3000:3000
+      - 5002:3000
     restart: always
 
-  loadmenu-p:
-    container_name: loadmenu-p
-    image: borisgra/greed:latest  # with Python
+  loadmenu-m:
+    container_name: loadmenu-m
+    image: borisgra/greed  # JS with Python
     environment:
       - PASS='12345'
     ports:
@@ -40,11 +40,11 @@ services:
 
   compurers:
     container_name: compurers
-    image: borisgra/vm:ver-1.0.106
+    image: borisgra/vm
     environment:
       - PASS='12345'
     ports:
-      - 8080:8080
+      - 5005:8080
     restart: always
 
 #  sudo docker compose  -f compose-query.yaml up

@@ -111,7 +111,7 @@ with role "Storage Admin"
 gcloud compute images export --destination-uri gs://store-gra/images/image-1.tar.gz --image image-1
 
 Debian/Ubuntu:
-f1-micro 0.25-1 vCPU (1 shared core) 614 MB  0.25 ? usd/h
+f1-micro 0.25-1 vCPU (1 shared core) 614 MB  0.025 ? usd/h
 g1-small 0.5-1 vCPU (1 shared core) 1.7 GB   0.03 usd/h ?
 e2-micro (2 vCPU, 1 core, 1 GB memory)  0.01 usd/h
 e2-small (2 vCPU, 1 core, 2 GB memory)  0.03 usd/h
@@ -303,6 +303,27 @@ install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachine
 wsl --export --vhd Ubuntu-24.04 F:/temp/WpSystem-my/Ubuntu-24.04/ext4.vhdx
 wsl --import-in-place ubuntu_24.04docker F:\temp\WpSystem-my\Ubuntu-24.04\ext4.vhdx
 wsl --manage ubuntu_24.04docker --set-sparse true
+
+SSL:
+https://www.dynadot.com/ - registred , login , my info
+https://www.dynadot.com/ru/domain/search and buy new DOMEN
+https://www.dynadot.com/ru/account/domain/name/new_domains.html - 
+  select row / Action / DNS setting
+https://www.dynadot.com/ru/account/domain/name/list.html - 
+open in Firewall TCP:443
+gcloud compute ssh # SSH into your Debian instance
+sudo apt update && sudo apt install certbot python3-certbot-nginx -y  # if nginx server
+sudo nginx -t # where config nginx
+server_name your_domain.com www.your_domain.com # edit config nginx
+sudo nginx -t #  test config
+sudo systemctl reload nginx # nginx reload
+sudo certbot --nginx -d your_domain.com -d www.your_domain.com # Obtain and Install SSL
+  Enter an email address.
+  Agree to the Terms of Service.
+  When prompted, choose whether to redirect HTTP traffic to HTTPS. Choosing option 2 (Redirect) is highly recommended
+Your site should now be accessible via https://your_domain.com. Certbot also automatically sets up a timer or cron job for auto-renewal, ensuring your 90-day certificates are renewed before they expire.
+https://search.google.com/search-console/welcome - registred domein in GCP
+https://console.cloud.google.com/run/domains?project=vpn-gra  add domen for GCP Cloud Run
 
 https://learn.microsoft.com/ru-ru/windows/wsl/basic-commands#import-a-distribution
 DELETE !!!
