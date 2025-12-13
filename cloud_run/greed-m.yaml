@@ -1,0 +1,89 @@
+##create gcloud run services replace greed-m.yaml  --project com-gra  --region us-central1
+##export gcloud run services describe greed-m --format export > greed-m.yaml
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: greed-m
+  labels:
+    cloud.googleapis.com/location: us-central1
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/invoker-iam-disabled: 'true'
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '5'
+        run.googleapis.com/startup-cpu-boost: 'true'
+    spec:
+      containerConcurrency: 1
+      timeoutSeconds: 60
+#      serviceAccountName: myserviceaccount@vpn-gra.iam.gserviceaccount.com
+      containers:
+        - name: greed
+          image: 'borisgra/greed'
+          ports:
+            - name: http1
+              containerPort: 3000
+          env:
+            - name: PASS
+              value: '12345'
+          resources:
+            limits:
+              cpu: 80m
+              memory: 128Mi
+          startupProbe:
+            timeoutSeconds: 240
+            periodSeconds: 240
+            failureThreshold: 1
+            tcpSocket:
+              port: 3000
+        - name: query
+          image: 'borisgra/query-gra'
+          env:
+            - name: PORT
+              value: '5004'
+            - name: SERVER_TYPE
+              value: http
+            - name: QUERY_BD
+              value: koyeb_querys
+            - name: DATABASE_URL_daas_nma
+              value: 'postgres://foUserRead:ablamtinas+1+2+3+4+5@db.daas.team:443/nma'
+            - name: DATABASE_URL_daas_fo
+              value: 'postgres://foUser:ablamtinas+12345@db.daas.team:443/fo'
+            - name: DATABASE_URL_koyeb_querys
+              value: >-
+                postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286.eu-central-1.aws.neon.tech/querys
+            - name: DATABASE_URL_supabase
+              value: >-
+                postgresql://postgres.bulhlrcpctszlzsqsluf:ablamtinas+13@aws-0-us-east-1.pooler.supabase.com:6543/query-gra
+            - name: BIG_QUERY_vpn-gra
+              value: >-
+                {   "type": "service_account",   "project_id": "vpn-gra",  
+                "private_key_id": "afa82924656aaf655652989e0893c0bc1564874a",  
+                "private_key": "-----BEGIN PRIVATE
+                KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC/J91kV6ias+cW\nydzew7vqIpOPjzYxhOGKoHugmoPccWv+JIYRJKtQWuWdXRpal8htm9XdJGr7eTbr\nC2y/nP65rrTMnT2M2n1q4tNSB9cEPMKw4Zdps5VoQVaL5V46RMcg+Px1LQ6oIpX6\nlpdW3UX/CNsp+PDlNqZVUME4nHNRvJhnuoBnDFD+wKU22C2S2HDmCxw/ULg462Rc\nw+FA9Lvl6GkC4t/GM3WNuTyNqk9kve+T65gOQsUJkQAxILfGJk/0sPKt4tvxD2/o\nFjAxBdse3ZrEaQaP0ILtk/1OaBi2Onkj6uQmIVhp7k+I0lcfOx4devwhBtQragX8\n8RfkjX+TAgMBAAECggEAOvp1S/rh2g2MzNKuk4rHxWcyqRYSLfgmUIvQaQ6ThaX3\nIHwrY0mxk8Lf2ow5z97J58uvkiIk4f8VyzKEtKAfVbIKNaGENpvJG3vtoH8rv7Jx\njXqlKWdPv1F9fv9fcdH7sHgyCINE5Op65Mym2BXAfX5BhLM6vDX+3w7h9vIKgJqL\nebLs8tUuxUKTiexn81fgBkHFt/r4f7ZzMf6n9E9qIi8xclwyxZHsVSKJ6cE4vha8\nLsol2VAavagUtRWzdP/gW0F9U/0EX0dlFUshskyqhTbsfyGNZUVFWChqtnRCF1B2\nA6Lg4TEvdJVMlDzC/HILj/vqXURz4DLDxVkJjN33lQKBgQDuB9wLCTeXlqtOpuul\n3UET/k6KfFVT9jrSEk7fKWINAGaiyVOdjNSlwN70SBbQ2D9BLouk5dzC17jUbQnF\n7EpY81Kbhm1sGkzJQsVnOk6TQLXfT/BviNaoeXXJbsBSb8m49HDeqzTxuQZlm84V\nxYUlbACcC+oHjva9l1aszZPGjQKBgQDNlhuC72rzk1ouhG3R5W/ryf5XL12N8U8o\nMn4mTsFMsDpN+bryuDgNlrFp83v6RnBO54uIFTMU09lx7yr5FXqwu2V1+4dvd89m\n2PekpFE9cyTK1893JOwO8DFveWXE0xp1oIQ8+Erb0MTa4oKvi0njrTY1DCHa9Bcd\nhvwdHY1mnwKBgQDAX23BJZPeWZDdoh31ERoVdIQ5fD7h+rCTMuS3ixSJeXd5vMht\nHnKF+5i1SMXXx81nepy1imieuAXS+MTbRxrXRN/QfhZVNfQ0/FfaE8+JRtU2Q78I\nBUmnI3LEd1PLzDj11+iYrTm+2lCHMiKeieIP2nerph1gOnTDyVntksAJyQKBgQCf\ng5LBG0ceyvw0D6iuLZmTl9zyhNvQIKXMiLD8xCqTeEEk81msrmc/k+cAUF2nqTPG\n5T2MTvadeGrFTk9HiPTzX9OvoYRKZunT4RD0/FHUnhy0DpL43PsT9CZHWigueaWU\nEwHH1Ncwi2HSe+HuluKz91eR/WHfY3jz/iJr7Nwj/QKBgQCWdCHvwtsjo37eAje6\nADLsh3vpvVFHtQL8Riul2S2yZR5+8UsmgFj9R16EX5m7j6SzdEU7SgKXm0ODjO2O\nwgb6ES3kGz743bklJlZlte9GbOgu9nWcOoxSQkBm4DFqkYXMdjpTj59k5NLd70OV\nuuLvkwu5Zckb/RabRKGXV/S5Yg==\n-----END
+                PRIVATE KEY-----\n",   "client_email":
+                "myserviceaccount@vpn-gra.iam.gserviceaccount.com",   "client_id":
+                "112099843480991782590",   "auth_uri":
+                "https://accounts.google.com/o/oauth2/auth",   "token_uri":
+                "https://oauth2.googleapis.com/token",  
+                "auth_provider_x509_cert_url":
+                "https://www.googleapis.com/oauth2/v1/certs",  
+                "client_x509_cert_url":
+                "https://www.googleapis.com/robot/v1/metadata/x509/myserviceaccount%40vpn-gra.iam.gserviceaccount.com",  
+                "universe_domain": "googleapis.com" }
+          resources:
+            limits:
+              cpu: 80m
+              memory: 128Mi
+          startupProbe:
+            timeoutSeconds: 240
+            periodSeconds: 240
+            failureThreshold: 1
+            tcpSocket:
+              port: 5004
+  traffic:
+    - percent: 100
+      latestRevision: true

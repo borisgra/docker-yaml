@@ -1,0 +1,57 @@
+##ctrate gcloud run services replace dsv.yaml  --project com-gra  --region us-central1
+##export gcloud run services describe dsv --format export > dsv.yaml
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: dsv
+  #  namespace: com-gra
+  labels:
+    cloud.googleapis.com/location: us-central1
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/invoker-iam-disabled: 'true'
+spec:
+  template:
+    spec:
+      containerConcurrency: 1
+      containers:
+        - env:
+            - name: jsr223
+              value: hide
+            - name: SERVER_TYPE
+              value: https
+            - name: QUERY_BD
+              value: neon-boris.gra
+            - name: w
+              value: and submenu='SOUNDPROOFING'
+            - name: DATABASE_URL_koyeb_querys
+              value: postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286.eu-central-1.aws.neon.tech/querys
+            - name: DATABASE_URL_daas_nma
+              value: postgres://foUserRead:ablamtinas+1+2+3+4+5@db.daas.team:443/nma
+            - name: ADMIN_PASSW
+              value: +++++
+            - name: q
+              value: v_history_today_ro
+            - name: DATABASE_URL_neon-boris.gra
+              value: postgres://fo_user:HwAJ7FseEZ6K@ep-aged-wind-326026.ap-southeast-1.aws.neon.tech/fo
+          image: borisgra/query-gra
+          name: hello-1
+          ports:
+            - containerPort: 9090
+              name: http1
+          resources:
+            limits:
+              cpu: 80m
+              memory: 256Mi
+          startupProbe:
+            failureThreshold: 1
+            periodSeconds: 240
+            tcpSocket:
+              port: 9090
+            timeoutSeconds: 240
+      #      serviceAccountName: myserviceaccount@vpn-gra.iam.gserviceaccount.com
+      timeoutSeconds: 15
+  traffic:
+    - latestRevision: true
+      percent: 100

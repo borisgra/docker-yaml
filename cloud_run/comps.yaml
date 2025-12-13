@@ -1,0 +1,39 @@
+##create gcloud run services replace comps.yaml  --project com-gra  --region us-central1
+##export gcloud run services describe comps --format export > comps.yaml
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: comps
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    run.googleapis.com/invoker-iam-disabled: 'true'
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '5'
+        run.googleapis.com/startup-cpu-boost: 'true'
+    spec:
+      containerConcurrency: 1
+      timeoutSeconds: 30
+#      serviceAccountName: myserviceaccount@vpn-gra.iam.gserviceaccount.com
+      containers:
+        - name: vm-1
+          image: 'borisgra/vm'
+          ports:
+            - name: http1
+              containerPort: 8080
+          resources:
+            limits:
+              cpu: 80m
+              memory: 128Mi
+          startupProbe:
+            timeoutSeconds: 240
+            periodSeconds: 240
+            failureThreshold: 1
+            tcpSocket:
+              port: 8080
+  traffic:
+    - percent: 100
+      latestRevision: true
