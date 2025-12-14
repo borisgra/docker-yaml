@@ -1,4 +1,7 @@
 <pre>
+#  sudo su -c /usr/lib/openssh/sftp-server  # for winSCP (edit/edvanset/SFTP) (debian sudo apt install openssh-server)
+# sudo ifconfig
+
 VM instances (min):
 system disk- 10G  - Debian /Ubuntu
 procesor 1 memory min 1G  (N2 type - custom-1-1024 - 0.035 usd/h)
@@ -117,15 +120,15 @@ e2-micro (2 vCPU, 1 core, 1 GB memory)  0.01 usd/h
 e2-small (2 vCPU, 1 core, 2 GB memory)  0.03 usd/h
 N2 type - custom-1-1024 - 0.035 usd/h
 
-gcloud compute instances create debian-2 \
+gcloud compute instances create debian \
 --project=com-gra \
 --zone=us-central1-a \
---machine-type=e2-small \
+--machine-type=e2-micro \
 --network-interface=network-tier=PREMIUM,stack-type=IPV4_ONLY,subnet=default \
 --metadata=enable-osconfig=TRUE \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
---create-disk=auto-delete=yes,boot=yes,device-name=debian-2,image=projects/debian-cloud/global/images/debian-13-trixie-v20251014,mode=rw,size=10,type=pd-standard
+--create-disk=auto-delete=yes,boot=yes,device-name=debian,image=projects/debian-cloud/global/images/debian-13-trixie-v20251014,mode=rw,size=10,type=pd-standard
 
 extend file system on 1G :
 GCP Manage disk(edit) - set new value
@@ -314,11 +317,10 @@ open in Firewall TCP:443
 gcloud compute ssh # SSH into your Debian instance
 sudo apt update && sudo apt install certbot python3-certbot-nginx -y  # if nginx server
 sudo nginx -t # where config nginx
-server_name your_domain.com www.your_domain.com # edit config nginx
 sudo nginx -t #  test config
 sudo systemctl reload nginx # nginx reload
-sudo certbot --nginx -d your_domain.com -d www.your_domain.com # Obtain and Install SSL
-  Enter an email address.
+sudo certbot --nginx -d boris-gra.xyz -d www.boris-gra.xyz # Obtain and Install SSL
+  Enter an email address!!
   Agree to the Terms of Service.
   When prompted, choose whether to redirect HTTP traffic to HTTPS. Choosing option 2 (Redirect) is highly recommended
 Your site should now be accessible via https://your_domain.com. Certbot also automatically sets up a timer or cron job for auto-renewal, ensuring your 90-day certificates are renewed before they expire.
