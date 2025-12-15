@@ -1,6 +1,7 @@
 <pre>
 #  sudo su -c /usr/lib/openssh/sftp-server  # for winSCP (edit/edvanset/SFTP) (debian sudo apt install openssh-server)
 # sudo ifconfig
+# sudo passwd root
 
 VM instances (min):
 system disk- 10G  - Debian /Ubuntu
@@ -119,6 +120,14 @@ g1-small 0.5-1 vCPU (1 shared core) 1.7 GB   0.03 usd/h ?
 e2-micro (2 vCPU, 1 core, 1 GB memory)  0.01 usd/h
 e2-small (2 vCPU, 1 core, 2 GB memory)  0.03 usd/h
 N2 type - custom-1-1024 - 0.035 usd/h
+Set ssh key for All instances
+https://console.cloud.google.com/compute/metadata?project=com-gra&scopeTab=projectMetadata&resourceTab=sshkeys
+ or
+gcloud compute project-info add-metadata \
+--metadata-from-file ssh-keys=root-pub
+export ssh key:
+gcloud compute project-info describe \
+--format="value(commonInstanceMetadata.items.ssh-keys)" > existing-keys.txt
 
 gcloud compute instances create debian \
 --project=com-gra \

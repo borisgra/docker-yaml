@@ -12,11 +12,10 @@ sudo mkdir config_pgadmin4
 sudo mkdir config_pgadmin4/storage
 sudo mkdir config_pgadmin4/storage/mail_gmail.com
 sudo chmod 777 -R config*
-echo "install query , loadmenu , computers-start-stop"
+echo "install certbot , registr SSL"
+sudo apt install certbot python3-certbot-nginx -y  # install nginx
+sudo certbot --nginx -d boris-gra.xyz -d www.boris-gra.xyz # Obtain and Install SSL
+sudo nginx -t && sudo systemctl reload nginx # test and nginx reload
+echo "Run query , loadmenu , computers-start-stop"
 sudo docker compose -f compose-query.yaml --env-file .env_query up &&
 sudo docker compose -f compose-bd.yaml --env-file .env up
-#sudo apt install certbot python3-certbot-nginx -y  # install nginx
-#sudo nginx -t # where config nginx
-#sudo nginx -t #  test config
-#sudo systemctl reload nginx # nginx reload
-#sudo certbot --nginx -d boris-gra.xyz -d www.boris-gra.xyz # Obtain and Install SSL
