@@ -2,7 +2,10 @@
 sudo apt update
 sudo apt install net-tools  # ifconfig
 echo "install docker -----------------------"
-sudo bash -c "$(curl -fsSL https://get.docker.com)"
+sudo apt install docker.io docker-doc docker-compose
+sudo chmod 666 /var/run/docker.sock
+#sudo apt install openssh-server ufw -y
+sudo apt install openssh-server
 echo "installed docker !!! -----------------------"
 curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/yamls/compose-query.yaml -O
 curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/yamls/compose-bd.yaml -O
@@ -11,7 +14,7 @@ curl -fsSL https://raw.githubusercontent.com/borisgra/docker-yaml/develop/yamls/
 sudo mkdir config_pgadmin4
 sudo mkdir config_pgadmin4/storage
 sudo mkdir config_pgadmin4/storage/mail_gmail.com
-sudo chmod 777 -R config*
+sudo chmod 666 -R config*
 echo "install certbot , registr SSL"
 sudo apt install certbot python3-certbot-nginx -y  # install nginx
 sudo certbot --nginx -d boris-gra.xyz -d www.boris-gra.xyz # Obtain and Install SSL

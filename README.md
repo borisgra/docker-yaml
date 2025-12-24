@@ -209,6 +209,7 @@ create new role "Custom ComputeStartStop" with permision:
 compute.instances.list	
 compute.instances.start	
 compute.instances.stop	
+compute.instances.reset	
 
 https://console.cloud.google.com/iam-admin/iam?project=????? (View by principals + Grant access)
 Add to project ?????? principal "myserviceaccount@vpn-gra.iam.gserviceaccount.com" 

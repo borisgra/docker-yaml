@@ -7,7 +7,8 @@ sudo chmod 777 docker-yaml/config*
 cd docker-yaml/yamls
 
 echo "install docker -----------------------"
-sudo bash -c "$(curl -fsSL https://get.docker.com)"
+#sudo bash -c "$(curl -fsSL https://get.docker.com)"
+sudo apt install docker.io docker-doc docker-compose
 echo "installed docker !!! -----------------------"
 echo "install pgsql:version+pgAdmin4:version+odoo:version  (version in .env) "
 sudo docker compose up
