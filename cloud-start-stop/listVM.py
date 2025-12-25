@@ -25,7 +25,8 @@ def listVM(request,version):
     for project  in projects.split(","):
         codes, vmList = one_project(codes, project, token, urlCom, vmList, zone)
 
-    vmList = ('<b><table> <th>Project</th> <th>Name VM</th> <th>Zone</th> <th>Status</th> <th>Start</th> <th>Stop</th><th>Reset</th>  <th>natIP</th> <th>In</th> <th>Out</th>\n '
+    vmList = ('<b><table> <th>Project</th> <th>Name VM</th> <th>Zone</th> <th>Status</th> <th>Start</th>'
+              ' <th>Stop</th><th>Reset</th>  <th>natIP</th> <th>Create</th> <th>Type</th> <th>License</th>\n '
               '{}</table></b>').format(vmList)
     return render_template('index.html',codes=','.join(codes),data=vmList,projects=projects,ver=version)
 
@@ -36,8 +37,10 @@ def listVM(request,version):
 #         compute.instances.start
 #         compute.instances.stop
 #         compute.instances.reset
+# https://console.cloud.google.com/run/deploy/us-central1/comps?project=vpn-gra # Cloud run !!!
+#     Security / servise account -> copy principal
 # https://console.cloud.google.com/iam-admin/iam?project=????? (View by principals + Grant access)
-#     Add to project ?????? principal "myserviceaccount@?????.iam.gserviceaccount.com"
+#     Add to project ?????? principal "myserviceaccount@vpn-gra.iam.gserviceaccount.com"
 #     with role "Custom ComputeStartStop"
 def one_project(codes, project, token, urlCom, vmList, zone):
     # url = ("https://compute.googleapis.com/compute/v1/projects/{}/zones/{}/instances"  # list - one zone
@@ -67,19 +70,20 @@ def one_project(codes, project, token, urlCom, vmList, zone):
                         zone = instance['zone'].split('/')[-1]
                         accessConfigs = instance['networkInterfaces'][0]['accessConfigs'][0]
                         natIP = accessConfigs['natIP'] if 'natIP' in accessConfigs else ''
+                        creationDate = instance['creationTimestamp'][:10]
+                        machineType = instance['machineType'].split('/')[-1]
+                        license = instance['disks'][0]['licenses'][0].split('/')[-1]
 
                         vmList += ('<tr> '
                                    '<td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> \n'
                                    '<td> <button onclick="com_vm(\'{}?vm={}&com=start&projects={}&zone={}\')">&nbsp;START</button> </td> \n'
                                    '<td> <button onclick="com_vm(\'{}?vm={}&com=stop&projects={}&zone={}\')">&nbsp;STOP</button> </td> \n'
                                    '<td> <button onclick="com_vm(\'{}?vm={}&com=reset&projects={}&zone={}\')">&nbsp;RESET</button> </td> \n'
-                                   '<td> {}</td> </tr> '
-                                   # '<td> {}</td> <td> {}</td> <td> {}</td></tr> '
+                                   '<td> {}</td> <td> {}</td> <td> {}</td> <td> {}</td> </tr> '
                                    .format(project, name, zone, status,
                                            urlCom,name, project, zone,
                                            urlCom, name, project, zone,
-                                           urlCom, name, project, zone
-                                           , natIP  ))
-                                           # , natIP , startTime, endTime ))
+                                           urlCom, name, project, zone,
+                                           natIP , creationDate, machineType,  license))
     codes.append(str(response.status_code))
     return codes, vmList
