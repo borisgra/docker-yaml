@@ -25,11 +25,20 @@ def listVM(request,version):
     for project  in projects.split(","):
         codes, vmList = one_project(codes, project, token, urlCom, vmList, zone)
 
-    vmList = ('<b><table> <th>Project</th> <th>Name VM</th> <th>Zone</th> <th>Status</th> <th>Start</th> <th>Stop</th> <th>natIP</th>\n '
+    vmList = ('<b><table> <th>Project</th> <th>Name VM</th> <th>Zone</th> <th>Status</th> <th>Start</th> <th>Stop</th><th>Reset</th>  <th>natIP</th> <th>In</th> <th>Out</th>\n '
               '{}</table></b>').format(vmList)
     return render_template('index.html',codes=','.join(codes),data=vmList,projects=projects,ver=version)
 
-
+# https://docs.cloud.google.com/compute/docs/reference/rest/v1/instances
+# https://console.cloud.google.com/iam-admin/roles?project=?????
+#     create new role "Custom ComputeStartStop" with permision:
+#         compute.instances.list
+#         compute.instances.start
+#         compute.instances.stop
+#         compute.instances.reset
+# https://console.cloud.google.com/iam-admin/iam?project=????? (View by principals + Grant access)
+#     Add to project ?????? principal "myserviceaccount@?????.iam.gserviceaccount.com"
+#     with role "Custom ComputeStartStop"
 def one_project(codes, project, token, urlCom, vmList, zone):
     # url = ("https://compute.googleapis.com/compute/v1/projects/{}/zones/{}/instances"  # list - one zone
     url = "https://compute.googleapis.com/compute/v1/projects/{}/aggregated/instances".format(project) # aggregatedList - all zones
@@ -63,10 +72,14 @@ def one_project(codes, project, token, urlCom, vmList, zone):
                                    '<td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> \n'
                                    '<td> <button onclick="com_vm(\'{}?vm={}&com=start&projects={}&zone={}\')">&nbsp;START</button> </td> \n'
                                    '<td> <button onclick="com_vm(\'{}?vm={}&com=stop&projects={}&zone={}\')">&nbsp;STOP</button> </td> \n'
-                                   '<td> {}</td></tr> '
+                                   '<td> <button onclick="com_vm(\'{}?vm={}&com=reset&projects={}&zone={}\')">&nbsp;RESET</button> </td> \n'
+                                   '<td> {}</td> </tr> '
+                                   # '<td> {}</td> <td> {}</td> <td> {}</td></tr> '
                                    .format(project, name, zone, status,
                                            urlCom,name, project, zone,
+                                           urlCom, name, project, zone,
                                            urlCom, name, project, zone
-                                           , natIP))
+                                           , natIP  ))
+                                           # , natIP , startTime, endTime ))
     codes.append(str(response.status_code))
     return codes, vmList
