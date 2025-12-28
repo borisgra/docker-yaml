@@ -8,7 +8,7 @@
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
     <option name="SDK_HOME" value="" />
-    <option name="SDK_NAME" value="Python 3.12 (docker-yaml)" />
+    <option name="SDK_NAME" value="Python 3.12 (react)" />
     <option name="WORKING_DIRECTORY" value="F:\Projects_git\docker-yaml\cloud-start-stop" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -23,6 +23,7 @@
         <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
       </ENTRIES>
     </EXTENSION>
+    <option name="RUN_TOOL" value="" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cloud-start-stop/cloudrun.py" />
     <option name="PARAMETERS" value="PORT=8080" />
     <option name="SHOW_COMMAND_LINE" value="false" />

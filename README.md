@@ -1,6 +1,7 @@
 <pre>
 #  sudo su -c /usr/lib/openssh/sftp-server  # for winSCP (edit/edvanset/SFTP) (debian sudo apt install openssh-server)
 # sudo ifconfig
+# ss -tulpn | grep LISTEN   # open ports
 # sudo passwd root
 
 VM instances (min):
@@ -316,6 +317,39 @@ install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachine
 wsl --export --vhd Ubuntu-24.04 F:/temp/WpSystem-my/Ubuntu-24.04/ext4.vhdx
 wsl --import-in-place ubuntu_24.04docker F:\temp\WpSystem-my\Ubuntu-24.04\ext4.vhdx
 wsl --manage ubuntu_24.04docker --set-sparse true
+wsl --install Debian --name debian-13 --location F:/temp/WpSystem-my/debian
+wsl --unregister  debian-13 # deleted also .vxdx  file
+wsl -l -v
+wsl --help
+
+**Podmain** on wsl (Debian) from intellij:
+wsl --install Debian --name debian-1 --location F:/temp/WpSystem-my/debian-1
+sudo apt update
+sudo apt install podman
+sudo systemctl enable --now podman.socket
+systemctl status podman.socket  # verify
+# (Allow rootless access &#40;Optional but Recommended&#41; If you want to run containers without sudo, you should enable the user socket)
+systemctl --user enable --now podman.socket  
+sudo apt install podman-docker # Or manually alias it: alias docker=podman
+sudo apt install openssh-server
+# (Configure cgroup Manager)
+mkdir ~/.config/containers
+nano ~/.config/containers/containers.conf
+[engine]
+cgroup_manager = "cgroupfs"
+events_logger = "file"
+# wsl --shutdown # Restart your WSL
+# ! Switch Debian to Legacy Iptables if Status 500 when run podmain
+sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
+sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+nano ~/.config/containers/containers.conf
+[network]
+firewall_driver = "iptables" 
+wsl --shutdown # Restart your WSL
+podman network rm podman
+nano /etc/containers/registries.conf
+unqualified-search-registries = ["docker.io", "quay.io"] # Podman does not assume docker.io is the default
+sudo systemctl restart podman.socket
 
 SSL:
 https://www.dynadot.com/ - registred , login , my info
