@@ -3,6 +3,7 @@
 # sudo ifconfig
 # ss -tulpn | grep LISTEN   # open ports
 # sudo passwd root
+# sudo shutdown -h nov
 
 VM instances (min):
 system disk- 10G  - Debian /Ubuntu
@@ -321,34 +322,36 @@ wsl --install Debian --name debian-13 --location F:/temp/WpSystem-my/debian
 wsl --unregister  debian-13 # deleted also .vxdx  file
 wsl -l -v
 wsl --help
+wsl --shutdown
 
 **Podmain** on wsl (Debian) from intellij:
 wsl --install Debian --name debian-1 --location F:/temp/WpSystem-my/debian-1
-sudo apt update
-sudo apt install podman
-sudo systemctl enable --now podman.socket
-systemctl status podman.socket  # verify
-# (Allow rootless access &#40;Optional but Recommended&#41; If you want to run containers without sudo, you should enable the user socket)
-systemctl --user enable --now podman.socket  
-sudo apt install podman-docker # Or manually alias it: alias docker=podman
-sudo apt install openssh-server
-# (Configure cgroup Manager)
+sudo apt update && sudo apt install -y git  \
+ openssh-server \
+ podman && \
+sudo systemctl enable --now podman.socket && \
+systemctl status podman.socket && \ 
+systemctl --user enable --now podman.socket  && \
+sudo apt install -y podman-docker # Or manually alias it: alias docker=podman
+# Configure cgroup Manager if error 125 
 mkdir ~/.config/containers
 nano ~/.config/containers/containers.conf
 [engine]
 cgroup_manager = "cgroupfs"
 events_logger = "file"
-# wsl --shutdown # Restart your WSL
+
+nano ~/.config/containers/registries.conf
+unqualified-search-registries = ["docker.io"] # Podman does not assume docker.io is the default
+
+wsl --shutdown # Restart your WSL
 # ! Switch Debian to Legacy Iptables if Status 500 when run podmain
 sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
-sudo update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
 nano ~/.config/containers/containers.conf
 [network]
 firewall_driver = "iptables" 
+
 wsl --shutdown # Restart your WSL
 podman network rm podman
-nano /etc/containers/registries.conf
-unqualified-search-registries = ["docker.io", "quay.io"] # Podman does not assume docker.io is the default
 sudo systemctl restart podman.socket
 
 SSL:
