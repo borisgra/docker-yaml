@@ -206,6 +206,7 @@ connect by windows Remote Deckstop
 unzip on D:  d:\distrib\mde-partision-free-portable.zip
 
 For service instance start/stop https://comps-907412932172.us-central1.run.app/?projects=com-gra,vpn-gra,gke-gra :
+https://docs.cloud.google.com/compute/docs/reference/rest/v1/instances
 https://console.cloud.google.com/iam-admin/roles?project=vpn-gra
 create new role "Custom ComputeStartStop" with permision:
 compute.instances.list	

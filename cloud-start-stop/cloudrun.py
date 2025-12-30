@@ -6,6 +6,7 @@ from listVM import listVM
 import os.path
 from datetime import datetime
 import requests
+import logging
 
 app = Flask(__name__)
 # https://sky.pro/wiki/python/razreshenie-cors-vo-flask-dlya-zaprosov-cherez-j-query/
@@ -14,6 +15,7 @@ CORS(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def listvm():
+    logging.warning('00 '+request.url)
     return listVM(request,version)
 
 @app.route('/load', methods=['GET', 'POST'])

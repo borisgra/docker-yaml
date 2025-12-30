@@ -4,13 +4,17 @@ from getToken import getToken
 from flask import render_template
 from run_command import run_command
 from get_param import get_param
+import logging
 
 
 @functions_framework.http
 def listVM(request,version):
-    urlCom = request.url.split('?')[0].replace('http:','https:')  # todo http ??
-    print('urlCom =',urlCom,'version=',version)
+    logging.warning('01 '+request.url)
+    urlCom = str(request.url.split('?')[0])
+    if urlCom.find(".xyz:") < 0 :
+        urlCom = urlCom.replace('http:','https:')
     com, projects, vm, zone = get_param(request)
+    logging.warning('02 '+urlCom)
     if projects == '':
         return 'Add param (url?projects=my_projects1_id,my_project2_id,..)'
 
