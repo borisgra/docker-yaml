@@ -314,7 +314,12 @@ tar -xzOvf -   | \
 aws s3 cp - s3://aws-strore-gra/win10/images/gcp-win10.vmdk
 
 WSL (Windows Subsystem for Linux):  Unix on Windows
-install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+install wsl in cmd  (Admin):
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+or
+wsl --install
+
 wsl --export --vhd Ubuntu-24.04 F:/temp/WpSystem-my/Ubuntu-24.04/ext4.vhdx
 wsl --import-in-place ubuntu_24.04docker F:\temp\WpSystem-my\Ubuntu-24.04\ext4.vhdx
 wsl --manage ubuntu_24.04docker --set-sparse true

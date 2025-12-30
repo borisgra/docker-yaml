@@ -1,6 +1,11 @@
 #!/bin/sh
 WSL (Windows Subsystem for Linux):  Unix on Windows
-install wsl in cmd: dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+install wsl in cmd  (Admin):
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+or
+wsl --install
+
 cmd or powershel
 wsl --export --vhd Ubuntu-24.04 F:/temp/WpSystem-my/Ubuntu-24.04/ext4.vhdx
 wsl --import ubuntu_22-04-fromtar F:\temp\WpSystem-my\ubuntu-22.04fromtar\ext4.vhdx F:\temp\WpSystem-my\tar_wsl-ubuntu\Ubuntu-22-04_start.tar
