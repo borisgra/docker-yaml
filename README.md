@@ -131,6 +131,15 @@ export ssh key:
 gcloud compute project-info describe \
 --format="value(commonInstanceMetadata.items.ssh-keys)" > existing-keys.txt
 
+# myserviceaccount@com-gra.iam.gserviceaccount.com
+gcloud iam service-accounts create myserviceaccount \
+--description="DESCRIPTION" \
+--display-name="myServiceaccount"
+or
+gcloud projects add-iam-policy-binding com-gra \
+--member="serviceAccount:myserviceaccount@com-gra.iam.gserviceaccount.com" \
+--role="Custom ComputeStartStop"
+
 gcloud compute instances create debian \
 --project=com-gra \
 --zone=us-central1-a \
@@ -139,7 +148,12 @@ gcloud compute instances create debian \
 --metadata=enable-osconfig=TRUE \
 --maintenance-policy=MIGRATE \
 --provisioning-model=STANDARD \
+--service-account=myserviceaccount@com-gra.iam.gserviceaccount.com
 --create-disk=auto-delete=yes,boot=yes,device-name=debian,image=projects/debian-cloud/global/images/debian-13-trixie-v20251014,mode=rw,size=10,type=pd-standard
+
+Add to projects vpn-gra,store-gra,gke-gra principal "myserviceaccount@com-gra.iam.gserviceaccount.com"
+with role "Custom ComputeStartStop"
+https://console.cloud.google.com/iam-admin/roles?project=vpn-gra
 
 extend file system on 1G :
 GCP Manage disk(edit) - set new value
