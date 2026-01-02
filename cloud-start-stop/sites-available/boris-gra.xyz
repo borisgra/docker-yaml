@@ -1,0 +1,80 @@
+# https://www.hostinger.com/uk/tutorials/how-to-set-up-nginx-reverse-proxy
+# Copy this file to /etc/nginx/sites-available
+# sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+# sudo nginx -t # path and test config
+# sudo systemctl reload nginx # nginx reload
+
+server {
+
+	root /var/www/html;
+
+	# Add index.php to the list if you are using PHP
+	index index.html index.htm index.nginx-debian.html;
+    server_name boris-gra.xyz www.boris-gra.xyz; # managed by Certbot
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/boris-gra.xyz/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/boris-gra.xyz/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+	location /x {
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		try_files $uri $uri/ =404;
+	}
+
+   location / {
+    proxy_pass http://127.0.0.1:5001/;  # The trailing slash strips
+    include proxy_params;
+    }
+
+   location /query/ {
+    proxy_pass http://127.0.0.1:5003/;  # The trailing slash strips "/query"
+    include proxy_params;
+    }
+
+    location = /loadEnv {
+        proxy_pass http://127.0.0.1:5003/loadEnv;
+        include proxy_params;    
+    }
+
+   location /com/ {
+    proxy_pass http://127.0.0.1:5005/;  # The trailing slash strips 
+    include proxy_params;
+  }
+
+   location /mn/ {
+    proxy_pass http://127.0.0.1:5002/;  # The trailing slash strips
+    include proxy_params;
+    }
+
+    location = /assets{
+        proxy_pass http://127.0.0.1:5002/assets;
+        include proxy_params; 
+    }
+
+}
+
+
+server {
+    if ($host = www.boris-gra.xyz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    if ($host = boris-gra.xyz) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	listen 80 ;
+	listen [::]:80 ;
+    server_name boris-gra.xyz www.boris-gra.xyz;
+    return 404; # managed by Certbot
+
+
+
+
+}

@@ -374,7 +374,7 @@ wsl --shutdown # Restart your WSL
 podman network rm podman
 sudo systemctl restart podman.socket
 
-SSL:
+SSL and nginx:
 https://www.dynadot.com/ - registred , login , my info
 https://www.dynadot.com/ru/domain/search and buy new DOMEN
 https://www.dynadot.com/ru/account/domain/name/new_domains.html - 
@@ -383,7 +383,7 @@ https://www.dynadot.com/ru/account/domain/name/list.html -
 open in Firewall TCP:443
 gcloud compute ssh # SSH into your Debian instance
 sudo apt update && sudo apt install certbot python3-certbot-nginx -y  # if nginx server
-sudo nginx -t # where config nginx and test config
+sudo nginx -t # path and test config
 sudo systemctl reload nginx # nginx reload
 sudo certbot --nginx -d boris-gra.xyz -d www.boris-gra.xyz # Obtain and Install SSL
   Enter an email address!!
