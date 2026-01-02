@@ -10,11 +10,7 @@ import logging
 @functions_framework.http
 def listVM(request,version):
     logging.warning('01 '+request.url)
-    urlCom = str(request.url.split('?')[0])
-    if urlCom.find(".xyz:") < 0 :
-        urlCom = urlCom.replace('http:','https:')
     com, projects, vm, zone = get_param(request)
-    logging.warning('02 '+urlCom)
     if projects == '':
         return 'Add param (url?projects=my_projects1_id,my_project2_id,..)'
 
@@ -27,7 +23,7 @@ def listVM(request,version):
         return run_command(com, projects, token, vm, zone)
 
     for project  in projects.split(","):
-        codes, vmList = one_project(codes, project, token, urlCom, vmList, zone)
+        codes, vmList = one_project(codes, project, token, vmList)
 
     vmList = ('<b><table> <th>Project</th> <th>Name VM</th> <th>Zone</th> <th>Status</th> <th>Start</th>'
               ' <th>Stop</th><th>Reset</th>  <th>natIP</th> <th>Create</th> <th>Type</th> <th>License</th>\n '
@@ -46,7 +42,7 @@ def listVM(request,version):
 # https://console.cloud.google.com/iam-admin/iam?project=????? (View by principals + Grant access)
 #     Add to project ?????? principal "myserviceaccount@vpn-gra.iam.gserviceaccount.com"
 #     with role "Custom ComputeStartStop"
-def one_project(codes, project, token, urlCom, vmList, zone):
+def one_project(codes, project, token, vmList):
     # url = ("https://compute.googleapis.com/compute/v1/projects/{}/zones/{}/instances"  # list - one zone
     url = "https://compute.googleapis.com/compute/v1/projects/{}/aggregated/instances".format(project) # aggregatedList - all zones
     print(url)
@@ -80,14 +76,14 @@ def one_project(codes, project, token, urlCom, vmList, zone):
 
                         vmList += ('<tr> '
                                    '<td>{}</td> <td>{}</td> <td>{}</td> <td>{}</td> \n'
-                                   '<td> <button onclick="com_vm(\'{}?vm={}&com=start&projects={}&zone={}\')">&nbsp;START</button> </td> \n'
-                                   '<td> <button onclick="com_vm(\'{}?vm={}&com=stop&projects={}&zone={}\')">&nbsp;STOP</button> </td> \n'
-                                   '<td> <button onclick="com_vm(\'{}?vm={}&com=reset&projects={}&zone={}\')">&nbsp;RESET</button> </td> \n'
+                                   '<td> <button onclick="com_vm(\'?vm={}&com=start&projects={}&zone={}\')">&nbsp;START</button> </td> \n'
+                                   '<td> <button onclick="com_vm(\'?vm={}&com=stop&projects={}&zone={}\')">&nbsp;STOP</button> </td> \n'
+                                   '<td> <button onclick="com_vm(\'?vm={}&com=reset&projects={}&zone={}\')">&nbsp;RESET</button> </td> \n'
                                    '<td> {}</td> <td> {}</td> <td> {}</td> <td> {}</td> </tr> '
                                    .format(project, name, zone, status,
-                                           urlCom,name, project, zone,
-                                           urlCom, name, project, zone,
-                                           urlCom, name, project, zone,
+                                           name, project, zone,
+                                           name, project, zone,
+                                           name, project, zone,
                                            natIP , creationDate, machineType,  license))
     codes.append(str(response.status_code))
     return codes, vmList

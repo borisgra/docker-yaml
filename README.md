@@ -383,8 +383,7 @@ https://www.dynadot.com/ru/account/domain/name/list.html -
 open in Firewall TCP:443
 gcloud compute ssh # SSH into your Debian instance
 sudo apt update && sudo apt install certbot python3-certbot-nginx -y  # if nginx server
-sudo nginx -t # where config nginx
-sudo nginx -t #  test config
+sudo nginx -t # where config nginx and test config
 sudo systemctl reload nginx # nginx reload
 sudo certbot --nginx -d boris-gra.xyz -d www.boris-gra.xyz # Obtain and Install SSL
   Enter an email address!!
@@ -393,8 +392,8 @@ sudo certbot --nginx -d boris-gra.xyz -d www.boris-gra.xyz # Obtain and Install 
 Your site should now be accessible via https://your_domain.com. Certbot also automatically sets up a timer or cron job for auto-renewal, ensuring your 90-day certificates are renewed before they expire.
 https://search.google.com/search-console/welcome - registred domein in GCP
 https://console.cloud.google.com/run/domains?project=vpn-gra  add domen for GCP Cloud Run
+https://www.hostinger.com/uk/tutorials/how-to-set-up-nginx-reverse-proxy 
 
-https://learn.microsoft.com/ru-ru/windows/wsl/basic-commands#import-a-distribution
 DELETE !!!
 gsutil -m retention event release gs://boris-gra/images/*.*
 gsutil retention temp release gs://boris-gra/images/*.*
