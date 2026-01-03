@@ -27,3 +27,8 @@ services:
     restart: always
 
 #  sudo docker compose  -f compose-bd.yaml up
+#  sudo su -c /usr/lib/openssh/sftp-server  # for winSCP (edit/edvanset/SFTP) (debian sudo apt install openssh-server)
+# RUN bash IN container bd  !!
+# if needed: sudo docker compose -f compose-query.yaml --env-file .env_query exec -it -u root loadmenu  apk add bash
+#  sudo docker compose -f compose-query.yaml --env-file .env_query exec -it -u root loadmenu   bash
+#  sudo docker compose -f compose-query.yaml --env-file .env_query exec -it loadmenu   bash  # NOT root !

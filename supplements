@@ -66,6 +66,8 @@ sudo nano /etc/ssh/sshd_config   #  ( PasswordAuthentication yes) if refuse conn
 sudo lsof -i -n -P | grep LISTEN # list open ports
 sudo service docker start # Ubuntu/Debian if error:  Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
 
+# RUN bash IN container ooo  !!
+# if needed: sudo docker compose -f compose-query.yaml --env-file .env_query exec -it -u root loadmenu  apk add bash
 sudo docker compose exec -it odoo bash  # NOT root acccess
 sudo docker compose exec -it -u root odoo bash  # root acccess
 https://security.stackexchange.com/questions/218355/how-to-execute-a-command-directly-on-the-host-system-through-docker-sock-in-a-do
