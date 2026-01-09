@@ -85,6 +85,10 @@ gsutil -m  mv -r  gs://*   # move all bucket from current project
 gsutil -m  cp -r  gs://*   # copy all bucket from current project
 gcloud config get-value project
 gcloud config set project new-project
+echo '[{"origin": ["*"], "method": ["GET"], "maxAgeSeconds": 3600}]' > cors.json
+gsutil cors set cors.json gs://public-menu
+gsutil cors get gs://test-menu
+gcloud storage buckets add-iam-policy-binding gs://test-gra --member=allUsers --role=roles/storage.objectViewer
 gcloud help
 curl https://raw.githubusercontent.com/borisgra/menus/refs/heads/main/menu-koyeb.js | gsutil cp - gs://gke-gra
 gcloud storage buckets update gs://my-bucket --soft-delete-duration=1d  # 0d - cancel  
