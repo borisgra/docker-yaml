@@ -7,8 +7,10 @@ services:
       - PORT=5003
       - SERVER_TYPE=htts
       - jsr223=hide
-      - QUERY_BD=neon-boris.gra
-#      - w=and submenu='SOUNDPROOFING'
+      #      - QUERY_BD=neon-boris.gra
+      - QUERY_BD=local
+
+      #      - w=and submenu='SOUNDPROOFING'
       - DATABASE_URL_local=postgres://odoo:6Ud3RVzDQgntgcED4jUm@172.18.0.1/querys
       - DATABASE_URL_koyeb_querys=postgres://koyeb-adm:bEhm6HPl7JSF@ep-falling-shape-89504286.eu-central-1.aws.neon.tech/querys
       - DATABASE_URL_daas_nma=$NMA
@@ -22,25 +24,18 @@ services:
 
   loadmenu:
     container_name: loadmenu # only JS without Python
-    image: borisgra/greed:nginx-91
+    image: borisgra/greed:nginx-93
     environment:
       - PASS='12345'
+    volumes:
+      - ./menus:/usr/share/nginx/html/menus
     ports:
       - 5002:3000
     restart: always
 
-  loadmenu-m:
-    container_name: loadmenu-m
-    image: borisgra/greed  # JS with Python
-    environment:
-      - PASS='12345'
-    ports:
-      - 5001:3000
-    restart: always
-
   compurers:
     container_name: compurers
-    image: borisgra/vm
+    image: borisgra/vm:ver-1.0.136
     environment:
       - PASS='12345'
     ports:
@@ -50,6 +45,5 @@ services:
 #  sudo docker compose  -f compose-query.yaml --env-file .env_query up
 #  sudo su -c /usr/lib/openssh/sftp-server  # for winSCP (edit/edvanset/SFTP) (debian sudo apt install openssh-server)
 # RUN bash IN container loadmenu  !!
-# if needed: sudo docker compose -f compose-query.yaml --env-file .env_query exec -it -u root loadmenu  apk add bash
+#  sudo docker compose -f compose-query.yaml --env-file .env_query exec -it -u root loadmenu  apk add bash
 #  sudo docker compose -f compose-query.yaml --env-file .env_query exec -it -u root loadmenu   bash
-#  sudo docker compose -f compose-query.yaml --env-file .env_query exec -it loadmenu   bash  # NOT root !
