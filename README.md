@@ -347,6 +347,14 @@ wsl --unregister  debian-13 # deleted also .vxdx  file
 wsl -l -v
 wsl --help
 wsl --shutdown
+# https://stephenreescarter.net/how-to-shrink-a-wsl2-virtual-disk/
+docker system prune # start in debian wsl
+wsl --terminate debian
+DISKPART # start in PowerShell
+select vdisk file="F:\temp\WpSystem-my\debian\ext4.vhdx"
+compact vdisk
+exit
+wsl --distribution debian --user boris
 
 **Podmain** on wsl (Debian) from intellij:
 wsl --install Debian --name debian-1 --location F:/temp/WpSystem-my/debian-1
